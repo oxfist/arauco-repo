@@ -3,7 +3,7 @@ andres_test:
     prefix:   /
 
 fos_js_routing:
-    resource: '@FOSJsRoutingBundle/Resources/config/routing/routing.xml'
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 
 # Internal routing configuration to handle ESI
 #_internal:
