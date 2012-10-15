@@ -1,0 +1,3 @@
+andres_test_homepage:
+    pattern:  /
+    defaults: { _controller: AndresTestBundle:Default:index }
