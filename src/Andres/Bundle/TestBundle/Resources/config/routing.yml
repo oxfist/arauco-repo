@@ -1,5 +1,11 @@
-andres_test_homepage:
+andres_test_home:
     pattern:  /
     defaults: { _controller: AndresTestBundle:Default:index }
     options:
-        expose: true
+      expose: true
+
+andres_test_content:
+    pattern: /content
+    defaults: { _controller: AndresTestBundle:Default:content }
+    options:
+      expose: true

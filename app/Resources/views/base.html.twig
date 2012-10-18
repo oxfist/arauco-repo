@@ -6,19 +6,26 @@
         {% stylesheets '@AndresTestBundle/Resources/public/less/*' filter='less,?yui_css' %}
     	<link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
         {% endstylesheets %}
+        
         {% javascripts '@AndresTestBundle/Resources/public/js/*' filter='yui_js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
         <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
         <script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-        <script type="text/javascript" src="{{ asset_url }}" />
-        <script type="text/javascript">$(document).ready( function() {
-            //initial
-            var content = Routing.generate( 'andres_test_homepage' );
-            $('#content').load(content);
-        });</script>
         {% endjavascripts %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
         {% block body %}{% endblock %}
+        {% block footer %}
+            <br />
+            <div id="footer">
+                <a href=".">Home</a>
+                <a href="content">Content</a>
+                <a href="history">History</a>
+            </div>
+        {% endblock %}
+        {% block javascripts %}
+
+        {% endblock %}
     </body>
 </html>
