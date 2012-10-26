@@ -29,6 +29,6 @@ class DefaultController extends Controller
         $em->persist($menu);
         $em->flush();
 
-        return new Response('Creado menu con id '. $menu->getId());
+        return $this->render( 'AndresTestBundle:Default:crear.html.twig', array('id' => $menu->getId()) );
     }
 }
