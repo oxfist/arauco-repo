@@ -9,3 +9,7 @@ andres_test_content:
     defaults: { _controller: AndresTestBundle:Default:content }
     options:
       expose: true
+
+andres_crear_menu:
+    pattern: /crear
+    defaults: { _controller: AndresTestBundle:Default:create }
