@@ -1,0 +1,9 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+<div id="content">
+    <h1>{{ menu.id }} {{ menu.nombre }}</h1>
+    <h2>${{ menu.precio }}</h2>
+    <p>{{ menu.descripcion }}</p>
+</div>
+{% endblock %}

@@ -13,3 +13,7 @@ andres_test_content:
 andres_crear_menu:
     pattern: /crear
     defaults: { _controller: AndresTestBundle:Default:create }
+    
+andres_mostrar_menu:
+    pattern: /mostrar/{id}
+    defaults: { _controller: AndresTestBundle:Default:show, id: 1 }

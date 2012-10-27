@@ -21,14 +21,25 @@ class DefaultController extends Controller
     public function createAction()
     {
         $menu = new Menu();
-        $menu->setNombre('Tallarines');
-        $menu->setPrecio('1000.5');
-        $menu->setDescripcion('Tallarines muy ricos');
+        $menu->setNombre('Pollo con papas fritas');
+        $menu->setPrecio('4000');
+        $menu->setDescripcion('Papitas ricas y muuuy ricas');
         
         $em = $this->getDoctrine()->getEntityManager();
         $em->persist($menu);
         $em->flush();
 
-        return $this->render( 'AndresTestBundle:Default:crear.html.twig', array('id' => $menu->getId()) );
+        return $this->render( 'AndresTestBundle:Default:crear.html.twig',
+                              array('id' => $menu->getId()) );
+    }
+
+    public function showAction($id) {
+        $menu = $this->getDoctrine()
+            ->getRepository('AndresTestBundle:Menu')
+            ->find($id);
+        if (!$menu)
+            throw $this->createNotFoundException('No hay menu para el id: ' .$id);
+        return $this->render( 'AndresTestBundle:Default:mostrar.html.twig',
+                              array('menu' => $menu) );
     }
 }
