@@ -33,13 +33,13 @@ class DefaultController extends Controller
                               array('id' => $menu->getId()) );
     }
 
-    public function showAction($id) {
-        $menu = $this->getDoctrine()
+    public function showAction() {
+        $menus = $this->getDoctrine()
             ->getRepository('AndresTestBundle:Menu')
-            ->find($id);
-        if (!$menu)
-            throw $this->createNotFoundException('No hay menu para el id: ' .$id);
+            ->findAll();
+        if (!$menus)
+            throw $this->createNotFoundException('No existen menus');
         return $this->render( 'AndresTestBundle:Default:mostrar.html.twig',
-                              array('menu' => $menu) );
+                              array('menus' => $menus) );
     }
 }
