@@ -1,6 +1,43 @@
 {
-    "hash": "0c18389bc786324d01512fbbb128dfa2",
+    "hash": "78ecb90145c2671c969edd5c7b712690",
     "packages": [
+        {
+            "name": "braincrafted/bootstrap-bundle",
+            "version": "dev-master",
+            "target-dir": "Braincrafted/BootstrapBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/braincrafted/bootstrap-bundle",
+                "reference": "v1.0.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/braincrafted/bootstrap-bundle/zipball/v1.0.2",
+                "reference": "v1.0.2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "twig/extensions": "dev-master",
+                "knplabs/knp-menu": "dev-master",
+                "knplabs/knp-menu-bundle": "dev-master"
+            },
+            "time": "1347576916",
+            "type": "symfony-bundle",
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Braincrafted\\BootstrapBundle": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Twitter Bootstrap for Symfony2",
+            "keywords": [
+                "bootstrap"
+            ]
+        },
         {
             "name": "doctrine/common",
             "version": "2.3.x-dev",
@@ -580,6 +617,124 @@
             ]
         },
         {
+            "name": "knplabs/knp-menu",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "http://github.com/KnpLabs/KnpMenu.git",
+                "reference": "5c33817281456f9d5298a277890e2e025f7f50c7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/KnpLabs/KnpMenu/zipball/5c33817281456f9d5298a277890e2e025f7f50c7",
+                "reference": "5c33817281456f9d5298a277890e2e025f7f50c7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "silex/silex": "1.0.*",
+                "twig/twig": ">=1.2,<2.0-dev",
+                "pimple/pimple": "1.0.*"
+            },
+            "suggest": {
+                "pimple/pimple": "for the built-in implementations of the menu provider and renderer provider",
+                "silex/silex": "for the integration with your silex application",
+                "twig/twig": "for the TwigRenderer and the integration with your templates"
+            },
+            "time": "1350747764",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Knp\\Menu\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christophe Coevoet",
+                    "email": "stof@notk.org"
+                },
+                {
+                    "name": "KnpLabs",
+                    "homepage": "http://knplabs.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://github.com/KnpLabs/KnpMenu/contributors"
+                }
+            ],
+            "description": "An object oriented menu library",
+            "homepage": "http://knplabs.com",
+            "keywords": [
+                "menu",
+                "tree"
+            ]
+        },
+        {
+            "name": "knplabs/knp-menu-bundle",
+            "version": "dev-master",
+            "target-dir": "Knp/Bundle/MenuBundle",
+            "source": {
+                "type": "git",
+                "url": "http://github.com/KnpLabs/KnpMenuBundle.git",
+                "reference": "6040c533f561da285e38e8bda271d7aaaf62fd10"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/KnpLabs/KnpMenuBundle/zipball/6040c533f561da285e38e8bda271d7aaaf62fd10",
+                "reference": "6040c533f561da285e38e8bda271d7aaaf62fd10",
+                "shasum": ""
+            },
+            "require": {
+                "knplabs/knp-menu": "2.0.*",
+                "symfony/framework-bundle": ">=2.0,<2.3-dev"
+            },
+            "time": "1350241999",
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Knp\\Bundle\\MenuBundle": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christophe Coevoet",
+                    "email": "stof@notk.org"
+                },
+                {
+                    "name": "KnpLabs",
+                    "homepage": "http://knplabs.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://github.com/KnpLabs/KnpMenuBundle/contributors"
+                }
+            ],
+            "description": "This bundle provides an integration of the KnpMenu library",
+            "keywords": [
+                "menu"
+            ]
+        },
+        {
             "name": "kriswallsmith/assetic",
             "version": "dev-master",
             "source": {
@@ -1070,12 +1225,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/symfony/symfony.git",
-                "reference": "5155aecb3ac85597d7a70ac57899c860a6031501"
+                "reference": "43aa20fcb6e5b92d898e06700d7933d9a158f135"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/symfony/zipball/5155aecb3ac85597d7a70ac57899c860a6031501",
-                "reference": "5155aecb3ac85597d7a70ac57899c860a6031501",
+                "url": "https://github.com/symfony/symfony/zipball/43aa20fcb6e5b92d898e06700d7933d9a158f135",
+                "reference": "43aa20fcb6e5b92d898e06700d7933d9a158f135",
                 "shasum": ""
             },
             "require": {
@@ -1124,7 +1279,7 @@
                 "propel/propel1": "dev-master",
                 "monolog/monolog": "1.*"
             },
-            "time": "1351255755",
+            "time": "1351353561",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1210,18 +1365,18 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Twig.git",
-                "reference": "61393dc9fb8982110048624aa573aec4aee0b465"
+                "reference": "0505c2fefd5eaa81c628b0cf8a9b8a2bc612321c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Twig/zipball/61393dc9fb8982110048624aa573aec4aee0b465",
-                "reference": "61393dc9fb8982110048624aa573aec4aee0b465",
+                "url": "https://github.com/fabpot/Twig/zipball/0505c2fefd5eaa81c628b0cf8a9b8a2bc612321c",
+                "reference": "0505c2fefd5eaa81c628b0cf8a9b8a2bc612321c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
             },
-            "time": "1350737598",
+            "time": "1351434618",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1260,6 +1415,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "friendsofsymfony/jsrouting-bundle": 20
+        "friendsofsymfony/jsrouting-bundle": 20,
+        "braincrafted/bootstrap-bundle": 20
     }
 }

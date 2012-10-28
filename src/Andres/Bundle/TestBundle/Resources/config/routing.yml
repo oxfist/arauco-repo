@@ -17,3 +17,7 @@ andres_crear_menu:
 andres_mostrar_menu:
     pattern: /mostrar/{id}
     defaults: { _controller: AndresTestBundle:Default:show, id: 1 }
+
+andres_twitter:
+    pattern: /twitter
+    defaults: { _controller: AndresTestBundle:Default:twitter }
