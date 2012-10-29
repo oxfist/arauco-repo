@@ -22,7 +22,7 @@
                 "knplabs/knp-menu": "dev-master",
                 "knplabs/knp-menu-bundle": "dev-master"
             },
-            "time": "1347576916",
+            "time": "2012-09-13 15:55:16",
             "type": "symfony-bundle",
             "installation-source": "source",
             "autoload": {
