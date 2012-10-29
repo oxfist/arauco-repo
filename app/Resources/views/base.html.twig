@@ -4,18 +4,26 @@
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% stylesheets '@AndresTestBundle/Resources/public/less/*' filter='less,?yui_css' %}
-    	<link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
+    	<!--<link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />-->
+        {% include 'BraincraftedBootstrapBundle::_stylesheets.html.twig' %}
         {% endstylesheets %}
         
         {% javascripts '@AndresTestBundle/Resources/public/js/*' filter='yui_js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
+        <!--<script type="text/javascript" src="{{ asset_url }}"></script>-->
         <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
         <script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
         {% endjavascripts %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+        <h1>h1 Heading</h1>
+        <h2>h2 Heading</h2>
+        <h3>h3 Heading</h3>
+        <h4>h4 Heading</h4>
+        <h5>h5 Heading</h5>
+        <h6>h6 Heading</h6>
+        {% endblock %}
         {% block footer %}
             <br />
             <div id="footer">
@@ -29,5 +37,6 @@
         {% block javascripts %}
 
         {% endblock %}
+        {% include 'BraincraftedBootstrapBundle::_javascripts.html.twig' %}
     </body>
 </html>

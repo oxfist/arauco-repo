@@ -2,6 +2,9 @@
 /app/bootstrap*
 /app/cache/*
 /app/logs/*
-/vendor/
+
+/vendor/*
+!/vendor/braincrafted
+
 /app/config/parameters.yml
 /composer.phar

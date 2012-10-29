@@ -21,6 +21,9 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+    form:
+        resources:
+            - "BraincraftedBootstrapBundle:Form:form_div_layout.html.twig"
 
 # Assetic Configuration
 assetic:
@@ -66,3 +69,7 @@ swiftmailer:
 #toa_twitter_bootstrap:
 #    template: "ToaTwitterBootstrapBundle::layout.html.twig"
 #    block: "content"
+
+#knp_menu:
+#    twig:
+#        template: "BraincraftedBootstrapBundle:Menu:menu.html.twig"

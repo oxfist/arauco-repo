@@ -1,5 +1,5 @@
 {
-    "hash": "78ecb90145c2671c969edd5c7b712690",
+    "hash": "d899bf9a4c4b6ea20ce110bafcfe2101",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -1416,6 +1416,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "friendsofsymfony/jsrouting-bundle": 20,
-        "braincrafted/bootstrap-bundle": 20
+        "braincrafted/bootstrap-bundle": 20,
+        "knplabs/knp-menu-bundle": 20
     }
 }
