@@ -6,10 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-class DefaultController extends Controller
-{
+class StockController extends Controller
+{    
     /**
-     * @Route("/", name="arauco_home")
+     * @Route("/stock", name="arauco_stock_index")
      * @Template()
      */
     public function indexAction()

@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new Braincrafted\BootstrapBundle\BraincraftedBootstrapBundle(),
             new Arauco\CSVBundle\AraucoCSVBundle(),
             new Arauco\BaseBundle\AraucoBaseBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -29,7 +29,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ ]
+    bundles:        [ AraucoBaseBundle ]
     java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -62,3 +62,7 @@ swiftmailer:
     username:  %mailer_user%
     password:  %mailer_password%
     spool:     { type: memory }
+
+knp_menu:
+    twig:
+        template: "BraincraftedBootstrapBundle:Menu:menu.html.twig"
