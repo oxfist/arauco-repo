@@ -1,42 +1,67 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% stylesheets %}
-    	<!--<link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />-->
-        {% include 'BraincraftedBootstrapBundle::_stylesheets.html.twig' %}
-        {% endstylesheets %}
-        
-        {% javascripts '@AndresTestBundle/Resources/public/js/*' filter='yui_js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-        <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-        <script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-        {% endjavascripts %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        {% block body %}
-        <h1>h1 Heading</h1>
-        <h2>h2 Heading</h2>
-        <h3>h3 Heading</h3>
-        <h4>h4 Heading</h4>
-        <h5>h5 Heading</h5>
-        <h6>h6 Heading</h6>
-        {% endblock %}
-        {% block footer %}
-            <br />
-            <div id="footer">
-                <a href="{{ path('andres_test_home') }}">Home</a>
-                <a href="{{ path('andres_test_content') }}">Content</a>
-                <a href="history">History</a>
-                <a href="{{ path('andres_crear_menu') }}">Crear nuevo dato</a>
-                <a href="{{ path('andres_mostrar_menu') }}">Mostrar datos</a>
-            </div>
-        {% endblock %}
-        {% block javascripts %}
+<html lang=es>
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}{% endblock %}</title>
+    {% include 'BraincraftedBootstrapBundle::_stylesheets.html.twig' %}
+    {% stylesheets '@AraucoBaseBundle/Resources/public/css/*' filter='yui_css'%}
+    <link rel="stylesheet" type="text/css"
+          media="screen" href="{{ asset_url }}" />
+    {% endstylesheets %}
+    <link href='http://fonts.googleapis.com/css?family=Iceland' rel='stylesheet'
+          type='text/css'>
 
+    {% javascripts
+        '@AraucoBaseBundle/Resources/public/js/jquery.js'
+        '@AraucoBaseBundle/Resources/public/js/jquery-ui.js'
+        '@AraucoBaseBundle/Resources/public/js/*'
+        filter='yui_js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+  </head>
+  
+  <body>
+    <div id="wrap">
+      <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container">
+          {{ knp_menu_render('AraucoBaseBundle:Builder:mainMenu',
+                            {'nav_type': 'pills'}) }}
+          </div>
+        </div>
+      </div>
+      <div id="content">
+        <div class="container">
+        {% block content %}
         {% endblock %}
-        {% include 'BraincraftedBootstrapBundle::_javascripts.html.twig' %}
-    </body>
+        </div>
+      </div>
+    </div>
+    <div id="footer">
+      <div class="container">
+        <div id="contFooter" class="container">
+          <p id="leftFooter" class="muted">
+            <strong>Diseñado y desarrollado por
+            <a id="zpfooter"
+               href="http://wordpress.zeroproject.cl/">ZeroProject</a></strong>
+          </p>
+          <a href="http://www.arauco.cl/index.asp">
+            <img id="logoFooter"
+               src="{{ asset('bundles/araucobase/images/araucobanner.jpg') }}"
+               alt="Logo Arauco"
+               />
+          </a>
+          <p id="rightFooter" class="muted credit">
+            <strong>Copyright &copy; 2013 Arauco y Constitución S.A.<br />
+            Todos los derechos reservados</strong></p>
+        </div><!-- contFooter -->
+      </div><!-- container -->
+    </div><!-- footer -->
+    
+    <!-- Bootstrap JS -->
+    {% block javascripts %}
+    {% include 'BraincraftedBootstrapBundle::_javascripts.html.twig' %}
+    {% endblock %}
+  </body>
 </html>

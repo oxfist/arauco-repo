@@ -1,0 +1,18 @@
+{% extends '::base.html.twig' %}
+
+{% block content %}
+<div class="tab-content">
+  {% block body %}
+  <div class="tab-pane active" id="inicio">
+    <div class="hero-unit">
+      {% block titulo %}
+      <h2>Arauco y Constitución S.A.</h2>
+      {% endblock %}
+      <h4><i>Sembremos futuro</i></h4>
+      <p>Home</p>
+      </br>
+    </div> <!-- hero-unit -->
+  </div> <!-- tab-pane active -->
+  {% endblock %}
+</div> <!-- tab-content -->
+{% endblock %}
