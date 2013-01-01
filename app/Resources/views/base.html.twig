@@ -3,15 +3,16 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% stylesheets %}
-    	<!--<link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />-->
+        {% stylesheets '@AraucoBaseBundle/Resources/public/css/*' filter='yui_css'%}
         {% include 'BraincraftedBootstrapBundle::_stylesheets.html.twig' %}
         {% endstylesheets %}
         
-        {% javascripts '@AndresTestBundle/Resources/public/js/*' filter='yui_js' %}
+        {% javascripts
+            '@AraucoBaseBundle/Resources/public/js/jquery.js'
+            '@AraucoBaseBundle/Resources/public/js/jquery-ui.js'
+            '@AraucoBaseBundle/Resources/public/js/*'
+            filter='yui_js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
-        <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-        <script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
         {% endjavascripts %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
@@ -23,16 +24,6 @@
         <h4>h4 Heading</h4>
         <h5>h5 Heading</h5>
         <h6>h6 Heading</h6>
-        {% endblock %}
-        {% block footer %}
-            <br />
-            <div id="footer">
-                <a href="{{ path('andres_test_home') }}">Home</a>
-                <a href="{{ path('andres_test_content') }}">Content</a>
-                <a href="history">History</a>
-                <a href="{{ path('andres_crear_menu') }}">Crear nuevo dato</a>
-                <a href="{{ path('andres_mostrar_menu') }}">Mostrar datos</a>
-            </div>
         {% endblock %}
         {% block javascripts %}
 

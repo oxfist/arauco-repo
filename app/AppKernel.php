@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new Braincrafted\BootstrapBundle\BraincraftedBootstrapBundle(),
             new Arauco\CSVBundle\AraucoCSVBundle(),
+            new Arauco\BaseBundle\AraucoBaseBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
