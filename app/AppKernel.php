@@ -19,9 +19,8 @@ class AppKernel extends Kernel
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
-            new Andres\Bundle\TestBundle\AndresTestBundle(),
-            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-            new Braincrafted\BootstrapBundle\BraincraftedBootstrapBundle()
+            new Braincrafted\BootstrapBundle\BraincraftedBootstrapBundle(),
+            new Arauco\CSVBundle\AraucoCSVBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

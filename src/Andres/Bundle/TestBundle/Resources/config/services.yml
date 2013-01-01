@@ -1,7 +1,0 @@
-parameters:
-#    andres_test.example.class: Andres\Bundle\TestBundle\Example
-
-services:
-#    andres_test.example:
-#        class: %andres_test.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]

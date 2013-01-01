@@ -1,6 +1,6 @@
 <?php
 
-namespace Andres\Bundle\TestBundle\Tests\Controller;
+namespace Arauco\CSVBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

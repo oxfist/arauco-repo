@@ -1,9 +1,7 @@
-andres_test:
-    resource: "@AndresTestBundle/Resources/config/routing.yml"
+arauco_csv:
+    resource: "@AraucoCSVBundle/Controller/"
+    type:     annotation
     prefix:   /
-
-fos_js_routing:
-    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 
 # Internal routing configuration to handle ESI
 #_internal:
