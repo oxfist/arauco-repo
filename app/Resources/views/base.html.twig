@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% stylesheets '@AndresTestBundle/Resources/public/less/*' filter='less,?yui_css' %}
+        {% stylesheets %}
     	<!--<link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />-->
         {% include 'BraincraftedBootstrapBundle::_stylesheets.html.twig' %}
         {% endstylesheets %}
