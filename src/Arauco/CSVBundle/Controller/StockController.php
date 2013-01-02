@@ -16,9 +16,14 @@ class StockController extends Controller
      */
 	public function importAction ( ) {
 
+  		$em = $this->getDoctrine()->getManager();
+		$query = $em->createQuery(
+           "SELECT COUNT ( S.Lote )
+			FROM AraucoCSVBundle:Stock S
+			WHERE S.Status <> 'A'"
+       	);
 
-		$total = 2;
-
+  		$total = $query->getSingleScalarResult ( );
 		return $this->render('AraucoBaseBundle:Stock:index.html.twig',  array( 'total' => $total));
 
 	}
