@@ -4,10 +4,10 @@ namespace Arauco\CSVBundle\Controller;
 
 ini_set('max_execution_time', 300);
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Arauco\CSVBundle\Entity\Stock;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class StockController extends Controller
 {
