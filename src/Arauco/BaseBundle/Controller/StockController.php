@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class StockController extends Controller
 {    
     /**
-     * @Route("/stock", name="arauco_stock_index")
+     * @Route("/stockk", name="arauco_stock_index")
      * @Template()
      */
     public function indexAction()
