@@ -38,9 +38,9 @@ class Stock
     /**
      * @var float
      *
-     * @ORM\Column(name="Fecha_de_Creación", type="float")
+     * @ORM\Column(name="Fecha_de_Creacion", type="float")
      */
-    private $Fecha_de_Creación;
+    private $Fecha_de_Creacion;
 
     /**
      * @var string
@@ -261,26 +261,26 @@ class Stock
     }
 
     /**
-     * Set Fecha_de_Creación
+     * Set Fecha_de_Creacion
      *
-     * @param float $fechaDeCreación
+     * @param float $fechaDeCreacion
      * @return Stock
      */
-    public function setFechaDeCreación($fechaDeCreación)
+    public function setFechaDeCreacion($fechaDeCreacion)
     {
-        $this->Fecha_de_Creación = $fechaDeCreación;
+        $this->Fecha_de_Creacion = $fechaDeCreacion;
     
         return $this;
     }
 
     /**
-     * Get Fecha_de_Creación
+     * Get Fecha_de_Creacion
      *
      * @return float 
      */
-    public function getFechaDeCreación()
+    public function getFechaDeCreacion()
     {
-        return $this->Fecha_de_Creación;
+        return $this->Fecha_de_Creacion;
     }
 
     /**
