@@ -55,7 +55,7 @@ class StockController extends Controller
 
         }
 
-        return new Response ( '<html><body> Hello, world! </body></html>' );
+        return array();
 
     }
 
