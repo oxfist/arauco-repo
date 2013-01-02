@@ -24,182 +24,182 @@ class Stock
     /**
      * @var string
      *
-     * @ORM\Column(name="Clase", type="string", length=255)
+     * @ORM\Column(name="Clase", type="string", length=255 , nullable=true)
      */
     private $Clase;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="Lote", type="float")
+     * @ORM\Column(name="Lote", type="float" , nullable=true)
      */
     private $Lote;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="Fecha_de_Creacion", type="float")
+     * @ORM\Column(name="Fecha_de_Creacion", type="float" , nullable=true)
      */
     private $Fecha_de_Creacion;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="UMB", type="string", length=255)
+     * @ORM\Column(name="UMB", type="string", length=255 , nullable=true)
      */
     private $UMB;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Centro", type="string", length=255)
+     * @ORM\Column(name="Centro", type="string", length=255 , nullable=true)
      */
     private $Centro;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Desc_Centro", type="string", length=255)
+     * @ORM\Column(name="Desc_Centro", type="string", length=255 , nullable=true)
      */
     private $Desc_Centro;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="Almacen", type="float")
+     * @ORM\Column(name="Almacen", type="float" , nullable=true)
      */
     private $Almacen;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Desc_Alm", type="string", length=255)
+     * @ORM\Column(name="Desc_Alm", type="string", length=255 , nullable=true)
      */
     private $Desc_Alm;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="Material", type="float")
+     * @ORM\Column(name="Material", type="float" , nullable=true)
      */
     private $Material;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Desc_Mat", type="string", length=255)
+     * @ORM\Column(name="Desc_Mat", type="string", length=255 , nullable=true)
      */
     private $Desc_Mat;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="Vol_Util", type="float")
+     * @ORM\Column(name="Vol_Util", type="float" , nullable=true)
      */
     private $Vol_Util;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="Vol_Tran", type="float")
+     * @ORM\Column(name="Vol_Tran", type="float" , nullable=true)
      */
     private $Vol_Tran;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="Bloqueado", type="float")
+     * @ORM\Column(name="Bloqueado", type="float" , nullable=true)
      */
     private $Bloqueado;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Jerarquia", type="string", length=255)
+     * @ORM\Column(name="Jerarquia", type="string", length=255 , nullable=true)
      */
     private $Jerarquia;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Desc_Jer", type="string", length=255)
+     * @ORM\Column(name="Desc_Jer", type="string", length=255 , nullable=true)
      */
     private $Desc_Jer;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Grpo_Art", type="string", length=255)
+     * @ORM\Column(name="Grpo_Art", type="string", length=255 , nullable=true)
      */
     private $Grpo_Art;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Descrip_Grpo_Art", type="string", length=255)
+     * @ORM\Column(name="Descrip_Grpo_Art", type="string", length=255 , nullable=true)
      */
     private $Descrip_Grpo_Art;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Clase_de_Valoracion", type="string", length=255)
+     * @ORM\Column(name="Clase_de_Valoracion", type="string", length=255 , nullable=true)
      */
     private $Clase_de_Valoracion;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="M3", type="float")
+     * @ORM\Column(name="M3", type="float" , nullable=true)
      */
     private $M3;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Status", type="string", length=10)
+     * @ORM\Column(name="Status", type="string", length=10 , nullable=true)
      */
     private $Status;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="Nro_Entrega", type="float")
+     * @ORM\Column(name="Nro_Entrega", type="float" , nullable=true)
      */
     private $Nro_Entrega;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="Pos_Entrega", type="float")
+     * @ORM\Column(name="Pos_Entrega", type="float" , nullable=true)
      */
     private $Pos_Entrega;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="Fch_Creacion", type="date")
+     * @ORM\Column(name="Fch_Creacion", type="date" , nullable=true)
      */
     private $Fch_Creacion;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Defecto", type="string", length=3)
+     * @ORM\Column(name="Defecto", type="string", length=3 , nullable=true)
      */
     private $Defecto;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="Esp_Real_Mm", type="float")
+     * @ORM\Column(name="Esp_Real_Mm", type="float" , nullable=true)
      */
     private $Esp_Real_Mm;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="Anc_Real_Mm", type="float")
+     * @ORM\Column(name="Anc_Real_Mm", type="float" , nullable=true)
      */
     private $Anc_Real_Mm;
 

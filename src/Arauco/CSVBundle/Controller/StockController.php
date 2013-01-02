@@ -2,6 +2,8 @@
 
 namespace Arauco\CSVBundle\Controller;
 
+ini_set('max_execution_time', 300);
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,8 +19,6 @@ class StockController extends Controller {
 		$reader = new \EasyCSV\Reader ( __DIR__ . '/Data/STOCKHOYPRUEBASINF.txt' , 'r+b', ';' );
 		while ( $row = $reader -> getRow ( ) ) {
 
-			print_r ( $row ) ;
-			echo '</br>';
 			$stock = new Stock ( );
 			$stock -> setClase ( $row [ "clase" ] );
 			$stock -> setLote ( $row [ "lote" ] );
