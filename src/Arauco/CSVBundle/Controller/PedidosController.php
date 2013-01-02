@@ -2,20 +2,19 @@
 
 namespace Arauco\CSVBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Arauco\CSVBundle\Entity\Pedidos;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-class PedidosController extends Controller {
-
-	/**
-     * @Route("/pedido")
+class PedidosController extends Controller
+{
+    /**
+     * @Route("/pedido", name="arauco_pedido_index")
+     * @Template("AraucoBaseBundle:Pedido:index.html.twig")
      */
-	public function importAction ( ) {
-
-		return new Response ( '<html><body> Hello, world! </body></html>' );
-
-	}
+    public function importAction ()
+    {
+        return array();
+    }
 
 }
