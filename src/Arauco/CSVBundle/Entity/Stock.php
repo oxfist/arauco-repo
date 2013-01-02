@@ -176,9 +176,9 @@ class Stock
     private $Pos_Entrega;
 
     /**
-     * @var \DateTime
+     * @var \string
      *
-     * @ORM\Column(name="Fch_Creacion", type="date" , nullable=true)
+     * @ORM\Column(name="Fch_Creacion", type="string", length=255 , nullable=true)
      */
     private $Fch_Creacion;
 
@@ -723,7 +723,7 @@ class Stock
     /**
      * Set Fch_Creacion
      *
-     * @param \DateTime $fchCreacion
+     * @param string $fchCreacion
      * @return Stock
      */
     public function setFchCreacion($fchCreacion)
@@ -736,7 +736,7 @@ class Stock
     /**
      * Get Fch_Creacion
      *
-     * @return \DateTime 
+     * @return string 
      */
     public function getFchCreacion()
     {

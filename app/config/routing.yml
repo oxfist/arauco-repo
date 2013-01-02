@@ -1,5 +1,5 @@
 AraucoAnnotations:
-    resource: "@AraucoCSVBundle/Controller/StockController.php"
+    resource: "@AraucoCSVBundle/Controller/"
     type: annotation
 
 arauco_base:

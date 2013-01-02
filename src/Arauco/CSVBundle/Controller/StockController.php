@@ -12,7 +12,7 @@ use Arauco\CSVBundle\Entity\Stock;
 class StockController extends Controller {
 
 	/**
-     * @Route("/")
+     * @Route("/stock")
      */
 	public function importAction ( ) {
 
