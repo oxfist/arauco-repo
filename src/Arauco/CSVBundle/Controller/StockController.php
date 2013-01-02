@@ -30,8 +30,10 @@ class StockController extends Controller
                 FROM AraucoCSVBundle:Stock S
                 WHERE S.Status <> 'A'"
                 );
+        
         $StockSinAsignar = $query->getResult();
 
-        return array('total' => $total);
+        return array('total' => $total,
+                     'stocksa' => $StockSinAsignar);
     }
 }
