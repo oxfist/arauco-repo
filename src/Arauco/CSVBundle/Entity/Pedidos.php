@@ -13,15 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Pedidos
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
      * @var float
      *
      * @ORM\Column(name="DocEntrega", type="float" , nullable=true)
@@ -31,6 +22,7 @@ class Pedidos
     /**
      * @var float
      *
+     * @ORM\Id
      * @ORM\Column(name="Pedido", type="float", nullable=true)
      */
     private $Pedido;
@@ -38,6 +30,7 @@ class Pedidos
     /**
      * @var float
      *
+     * @ORM\Id
      * @ORM\Column(name="PosPedido", type="float", nullable=true)
      */
     private $PosPedido;
