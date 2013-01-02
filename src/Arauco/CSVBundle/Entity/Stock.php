@@ -20,10 +20,10 @@ class Stock
     private $Clase;
 
     /**
-     * @var float
+     * @var string
      *
      * @ORM\Id
-     * @ORM\Column(name="Lote", type="float" , nullable=true)
+     * @ORM\Column(name="Lote", type="string" , length=255, nullable=true)
      */
     private $Lote;
 
@@ -232,7 +232,7 @@ class Stock
     /**
      * Set Lote
      *
-     * @param float $lote
+     * @param string $lote
      * @return Stock
      */
     public function setLote($lote)
@@ -245,7 +245,7 @@ class Stock
     /**
      * Get Lote
      *
-     * @return float 
+     * @return string 
      */
     public function getLote()
     {
