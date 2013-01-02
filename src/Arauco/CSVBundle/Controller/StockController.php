@@ -9,23 +9,30 @@ use Arauco\CSVBundle\Entity\Stock;
 
 class StockController extends Controller
 {
-    
     /**
      * @Route("/stock", name="arauco_stock_index")
      * @Template("AraucoBaseBundle:Stock:index")
      */
 	public function importAction ( ) {
 
-  		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager();
 		$query = $em->createQuery(
-           "SELECT COUNT ( S.Lote )
+			"SELECT COUNT ( S.Lote )
 			FROM AraucoCSVBundle:Stock S
 			WHERE S.Status <> 'A'"
-       	);
+		);
 
-  		$total = $query->getSingleScalarResult ( );
-		return $this->render('AraucoBaseBundle:Stock:index.html.twig',  array( 'total' => $total));
+		$total = $query->getSingleScalarResult ( );
 
+		$query = $em->createQuery(
+			"SELECT S.Lote, S.Material, S.Desc_Mat
+			FROM AraucoCSVBundle:Stock S
+			WHERE S.Status <> 'A'"
+		);
+
+		$StockSinAsignar = $query->getResult();
+
+		return $this->render('AraucoBaseBundle:Stock:index.html.twig',  array( 'total' => $total, 'stocksa' => $StockSinAsignar ));
 	}
 
 }
