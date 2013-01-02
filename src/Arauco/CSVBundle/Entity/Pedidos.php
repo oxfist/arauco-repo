@@ -1,0 +1,514 @@
+<?php
+
+namespace Arauco\CSVBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Pedidos
+ *
+ * @ORM\Table()
+ * @ORM\Entity
+ */
+class Pedidos
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="DocEntrega", type="float" , nullable=true)
+     */
+    private $DocEntrega;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="Pedido", type="float", nullable=true)
+     */
+    private $Pedido;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="PosPedido", type="float", nullable=true)
+     */
+    private $PosPedido;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="CentroPedido", type="string", length=255, nullable=true)
+     */
+    private $CentroPedido;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="VolPedido", type="float", nullable=true)
+     */
+    private $VolPedido;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="UM", type="string", length=255, nullable=true)
+     */
+    private $UM;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="UnitsSolicPed", type="integer", nullable=true)
+     */
+    private $UnitsSolicPed;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="UM2", type="string", length=255, nullable=true)
+     */
+    private $UM2;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="CantidadUMV", type="float", nullable=true)
+     */
+    private $CantidadUMV;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="UMV", type="string", length=255, nullable=true)
+     */
+    private $UMV;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="Material", type="float", nullable=true)
+     */
+    private $Material;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="DescripcionMaterial", type="string", length=255, nullable=true)
+     */
+    private $DescripcionMaterial;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Categoria", type="string", length=255, nullable=true)
+     */
+    private $Categoria;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="FPE", type="string", length=255, nullable=true)
+     */
+    private $FPE;
+
+    /**
+     * @var \string
+     *
+     * @ORM\Column(name="FPAN", type="string", length=255, nullable=true)
+     */
+    private $FPAN;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="StatusMovimientodeMcia", type="string", length=255, nullable=true)
+     */
+    private $StatusMovimientodeMcia;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set DocEntrega
+     *
+     * @param float $docEntrega
+     * @return Pedidos
+     */
+    public function setDocEntrega($docEntrega)
+    {
+        $this->DocEntrega = $docEntrega;
+    
+        return $this;
+    }
+
+    /**
+     * Get DocEntrega
+     *
+     * @return float 
+     */
+    public function getDocEntrega()
+    {
+        return $this->DocEntrega;
+    }
+
+    /**
+     * Set Pedido
+     *
+     * @param float $pedido
+     * @return Pedidos
+     */
+    public function setPedido($pedido)
+    {
+        $this->Pedido = $pedido;
+    
+        return $this;
+    }
+
+    /**
+     * Get Pedido
+     *
+     * @return float 
+     */
+    public function getPedido()
+    {
+        return $this->Pedido;
+    }
+
+    /**
+     * Set PosPedido
+     *
+     * @param float $posPedido
+     * @return Pedidos
+     */
+    public function setPosPedido($posPedido)
+    {
+        $this->PosPedido = $posPedido;
+    
+        return $this;
+    }
+
+    /**
+     * Get PosPedido
+     *
+     * @return float 
+     */
+    public function getPosPedido()
+    {
+        return $this->PosPedido;
+    }
+
+    /**
+     * Set CentroPedido
+     *
+     * @param string $centroPedido
+     * @return Pedidos
+     */
+    public function setCentroPedido($centroPedido)
+    {
+        $this->CentroPedido = $centroPedido;
+    
+        return $this;
+    }
+
+    /**
+     * Get CentroPedido
+     *
+     * @return string 
+     */
+    public function getCentroPedido()
+    {
+        return $this->CentroPedido;
+    }
+
+    /**
+     * Set VolPedido
+     *
+     * @param float $volPedido
+     * @return Pedidos
+     */
+    public function setVolPedido($volPedido)
+    {
+        $this->VolPedido = $volPedido;
+    
+        return $this;
+    }
+
+    /**
+     * Get VolPedido
+     *
+     * @return float 
+     */
+    public function getVolPedido()
+    {
+        return $this->VolPedido;
+    }
+
+    /**
+     * Set UM
+     *
+     * @param string $uM
+     * @return Pedidos
+     */
+    public function setUM($uM)
+    {
+        $this->UM = $uM;
+    
+        return $this;
+    }
+
+    /**
+     * Get UM
+     *
+     * @return string 
+     */
+    public function getUM()
+    {
+        return $this->UM;
+    }
+
+    /**
+     * Set UnitsSolicPed
+     *
+     * @param integer $unitsSolicPed
+     * @return Pedidos
+     */
+    public function setUnitsSolicPed($unitsSolicPed)
+    {
+        $this->UnitsSolicPed = $unitsSolicPed;
+    
+        return $this;
+    }
+
+    /**
+     * Get UnitsSolicPed
+     *
+     * @return integer 
+     */
+    public function getUnitsSolicPed()
+    {
+        return $this->UnitsSolicPed;
+    }
+
+    /**
+     * Set UM2
+     *
+     * @param string $uM2
+     * @return Pedidos
+     */
+    public function setUM2($uM2)
+    {
+        $this->UM2 = $uM2;
+    
+        return $this;
+    }
+
+    /**
+     * Get UM2
+     *
+     * @return string 
+     */
+    public function getUM2()
+    {
+        return $this->UM2;
+    }
+
+    /**
+     * Set CantidadUMV
+     *
+     * @param float $cantidadUMV
+     * @return Pedidos
+     */
+    public function setCantidadUMV($cantidadUMV)
+    {
+        $this->CantidadUMV = $cantidadUMV;
+    
+        return $this;
+    }
+
+    /**
+     * Get CantidadUMV
+     *
+     * @return float 
+     */
+    public function getCantidadUMV()
+    {
+        return $this->CantidadUMV;
+    }
+
+    /**
+     * Set UMV
+     *
+     * @param string $uMV
+     * @return Pedidos
+     */
+    public function setUMV($uMV)
+    {
+        $this->UMV = $uMV;
+    
+        return $this;
+    }
+
+    /**
+     * Get UMV
+     *
+     * @return string 
+     */
+    public function getUMV()
+    {
+        return $this->UMV;
+    }
+
+    /**
+     * Set Material
+     *
+     * @param float $material
+     * @return Pedidos
+     */
+    public function setMaterial($material)
+    {
+        $this->Material = $material;
+    
+        return $this;
+    }
+
+    /**
+     * Get Material
+     *
+     * @return float 
+     */
+    public function getMaterial()
+    {
+        return $this->Material;
+    }
+
+    /**
+     * Set DescripcionMaterial
+     *
+     * @param string $descripcionMaterial
+     * @return Pedidos
+     */
+    public function setDescripcionMaterial($descripcionMaterial)
+    {
+        $this->DescripcionMaterial = $descripcionMaterial;
+    
+        return $this;
+    }
+
+    /**
+     * Get DescripcionMaterial
+     *
+     * @return string 
+     */
+    public function getDescripcionMaterial()
+    {
+        return $this->DescripcionMaterial;
+    }
+
+    /**
+     * Set Categoria
+     *
+     * @param string $categoria
+     * @return Pedidos
+     */
+    public function setCategoria($categoria)
+    {
+        $this->Categoria = $categoria;
+    
+        return $this;
+    }
+
+    /**
+     * Get Categoria
+     *
+     * @return string 
+     */
+    public function getCategoria()
+    {
+        return $this->Categoria;
+    }
+
+    /**
+     * Set FPE
+     *
+     * @param string $fPE
+     * @return Pedidos
+     */
+    public function setFPE($fPE)
+    {
+        $this->FPE = $fPE;
+    
+        return $this;
+    }
+
+    /**
+     * Get FPE
+     *
+     * @return string 
+     */
+    public function getFPE()
+    {
+        return $this->FPE;
+    }
+
+    /**
+     * Set FPAN
+     *
+     * @param string $fPAN
+     * @return Pedidos
+     */
+    public function setFPAN($fPAN)
+    {
+        $this->FPAN = $fPAN;
+    
+        return $this;
+    }
+
+    /**
+     * Get FPAN
+     *
+     * @return string 
+     */
+    public function getFPAN()
+    {
+        return $this->FPAN;
+    }
+
+    /**
+     * Set StatusMovimientodeMcia
+     *
+     * @param string $statusMovimientodeMcia
+     * @return Pedidos
+     */
+    public function setStatusMovimientodeMcia($statusMovimientodeMcia)
+    {
+        $this->StatusMovimientodeMcia = $statusMovimientodeMcia;
+    
+        return $this;
+    }
+
+    /**
+     * Get StatusMovimientodeMcia
+     *
+     * @return string 
+     */
+    public function getStatusMovimientodeMcia()
+    {
+        return $this->StatusMovimientodeMcia;
+    }
+}
