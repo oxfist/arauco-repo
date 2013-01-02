@@ -13,15 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Stock
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="Clase", type="string", length=255 , nullable=true)
@@ -31,6 +22,7 @@ class Stock
     /**
      * @var float
      *
+     * @ORM\Id
      * @ORM\Column(name="Lote", type="float" , nullable=true)
      */
     private $Lote;
