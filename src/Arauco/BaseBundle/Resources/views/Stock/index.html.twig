@@ -11,7 +11,8 @@
       <h2>Arauco y Constitución S.A.</h2>
       {% endblock %}
       <h4><i>Sembremos futuro</i></h4>
-      <p>Stock sin asignar = {{ total }} lotes.</p>
+      <p>Stock sin asignar = {{ total }} lotes.<br />
+      <a href="{{ path ('arauco_stock_csv') }}">Exportar CSV</a></p>
 	  <table class="table">
 	  <thead>
 	  <tr>
