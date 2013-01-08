@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Pedidos
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Arauco\CSVBundle\Entity\Repository\PedidosRepository")
  */
 class Pedidos
 {

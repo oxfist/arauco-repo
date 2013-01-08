@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class StockRepository extends EntityRepository
 {
-    public function findAllTotalInInventory()
+    public function findAllTotalStock()
     {
         return $this->getEntityManager()->createQuery('
             SELECT s.Material, s.Desc_Mat,
@@ -23,7 +23,7 @@ class StockRepository extends EntityRepository
     }
 }
 
-//Total en inventario
+//Total en inventario por material
 //SELECT Material, Desc_Mat, sum(Vol_Util)+sum(Vol_Tran)+sum(Bloqueado) Suma
 //FROM Stock
 //GROUP BY Material;

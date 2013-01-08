@@ -15,17 +15,21 @@
           <tr>
             <th>Código Material</th>
             <th>Material</th>
+            <th>Stock</th>
+            <th>Total pedidos</th>
             <th>Balance</th>
           </tr>
         </thead>
         <tbody>
-          {% for item in stock %}
+        {% for materialStock in total %}
           <tr>
-            <th>{{ item.Material }}</th>
-            <th>{{ item.Desc_Mat }}</th>
-            <th>{{ item.Suma }}</th>
+            <th>{{ materialStock.0 }}</th>
+            <th>{{ materialStock.1 }}</th>
+            <th>{{ materialStock.2 }}</th>
+            <th>{{ materialStock.3 }}</th>
+            <th>{{ materialStock.4 }}</th>
           </tr>
-          {% endfor %}
+        {% endfor %}
         </tbody>
       </table>
      <br />
