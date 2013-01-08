@@ -2,10 +2,10 @@
 
 namespace Arauco\CSVBundle\Controller;
 
+use Arauco\CSVBundle\Entity\Stock;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Arauco\CSVBundle\Entity\Stock;
 
 class StockController extends Controller
 {

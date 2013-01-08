@@ -1,0 +1,3 @@
+SELECT P.Material, s.t - sum(P.VolPedido) suma
+FROM AraucoCSVBundle:Pedidos P, (SELECT S.Material, sum(S.VolUtil+S.VolTran+S.Bloqueado) t from AraucoCSVBundle:Stock S group by S.Material) s
+group by P.Material
