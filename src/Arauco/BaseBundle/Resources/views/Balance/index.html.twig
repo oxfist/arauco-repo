@@ -10,6 +10,16 @@
       {% block titulo %}
       <h2>Arauco y Constitución S.A.</h2>
       {% endblock %}
+      <p>Total Balance = 
+      {% if totalBalance > 0 %}
+      <span class="badge badge-success">{{ totalBalance }}</span>
+      {% else %}
+      <span class="badge badge-important">{{ totalBalance }}</span>
+      {% endif %}
+      m&sup3;.<br />
+      Total Stock = {{ totalStock }} m&sup3;.<br />
+      Total Pedidos = {{ totalPedidos }} m&sup3;.<br />
+      </p>
       <table class="table">
         <thead>
           <tr>
@@ -27,7 +37,11 @@
             <th>{{ materialStock.1 }}</th>
             <th>{{ materialStock.2 }}</th>
             <th>{{ materialStock.3 }}</th>
-            <th>{{ materialStock.4 }}</th>
+            {% if materialStock.4 > 0 %}
+            <th><span class="badge badge-success">{{ materialStock.4 }}</span></th>
+            {% else %}
+            <th><span class="badge badge-important">{{ materialStock.4 }}</span></th>
+            {% endif %}
           </tr>
         {% endfor %}
         </tbody>

@@ -28,24 +28,41 @@ class BalanceController extends Controller
             $material = $item['Material'];
             $descMaterial = $item['Desc_Mat'];
             $stock = $item['Suma'];
-            $totalPedidos = NULL;
+            $totalPedidosPorMaterial = NULL;
             $balance = NULL;
+            $totalBalance = 0;
+            $totalStock = 0;
+            $totalPedidos = 0;
+            
             foreach ($pedidos as $pedido) {
                 if ( $pedido['Material'] == $material ) {
-                    $totalPedidos = $pedido['Suma'];
-                    $balance = $stock - $totalPedidos;
+                    $totalPedidosPorMaterial = $pedido['Suma'];
+                    $balance = $stock - $totalPedidosPorMaterial;
                     unset( $pedidos[$material] );
+                    break;
                 }
             }
             
+            if ( !$totalPedidosPorMaterial ) {
+                $totalPedidosPorMaterial = 0;
+                $balance = $stock;
+            }
+            
             array_push( $total, array( $material, $descMaterial,
-                $stock, $totalPedidos, $balance ) );
+                $stock, $totalPedidosPorMaterial, $balance ) );
+        }
+        
+        foreach ( $total as $item ) {
+            $totalStock = $totalStock + $item[2];
+            $totalPedidos = $totalPedidos + $item[3];
+            $totalBalance = $totalBalance + $item[4];
         }
         
         return array(
-            'stock' => $stock,
-            'pedidos' => $pedidos,
-            'total' => $total
+            'total' => $total,
+            'totalBalance' => $totalBalance,
+            'totalStock' => $totalStock,
+            'totalPedidos' => $totalPedidos
             );
     }
 }
