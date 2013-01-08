@@ -10,28 +10,27 @@
       {% block titulo %}
       <h2>Arauco y Constitución S.A.</h2>
       {% endblock %}
-      <h4><i>Sembremos futuro</i></h4>
       <p>Stock sin asignar = {{ total }} lotes.<br />
       <a href="{{ path ('arauco_stock_csv') }}">Exportar CSV</a></p>
-	  <table class="table">
-	  <thead>
-	  <tr>
-	  <th>Lote</th>
-	  <th>Material</th>
-	  <th>Descripcion</th>
-	  </tr>
-	  </thead>
-	  <tbody>
-      {% for material in stocksa %}
-	  <tr>
-	  <th>{{ material.Lote }}</th>
-	  <th>{{ material.Material }}</th>
-	  <th>{{ material.Desc_Mat }}</th>
-	  </tr>
-  {% endfor %}
-	  </tbody>
-	  </table>
-      </br>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Lote</th>
+            <th>Material</th>
+            <th>Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for material in stocksa %}
+          <tr>
+            <th>{{ material.Lote }}</th>
+            <th>{{ material.Material }}</th>
+            <th>{{ material.Desc_Mat }}</th>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <br />
     </div> <!-- hero-unit -->
   </div> <!-- tab-pane active -->
   {% endblock %}

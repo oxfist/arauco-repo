@@ -10,9 +10,25 @@
       {% block titulo %}
       <h2>Arauco y Constitución S.A.</h2>
       {% endblock %}
-      <h4><i>Sembremos futuro</i></h4>
-      <p>Balance</p>
-      </br>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Código Material</th>
+            <th>Material</th>
+            <th>Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in stock %}
+          <tr>
+            <th>{{ item.Material }}</th>
+            <th>{{ item.Desc_Mat }}</th>
+            <th>{{ item.Suma }}</th>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+     <br />
     </div> <!-- hero-unit -->
   </div> <!-- tab-pane active -->
   {% endblock %}
