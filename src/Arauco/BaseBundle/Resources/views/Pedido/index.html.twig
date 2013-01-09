@@ -65,14 +65,7 @@
   				$('#chart3').bind('jqplotDataClick', 
     				function (ev, seriesIndex, pointIndex, data) {
       					//$('#info3').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);
-						 $( "#dialog-message" ).dialog({
-							modal: true,
-							buttons: {
-								Ok: function() {
-									$( this ).dialog( "close" );
-								}
-							}
-						});
+						document.location.href='#';
     				}
   				); 
 			});
@@ -100,22 +93,6 @@
 		</p>
 
 		<div id="chart3" style="width:800px; height:300px;"></div>
-
-		<div id="dialog-message" title="Download complete" style="display:none">
-
-			<p>
-
-				Your files have downloaded successfully into the My Downloads folder.
-
-			</p>
-
-			<p>
-
-				Currently using <b>36% of your storage space</b>.
-
-			</p>
-
-		</div>
 
 	</br></br>
     </div> <!-- hero-unit -->
