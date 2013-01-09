@@ -16,15 +16,11 @@
         '@AraucoBaseBundle/Resources/public/js/jquery-ui.js'
         '@AraucoBaseBundle/Resources/public/js/jquery.dataTables.js'
         '@AraucoBaseBundle/Resources/public/js/DT_bootstrap.js'
-        '@AraucoBaseBundle/Resources/public/js/jquery.jqplot.min.js'
-        '@AraucoBaseBundle/Resources/public/js/jqplot.barRenderer.min.js'
-        '@AraucoBaseBundle/Resources/public/js/jqplot.categoryAxisRenderer.min.js'
-        '@AraucoBaseBundle/Resources/public/js/jqplot.pointLabels.min.js'
-        '@AraucoBaseBundle/Resources/public/js/*'
         filter='yui_js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <link rel="icon" type="image/x-icon" href="{{ asset('bundles/araucobase/images/favicon.ico') }}" />
+<<<<<<< HEAD
     <script class="code" type="text/javascript">
       $(document).ready(function(){
               var s1 = [2, 6, 7, 10];
@@ -74,6 +70,9 @@
               ); 
       });
     </script>
+=======
+	{% block scriptGrafico %} {% endblock %}
+>>>>>>> 149aa37588f81cde61c42af7d3ce67de29c513d4
   </head>
   
   <body>
