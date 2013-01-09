@@ -58,7 +58,7 @@ class BalanceController extends Controller
             $totalBalance = $totalBalance + $item[4];
         }
         
-        usort($total, array( $this, "Compare" ) );
+        usort( $total, array( $this, "Compare" ) );
         
         return array(
             'total' => $total,
