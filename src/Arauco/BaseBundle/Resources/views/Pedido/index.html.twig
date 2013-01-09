@@ -1,5 +1,15 @@
 {% extends '::base.html.twig' %}
 
+{% block styleGrafico %}
+	{{ parent() }}
+	{% stylesheets 
+            '@AraucoBaseBundle/Resources/public/css/jquery.jqplot.min.css' 
+            filter='yui_css'%}
+    <link rel="stylesheet" type="text/css"
+          media="screen" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
 {% block scriptGrafico %}
   {{ parent() }}
 	{% javascripts
