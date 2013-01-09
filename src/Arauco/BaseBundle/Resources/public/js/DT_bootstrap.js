@@ -151,6 +151,7 @@ $(document).ready(function() {
 	$('#myTable').dataTable( {
 		"sDom": "<'row'<'span5'l><'span5'f>r>t<'row'<'span5'i><'span5'p>>",
 		"sPaginationType": "bootstrap",
+                "bSort": false,
 		"oLanguage": {
 			"sLengthMenu": "_MENU_ registros por página"
 		}
