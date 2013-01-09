@@ -8,11 +8,11 @@
   <div class="tab-pane active" id="inicio">
     <div class="hero-unit">
       {% block titulo %}
-      <h2>Arauco y Constitución S.A.</h2>
+      <h2>Stock disponible</h2>
       {% endblock %}
-      <p>Stock sin asignar = {{ total }} lotes.<br />
+      <p>Stock sin asignar = <span class="badge badge-success">{{ total }}</span> lotes.<br />
       <a href="{{ path ('arauco_stock_csv') }}">Exportar CSV</a></p>
-      <table class="table">
+      <table class="table" id="myTable">
         <thead>
           <tr>
             <th>Lote</th>

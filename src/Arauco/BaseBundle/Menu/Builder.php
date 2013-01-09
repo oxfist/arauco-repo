@@ -14,7 +14,7 @@ class Builder extends ContainerAware
       $item = $menu->addChild('Inicio', array('route' => 'arauco_home'));
       $item = $menu->addChild('Stock', array('route' => 'arauco_stock_index'));
       $item = $menu->addChild('Pedidos', array('route' => 'arauco_pedido_index'));
-      $item = $menu->addChild('Balance de masa', array('route' => 'arauco_balance_index'));
+      $item = $menu->addChild('Balance de Volumen', array('route' => 'arauco_balance_index'));
 
       return $menu;
     }
