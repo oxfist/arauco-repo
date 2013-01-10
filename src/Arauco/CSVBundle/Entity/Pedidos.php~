@@ -15,9 +15,9 @@ class Pedidos
     /**
      * @var float
      *
-     * @ORM\Column(name="ETA", type="float" , nullable=true)
+     * @ORM\Column(name="Eta", type="float" , nullable=true)
      */
-    private $ETA;
+    private $Eta;
 
     /**
      * @var float
@@ -510,5 +510,28 @@ class Pedidos
     public function getStatusMovimientodeMcia()
     {
         return $this->StatusMovimientodeMcia;
+    }
+
+    /**
+     * Set ETA
+     *
+     * @param float $eTA
+     * @return Pedidos
+     */
+    public function setETA($eTA)
+    {
+        $this->ETA = $eTA;
+    
+        return $this;
+    }
+
+    /**
+     * Get ETA
+     *
+     * @return float 
+     */
+    public function getETA()
+    {
+        return $this->ETA;
     }
 }

@@ -22,10 +22,8 @@
     {% endjavascripts %}
 	<script class="code" type="text/javascript">
 			$(document).ready(function(){
-  				var s1 = [2, 6, 7, 10];
-  				var s2 = [7, 5, 3, 4];
-  				var s3 = [14, 9, 3, 8];
-  				plot3 = $.jqplot('chart3', [s1, s2, s3], {
+  				var s1 = [{{ cantEntregas [0] }}, {{ cantEntregas [1] }}, {{ cantEntregas [2] }}, {{ cantEntregas [3] }}];
+  				plot3 = $.jqplot('chart3', [s1], {
 
 					// Tell the plot to stack the bars.
     				stackSeries: true,
@@ -86,32 +84,7 @@
       <p>Pedido</p>
       </br>
 
-		<div id="chart3" style="width:800px; height:300px;"></div>
-      <table class="table" id="myTable">
-        <thead>
-          <tr>
-            <th>DocEntrega</th>
-            <th>PosPedido</th>
-            <th>Material</th>
-            <th>Descripcion</th>
-            <th>VolPedido</th>
-            <th>Total Asignado</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for entrega in Entregas %}
-          <tr>
-            <th>{{ entrega.DocEntrega }}</th>
-            <th>{{ entrega.PosPedido }}</th>
-            <th>{{ entrega.Material }}</th>
-            <th>{{ entrega.Desc_Mat }}</th>
-            <th>{{ entrega.VolPedido }}</th>
-            <th>{{ entrega.M3 }}</th>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-
+      <div id="chart3" style="width:800px; height:300px;"></div>
 	</br></br>
     </div> <!-- hero-unit -->
   </div> <!-- tab-pane active -->
