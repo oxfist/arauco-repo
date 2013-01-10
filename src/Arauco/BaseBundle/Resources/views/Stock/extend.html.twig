@@ -1,0 +1,37 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} Stock sin Asignar -{% endblock %}
+
+{% block content %}
+<div class="tab-content">
+  {% block body %}
+  <div class="tab-pane active" id="inicio">
+    <div class="hero-unit">
+      {% block titulo %}
+      <h2>Stock disponible</h2>
+      {% endblock %}
+      <p><strong>ID Material:</strong> {{ id }}</p>
+      <p><strong>Descripción Material:</strong> {{ stocksa.0.Desc_Mat }}</p>
+      <a href="{{ path ('arauco_stock_csvextend', {'id': id}) }}">Exportar CSV</a></p>
+      <table class="table" id="myTable">
+        <thead>
+          <tr>
+            <th>Lote</th>
+            <th>Volumen</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for material in stocksa %}
+          <tr>
+            <th>{{ material.Lote }}</th>
+            <th>{{ material.M3 }}</th>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <br />
+    </div> <!-- hero-unit -->
+  </div> <!-- tab-pane active -->
+  {% endblock %}
+</div> <!-- tab-content -->
+{% endblock %}

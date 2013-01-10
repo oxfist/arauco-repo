@@ -41,7 +41,7 @@
           <tr>
             <th>{{ entrega.DocEntrega }}</th>
             <th>{{ entrega.PosPedido }}</th>
-            <th>{{ entrega.Material }}</th>
+            <th><a href={{ path('arauco_stock_extend', {'id': entrega.Material}) }}>{{ entrega.Material }}</a></th>
             <th>{{ entrega.Desc_Mat }}</th>
             <th>{{ entrega.VolPedido }}</th>
             <th>{{ entrega.M3 }}</th>
