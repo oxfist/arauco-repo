@@ -45,7 +45,7 @@ class StockController extends Controller
     {
     	$em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
-                "SELECT S.Lote, S.Desc_Mat, S.M3
+                "SELECT S.Lote, S.Desc_Mat, S.Centro, S.Desc_Centro, S.Almacen, S.Desc_Alm, S.M3
                 FROM AraucoCSVBundle:Stock S
                 WHERE S.Material = ".$id." AND S.Status <> 'A'"
                 );
@@ -85,7 +85,7 @@ class StockController extends Controller
 
     	$em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
-                "SELECT S.Lote, S.M3
+                "SELECT S.Lote, S.Centro, S.Desc_Centro, S.Almacen, S.Desc_Alm, S.M3
                 FROM AraucoCSVBundle:Stock S
                 WHERE S.Material = ".$id." AND S.Status <> 'A'"
                 );
