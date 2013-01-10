@@ -15,6 +15,13 @@ class Pedidos
     /**
      * @var float
      *
+     * @ORM\Column(name="ETA", type="float" , nullable=true)
+     */
+    private $ETA;
+
+    /**
+     * @var float
+     *
      * @ORM\Column(name="DocEntrega", type="float" , nullable=true)
      */
     private $DocEntrega;
