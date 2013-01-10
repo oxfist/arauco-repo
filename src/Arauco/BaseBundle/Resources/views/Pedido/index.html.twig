@@ -63,7 +63,8 @@
   				$('#chart3').bind('jqplotDataClick', 
     				function (ev, seriesIndex, pointIndex, data) {
       					//$('#info3').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);
-						document.location.href='#';
+                                        var route = "{{ path('arauco_pedido_extend', { 'week': "jsWeek" }) }}";
+                                        window.location = route.replace("jsWeek", pointIndex);
     				}
   				);
 			});

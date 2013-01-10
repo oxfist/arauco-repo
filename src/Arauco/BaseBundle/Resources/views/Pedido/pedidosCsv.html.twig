@@ -1,0 +1,4 @@
+DocEntrega, PosPedido, Material, Descripcion, VolPedido, Total Asignado
+{% for entrega in data %}
+{{ entrega.DocEntrega }},{{ entrega.PosPedido }},{{ entrega.Material }},{{ entrega.Desc_Mat }},{{ entrega.VolPedido }},{{ entrega.M3 }}
+{% endfor %}
