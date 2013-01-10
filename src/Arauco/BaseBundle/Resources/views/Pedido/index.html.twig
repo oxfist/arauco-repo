@@ -67,7 +67,7 @@
       					//$('#info3').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);
 						document.location.href='#';
     				}
-  				); 
+  				);
 			});
 		</script>
 {% endblock %}
@@ -87,6 +87,30 @@
       </br>
 
 		<div id="chart3" style="width:800px; height:300px;"></div>
+      <table class="table" id="myTable">
+        <thead>
+          <tr>
+            <th>DocEntrega</th>
+            <th>PosPedido</th>
+            <th>Material</th>
+            <th>Descripcion</th>
+            <th>VolPedido</th>
+            <th>Total Asignado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for entrega in Entregas %}
+          <tr>
+            <th>{{ entrega.DocEntrega }}</th>
+            <th>{{ entrega.PosPedido }}</th>
+            <th>{{ entrega.Material }}</th>
+            <th>{{ entrega.Desc_Mat }}</th>
+            <th>{{ entrega.VolPedido }}</th>
+            <th>{{ entrega.M3 }}</th>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
 
 	</br></br>
     </div> <!-- hero-unit -->
