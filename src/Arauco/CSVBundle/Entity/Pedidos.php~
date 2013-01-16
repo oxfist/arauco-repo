@@ -15,13 +15,6 @@ class Pedidos
     /**
      * @var float
      *
-     * @ORM\Column(name="Eta", type="float" , nullable=true)
-     */
-    private $Eta;
-
-    /**
-     * @var float
-     *
      * @ORM\Column(name="DocEntrega", type="float" , nullable=true)
      */
     private $DocEntrega;
@@ -132,6 +125,14 @@ class Pedidos
      * @ORM\Column(name="StatusMovimientodeMcia", type="string", length=255, nullable=true)
      */
     private $StatusMovimientodeMcia;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="Eta", type="float" , nullable=true)
+     */
+    private $Eta;
+
 
 
     /**
@@ -513,25 +514,25 @@ class Pedidos
     }
 
     /**
-     * Set ETA
+     * Set Eta
      *
-     * @param float $eTA
+     * @param float $eta
      * @return Pedidos
      */
-    public function setETA($eTA)
+    public function setEta($eta)
     {
-        $this->ETA = $eTA;
+        $this->Eta = $eta;
     
         return $this;
     }
 
     /**
-     * Get ETA
+     * Get Eta
      *
      * @return float 
      */
-    public function getETA()
+    public function getEta()
     {
-        return $this->ETA;
+        return $this->Eta;
     }
 }
