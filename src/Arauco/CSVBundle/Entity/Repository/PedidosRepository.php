@@ -17,7 +17,7 @@ class PedidosRepository extends EntityRepository
         return $this->getEntityManager()->createQuery("
             SELECT p.Material, p.DescripcionMaterial, sum(p.VolPedido) Suma
             FROM AraucoCSVBundle:Pedidos p
-            WHERE p.StatusMovimientodeMcia IN ('A', 'C')
+            WHERE p.StatusMovimientodeMcia = 'A'
             GROUP By p.Material
             ")->getResult();
     }
