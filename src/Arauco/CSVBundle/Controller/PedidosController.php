@@ -55,15 +55,15 @@ class PedidosController extends Controller
         $weekday = date('w', mktime(0,0,0,$month, $day, $year));
         $sunday  = $day - $weekday;
 
-        $start_week = date('Ymd', mktime(0,0,0,$month, $sunday+1, $year));
-        $end_week   = date('Ymd', mktime(0,0,0,$month, $sunday+7, $year)); 
+        $start_week = date('Y-m-d', mktime(0,0,0,$month, $sunday+1, $year));
+        $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year)); 
 
         $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
         $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year)); 
 
         $em = $this->getDoctrine()->getManager();
 
-        $query = $em->createQuery("SELECT P.DocEntrega, P.PosPedido, S.Material, S.Desc_Mat, P.VolPedido, SUM( S.M3 ) as M3 FROM AraucoCSVBundle:Pedidos P, AraucoCSVBundle:Stock S WHERE P.DocEntrega = S.Nro_Entrega AND P.PosPedido = S.Pos_Entrega AND P.Eta >=".$start_week."AND P.Eta <=".$end_week." AND P.StatusMovimientodeMcia = 'A' GROUP BY P.DocEntrega, P.PosPedido ORDER BY P.DocEntrega");
+        $query = $em->createQuery("SELECT P.DocEntrega, P.PosPedido, S.Material, S.Desc_Mat, P.VolPedido, SUM( S.M3 ) as M3 FROM AraucoCSVBundle:Pedidos P, AraucoCSVBundle:Stock S WHERE P.DocEntrega = S.Nro_Entrega AND P.PosPedido = S.Pos_Entrega AND P.Eta >='".$start_week."' AND P.Eta <='".$end_week."' AND P.StatusMovimientodeMcia = 'A' GROUP BY P.DocEntrega, P.PosPedido ORDER BY P.DocEntrega");
 
         $Entregas = $query->getResult();
 
@@ -84,15 +84,15 @@ class PedidosController extends Controller
         $weekday = date('w', mktime(0,0,0,$month, $day, $year));
         $sunday  = $day - $weekday;
 
-        $start_week = date('Ymd', mktime(0,0,0,$month, $sunday+1, $year));
-        $end_week   = date('Ymd', mktime(0,0,0,$month, $sunday+7, $year)); 
+        $start_week = date('Y-m-d', mktime(0,0,0,$month, $sunday+1, $year));
+        $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year)); 
 
         $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
         $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year)); 
 
         $em = $this->getDoctrine()->getManager();
 
-        $query = $em->createQuery("SELECT P.DocEntrega, P.PosPedido, S.Material, S.Desc_Mat, P.VolPedido, SUM( S.M3 ) as M3 FROM AraucoCSVBundle:Pedidos P, AraucoCSVBundle:Stock S WHERE P.DocEntrega = S.Nro_Entrega AND P.PosPedido = S.Pos_Entrega AND P.Eta >=".$start_week."AND P.Eta <=".$end_week." AND P.StatusMovimientodeMcia = 'A' GROUP BY P.DocEntrega, P.PosPedido ORDER BY P.DocEntrega");
+        $query = $em->createQuery("SELECT P.DocEntrega, P.PosPedido, S.Material, S.Desc_Mat, P.VolPedido, SUM( S.M3 ) as M3 FROM AraucoCSVBundle:Pedidos P, AraucoCSVBundle:Stock S WHERE P.DocEntrega = S.Nro_Entrega AND P.PosPedido = S.Pos_Entrega AND P.Eta >='".$start_week."' AND P.Eta <='".$end_week."' AND P.StatusMovimientodeMcia = 'A' GROUP BY P.DocEntrega, P.PosPedido ORDER BY P.DocEntrega");
 
         $data = $query->getResult();
 

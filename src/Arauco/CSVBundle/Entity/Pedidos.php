@@ -13,8 +13,23 @@ use Doctrine\ORM\Mapping as ORM;
 class Pedidos
 {
     /**
+     * @var string
+     *
+     * @ORM\Column(name="Nave", type="string", length=255, nullable=true)
+     */
+    private $Nave;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="Eta", type="date" , nullable=true)
+     */
+    private $Eta;
+
+    /**
      * @var float
      *
+     * @ORM\Id
      * @ORM\Column(name="DocEntrega", type="float" , nullable=true)
      */
     private $DocEntrega;
@@ -23,24 +38,9 @@ class Pedidos
      * @var float
      *
      * @ORM\Id
-     * @ORM\Column(name="Pedido", type="float", nullable=true)
-     */
-    private $Pedido;
-
-    /**
-     * @var float
-     *
-     * @ORM\Id
      * @ORM\Column(name="PosPedido", type="float", nullable=true)
      */
     private $PosPedido;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="CentroPedido", type="string", length=255, nullable=true)
-     */
-    private $CentroPedido;
 
     /**
      * @var float
@@ -52,35 +52,7 @@ class Pedidos
     /**
      * @var string
      *
-     * @ORM\Column(name="UM", type="string", length=255, nullable=true)
-     */
-    private $UM;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="UnitsSolicPed", type="integer", nullable=true)
-     */
-    private $UnitsSolicPed;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="UM2", type="string", length=255, nullable=true)
-     */
-    private $UM2;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="CantidadUMV", type="float", nullable=true)
-     */
-    private $CantidadUMV;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="UMV", type="string", length=255, nullable=true)
+     * @ORM\Column(name="UMV", type="string", length=2, nullable=true)
      */
     private $UMV;
 
@@ -92,30 +64,16 @@ class Pedidos
     private $Material;
 
     /**
-     * @var string
+     * @var \DateTime
      *
-     * @ORM\Column(name="DescripcionMaterial", type="string", length=255, nullable=true)
-     */
-    private $DescripcionMaterial;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Categoria", type="string", length=255, nullable=true)
-     */
-    private $Categoria;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="FPE", type="string", length=255, nullable=true)
+     * @ORM\Column(name="FPE", type="date", nullable=true)
      */
     private $FPE;
 
     /**
-     * @var \string
+     * @var \DateTime
      *
-     * @ORM\Column(name="FPAN", type="string", length=255, nullable=true)
+     * @ORM\Column(name="FPAN", type="date", nullable=true)
      */
     private $FPAN;
 
@@ -127,22 +85,58 @@ class Pedidos
     private $StatusMovimientodeMcia;
 
     /**
-     * @var float
+     * @var string
      *
-     * @ORM\Column(name="Eta", type="float" , nullable=true)
+     * @ORM\Column(name="DescripcionMaterial", type="string", length=255, nullable=true)
      */
-    private $Eta;
+    private $DescripcionMaterial;
 
 
 
     /**
-     * Get id
+     * Set Nave
      *
-     * @return integer 
+     * @param string $nave
+     * @return Pedidos
      */
-    public function getId()
+    public function setNave($nave)
     {
-        return $this->id;
+        $this->Nave = $nave;
+    
+        return $this;
+    }
+
+    /**
+     * Get Nave
+     *
+     * @return string 
+     */
+    public function getNave()
+    {
+        return $this->Nave;
+    }
+
+    /**
+     * Set Eta
+     *
+     * @param \DateTime $eta
+     * @return Pedidos
+     */
+    public function setEta($eta)
+    {
+        $this->Eta = $eta;
+    
+        return $this;
+    }
+
+    /**
+     * Get Eta
+     *
+     * @return \DateTime 
+     */
+    public function getEta()
+    {
+        return $this->Eta;
     }
 
     /**
@@ -169,29 +163,6 @@ class Pedidos
     }
 
     /**
-     * Set Pedido
-     *
-     * @param float $pedido
-     * @return Pedidos
-     */
-    public function setPedido($pedido)
-    {
-        $this->Pedido = $pedido;
-    
-        return $this;
-    }
-
-    /**
-     * Get Pedido
-     *
-     * @return float 
-     */
-    public function getPedido()
-    {
-        return $this->Pedido;
-    }
-
-    /**
      * Set PosPedido
      *
      * @param float $posPedido
@@ -215,29 +186,6 @@ class Pedidos
     }
 
     /**
-     * Set CentroPedido
-     *
-     * @param string $centroPedido
-     * @return Pedidos
-     */
-    public function setCentroPedido($centroPedido)
-    {
-        $this->CentroPedido = $centroPedido;
-    
-        return $this;
-    }
-
-    /**
-     * Get CentroPedido
-     *
-     * @return string 
-     */
-    public function getCentroPedido()
-    {
-        return $this->CentroPedido;
-    }
-
-    /**
      * Set VolPedido
      *
      * @param float $volPedido
@@ -258,98 +206,6 @@ class Pedidos
     public function getVolPedido()
     {
         return $this->VolPedido;
-    }
-
-    /**
-     * Set UM
-     *
-     * @param string $uM
-     * @return Pedidos
-     */
-    public function setUM($uM)
-    {
-        $this->UM = $uM;
-    
-        return $this;
-    }
-
-    /**
-     * Get UM
-     *
-     * @return string 
-     */
-    public function getUM()
-    {
-        return $this->UM;
-    }
-
-    /**
-     * Set UnitsSolicPed
-     *
-     * @param integer $unitsSolicPed
-     * @return Pedidos
-     */
-    public function setUnitsSolicPed($unitsSolicPed)
-    {
-        $this->UnitsSolicPed = $unitsSolicPed;
-    
-        return $this;
-    }
-
-    /**
-     * Get UnitsSolicPed
-     *
-     * @return integer 
-     */
-    public function getUnitsSolicPed()
-    {
-        return $this->UnitsSolicPed;
-    }
-
-    /**
-     * Set UM2
-     *
-     * @param string $uM2
-     * @return Pedidos
-     */
-    public function setUM2($uM2)
-    {
-        $this->UM2 = $uM2;
-    
-        return $this;
-    }
-
-    /**
-     * Get UM2
-     *
-     * @return string 
-     */
-    public function getUM2()
-    {
-        return $this->UM2;
-    }
-
-    /**
-     * Set CantidadUMV
-     *
-     * @param float $cantidadUMV
-     * @return Pedidos
-     */
-    public function setCantidadUMV($cantidadUMV)
-    {
-        $this->CantidadUMV = $cantidadUMV;
-    
-        return $this;
-    }
-
-    /**
-     * Get CantidadUMV
-     *
-     * @return float 
-     */
-    public function getCantidadUMV()
-    {
-        return $this->CantidadUMV;
     }
 
     /**
@@ -399,55 +255,9 @@ class Pedidos
     }
 
     /**
-     * Set DescripcionMaterial
-     *
-     * @param string $descripcionMaterial
-     * @return Pedidos
-     */
-    public function setDescripcionMaterial($descripcionMaterial)
-    {
-        $this->DescripcionMaterial = $descripcionMaterial;
-    
-        return $this;
-    }
-
-    /**
-     * Get DescripcionMaterial
-     *
-     * @return string 
-     */
-    public function getDescripcionMaterial()
-    {
-        return $this->DescripcionMaterial;
-    }
-
-    /**
-     * Set Categoria
-     *
-     * @param string $categoria
-     * @return Pedidos
-     */
-    public function setCategoria($categoria)
-    {
-        $this->Categoria = $categoria;
-    
-        return $this;
-    }
-
-    /**
-     * Get Categoria
-     *
-     * @return string 
-     */
-    public function getCategoria()
-    {
-        return $this->Categoria;
-    }
-
-    /**
      * Set FPE
      *
-     * @param string $fPE
+     * @param \DateTime $fPE
      * @return Pedidos
      */
     public function setFPE($fPE)
@@ -460,7 +270,7 @@ class Pedidos
     /**
      * Get FPE
      *
-     * @return string 
+     * @return \DateTime 
      */
     public function getFPE()
     {
@@ -470,7 +280,7 @@ class Pedidos
     /**
      * Set FPAN
      *
-     * @param string $fPAN
+     * @param \DateTime $fPAN
      * @return Pedidos
      */
     public function setFPAN($fPAN)
@@ -483,7 +293,7 @@ class Pedidos
     /**
      * Get FPAN
      *
-     * @return string 
+     * @return \DateTime 
      */
     public function getFPAN()
     {
@@ -514,25 +324,25 @@ class Pedidos
     }
 
     /**
-     * Set Eta
+     * Set DescripcionMaterial
      *
-     * @param float $eta
+     * @param string $descripcionMaterial
      * @return Pedidos
      */
-    public function setEta($eta)
+    public function setDescripcionMaterial($descripcionMaterial)
     {
-        $this->Eta = $eta;
+        $this->DescripcionMaterial = $descripcionMaterial;
     
         return $this;
     }
 
     /**
-     * Get Eta
+     * Get DescripcionMaterial
      *
-     * @return float 
+     * @return string 
      */
-    public function getEta()
+    public function getDescripcionMaterial()
     {
-        return $this->Eta;
+        return $this->DescripcionMaterial;
     }
 }
