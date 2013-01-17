@@ -38,9 +38,9 @@
             <th>{{ materialStock.2 }}</th>
             <th>{{ materialStock.3 }}</th>
             {% if materialStock.4 > 0 %}
-            <th><span class="badge badge-success">{{ materialStock.4 }}</span></th>
+            <th class="badge badge-success">{{ materialStock.4 }}</th>
             {% else %}
-            <th><span class="badge badge-important">{{ materialStock.4 }}</span></th>
+            <th class="badge badge-important">{{ materialStock.4 }}</th>
             {% endif %}
           </tr>
         {% endfor %}
