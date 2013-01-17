@@ -259,4 +259,27 @@ class Stock
     {
         return $this->Desc_Mat;
     }
+
+    /**
+     * Set Lote
+     *
+     * @param string $lote
+     * @return Stock
+     */
+    public function setLote($lote)
+    {
+        $this->Lote = $lote;
+    
+        return $this;
+    }
+
+    /**
+     * Get Lote
+     *
+     * @return string 
+     */
+    public function getLote()
+    {
+        return $this->Lote;
+    }
 }

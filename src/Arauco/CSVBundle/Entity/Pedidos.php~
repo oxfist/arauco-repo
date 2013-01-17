@@ -84,18 +84,6 @@ class Pedidos
      */
     private $StatusMovimientodeMcia;
 
-<<<<<<< HEAD
-=======
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="Eta", type="float" , nullable=true)
-     */
-    private $Eta;
-
-
-
->>>>>>> FETCH_HEAD
     /**
      * @var string
      *
@@ -336,7 +324,6 @@ class Pedidos
     }
 
     /**
-<<<<<<< HEAD
      * Set DescripcionMaterial
      *
      * @param string $descripcionMaterial
@@ -345,37 +332,17 @@ class Pedidos
     public function setDescripcionMaterial($descripcionMaterial)
     {
         $this->DescripcionMaterial = $descripcionMaterial;
-=======
-     * Set Eta
-     *
-     * @param float $eta
-     * @return Pedidos
-     */
-    public function setEta($eta)
-    {
-        $this->Eta = $eta;
->>>>>>> FETCH_HEAD
     
         return $this;
     }
 
     /**
-<<<<<<< HEAD
      * Get DescripcionMaterial
-=======
-     * Get Eta
->>>>>>> FETCH_HEAD
      *
      * @return string 
      */
-<<<<<<< HEAD
     public function getDescripcionMaterial()
     {
         return $this->DescripcionMaterial;
-=======
-    public function getEta()
-    {
-        return $this->Eta;
->>>>>>> FETCH_HEAD
     }
 }

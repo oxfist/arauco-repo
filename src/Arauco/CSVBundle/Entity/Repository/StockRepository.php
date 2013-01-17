@@ -15,8 +15,7 @@ class StockRepository extends EntityRepository
     public function findAllTotalStock()
     {
         return $this->getEntityManager()->createQuery('
-            SELECT s.Material, s.Desc_Mat,
-            sum(s.Vol_Util)+sum(s.Vol_Tran)+sum(s.Bloqueado) Suma
+            SELECT s.Material, s.Desc_Mat, sum(s.M3) Suma
             FROM AraucoCSVBundle:Stock s
             GROUP By s.Material
             ')->getResult();
