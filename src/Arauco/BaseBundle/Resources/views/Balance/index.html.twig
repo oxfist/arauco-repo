@@ -12,9 +12,9 @@
       {% endblock %}
       <p>Total Balance = 
       {% if totalBalance > 0 %}
-      <span class="badge badge-success">{{ totalBalance }}</span>
+      <span class="label label-success">{{ totalBalance }}</span>
       {% else %}
-      <span class="badge badge-important">{{ totalBalance }}</span>
+      <span class="label label-important">{{ totalBalance }}</span>
       {% endif %}
       m&sup3;.<br />
       Total Stock = {{ totalStock }} m&sup3;.<br />
@@ -38,15 +38,18 @@
             <th>{{ materialStock.2 }}</th>
             <th>{{ materialStock.3 }}</th>
             {% if materialStock.4 > 0 %}
-            <th class="badge badge-success">{{ materialStock.4 }}</th>
+            <th class="label label-success">{{ materialStock.4 }}</th>
             {% else %}
-            <th class="badge badge-important">{{ materialStock.4 }}</th>
+            <th class="label label-important">{{ materialStock.4 }}</th>
             {% endif %}
           </tr>
         {% endfor %}
         </tbody>
       </table>
       <br />
+      <div class="alert alert-info">
+      <strong>NOTA</strong>: Todas las cantidades mostradas en la tabla están en m&sup3;.
+      </div>
     </div> <!-- hero-unit -->
   </div> <!-- tab-pane active -->
   {% endblock %}

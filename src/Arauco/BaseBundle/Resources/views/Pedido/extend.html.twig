@@ -17,22 +17,18 @@
   {% block body %}
   <div class="tab-pane active" id="inicio">
     <div class="hero-unit">
-      {% block titulo %}
-      <h2>Arauco y Constitución S.A.</h2>
-      {% endblock %}
-      <h4><i>Sembremos futuro</i></h4>
-      <p> Pedidos para semana del {{ sWeek }} al {{ eWeek }} </p>
-      </br>
-      <a href="{{ path ('arauco_pedido_extendcsv', {'week': week}) }}">Exportar CSV</a></p>
-
+      <legend>Pedidos para semana del {{ sWeek }} al {{ eWeek }}</legend>
+      <a class="text-info" href="{{ path ('arauco_pedido_extendcsv', {'week': week}) }}">Exportar a .csv <i class="icon-download-alt"></i></a>
+      <br />
+      <br />
       <table class="table" id="myTable">
         <thead>
           <tr>
             <th>DocEntrega</th>
             <th>PosPedido</th>
             <th>Material</th>
-            <th>Descripcion</th>
-            <th>VolPedido</th>
+            <th>Descripción</th>
+            <th>Volumen Pedido</th>
             <th>Total Asignado</th>
           </tr>
         </thead>
@@ -49,8 +45,10 @@
           {% endfor %}
         </tbody>
       </table>
-
-	</br></br>
+      <br />
+      <div class="alert alert-info"> 
+        <strong>NOTA</strong>: Todas las cantidades mostradas en la tabla están en m&sup3;.
+      </div>
     </div> <!-- hero-unit -->
   </div> <!-- tab-pane active -->
   {% endblock %}
