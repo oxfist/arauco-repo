@@ -48,8 +48,12 @@ class BalanceController extends Controller
                 $balance = $stock;
             }
 
-            array_push( $total, array( $material, $descMaterial,
-                $stock, $totalPedidosPorMaterial, $balance ) );
+            array_push(
+                    $total, array(
+                        $material, $descMaterial, round( $stock, 3 ),
+                        round( $totalPedidosPorMaterial, 3 ), round( $balance, 3 )
+                        )
+                    );
         }
 
         foreach ( $total as $item ) {

@@ -37,7 +37,7 @@
             <th>{{ materialStock.2 }}</th>
             <th>{{ materialStock.3 }}</th>
             {% if materialStock.4 > 0 %}
-            <th class="label label-success">{{ materialStock.4 }}</th>
+            <th class="label label-success">{{ materialStock.4}}</th>
             {% else %}
             <th class="label label-important">{{ materialStock.4 }}</th>
             {% endif %}
@@ -47,8 +47,9 @@
       </table>
       <br />
       <div class="alert alert-info">
-      <strong>NOTA</strong>: Todas las cantidades mostradas en la tabla están en m&sup3;.
+        <strong>NOTA</strong>: Todas las cantidades mostradas en la tabla están en m&sup3;.
       </div>
+      <br />
     </div> <!-- hero-unit -->
   </div> <!-- tab-pane active -->
   {% endblock %}

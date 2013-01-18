@@ -20,57 +20,59 @@
         filter='yui_js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-	<script class="code" type="text/javascript">
-			$(document).ready(function(){
-  				var s1 = [{{ cantEntregasCom [0] }}, {{ cantEntregasCom [1] }}, {{ cantEntregasCom [2] }}, {{ cantEntregasCom [3] }}];
-  				var s2 = [{{ cantEntregasInc [0] }}, {{ cantEntregasInc [1] }}, {{ cantEntregasInc [2] }}, {{ cantEntregasInc [3] }}];
-  				plot3 = $.jqplot('chart3', [s1], {
+    <script class="code" type="text/javascript">
+    $(document).ready(function(){
+            // ARREGLAR CONSULTA PARA s1
+            var s1 = [{{ cantEntregasCompletas [0] }}, {{ cantEntregasCompletas [1] }}, {{ cantEntregasCompletas [2] }}, {{ cantEntregasCompletas [3] }}];
+            var s2 = [{{ cantEntregasCompletables [0] }}, {{ cantEntregasCompletables [1] }}, {{ cantEntregasCompletables [2] }}, {{ cantEntregasCompletables [3] }}];
+            var s3 = [{{ cantEntregasIncompletas [0] }}, {{ cantEntregasIncompletas [1] }}, {{ cantEntregasIncompletas [2] }}, {{ cantEntregasIncompletas [3] }}];
+            plot3 = $.jqplot('chart3', [s2,s3], {
 
-					// Tell the plot to stack the bars.
-    				stackSeries: true,
-    				captureRightClick: true,
-    				seriesDefaults:{
-      					renderer:$.jqplot.BarRenderer,
-      					rendererOptions: {
-          					// Put a 30 pixel margin between bars.
-          					barMargin: 30,
-                                                barDirection: 'vertical',
-         					// Highlight bars when mouse button pressed.
-          					// Disables default highlighting on mouse over.
-          					highlightMouseDown: true
-      					},
-      					pointLabels: {show: true}
-    				},
-    				axes: {
-      					xaxis: {
-          					renderer: $.jqplot.CategoryAxisRenderer
-      					},
-      					yaxis: {
-        					// Don't pad out the bottom of the data range.  By default,
-        					// axes scaled as if data extended 10% above and below the
-        					// actual range to prevent data points right on grid boundaries.
-        					// Don't want to do that here.
-        					padMin:0
-      					}
-    				},
-    				legend: {
-      					show: false,
-      					location: 'e',
-      					placement: 'outside'
-    				}
-  				});
-  				// Bind a listener to the "jqplotDataClick" event.  Here, simply change
-  				// the text of the info3 element to show what series and ponit were
-  				// clicked along with the data for that point.
-  				$('#chart3').bind('jqplotDataClick', 
-    				function (ev, seriesIndex, pointIndex, data) {
-      					//$('#info3').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);
-                                        var route = "{{ path('arauco_pedido_extend', { 'week': "jsWeek" }) }}";
-                                        window.location = route.replace("jsWeek", pointIndex);
-    				}
-  				);
-			});
-		</script>
+                    // Tell the plot to stack the bars.
+            stackSeries: true,
+            captureRightClick: true,
+            seriesDefaults:{
+                    renderer:$.jqplot.BarRenderer,
+                    rendererOptions: {
+                            // Put a 30 pixel margin between bars.
+                            barMargin: 30,
+                            barDirection: 'vertical',
+                            // Highlight bars when mouse button pressed.
+                            // Disables default highlighting on mouse over.
+                            highlightMouseDown: true
+                    },
+                    pointLabels: {show: true}
+            },
+            axes: {
+                    xaxis: {
+                            renderer: $.jqplot.CategoryAxisRenderer
+                    },
+                    yaxis: {
+                            // Don't pad out the bottom of the data range.  By default,
+                            // axes scaled as if data extended 10% above and below the
+                            // actual range to prevent data points right on grid boundaries.
+                            // Don't want to do that here.
+                            padMin:0
+                    }
+            },
+            legend: {
+                    show: false,
+                    location: 'e',
+                    placement: 'outside'
+            }
+            });
+            // Bind a listener to the "jqplotDataClick" event.  Here, simply change
+            // the text of the info3 element to show what series and ponit were
+            // clicked along with the data for that point.
+            $('#chart3').bind('jqplotDataClick', 
+            function (ev, seriesIndex, pointIndex, data) {
+                    //$('#info3').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);
+                    var route = "{{ path('arauco_pedido_extend', { 'week': "jsWeek" }) }}";
+                    window.location = route.replace("jsWeek", pointIndex);
+            }
+            );
+    });
+    </script>
 {% endblock %}
 
 {% block title %} Pedidos -{% endblock %}
@@ -80,16 +82,11 @@
   {% block body %}
   <div class="tab-pane active" id="inicio">
     <div class="hero-unit">
-      {% block titulo %}
-      <h2>Arauco y Constitución S.A.</h2>
-      {% endblock %}
-      <h4><i>Sembremos futuro</i></h4>
-      <p>Pedido</p>
-      </br>
-<center>
-      <div id="chart3" style="width:800px; height:300px;"></div>
-</center>
-	</br></br>
+      <legend>Gráfico de pedidos por semana</legend>
+      <br />
+      <center>
+            <div id="chart3" style="width:800px; height:300px;"></div>
+      </center>
     </div> <!-- hero-unit -->
   </div> <!-- tab-pane active -->
   {% endblock %}

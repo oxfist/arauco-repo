@@ -8,22 +8,27 @@
   <div class="tab-pane active" id="inicio">
     <div class="hero-unit">
       {% block titulo %}
-      <h2>Stock disponible</h2>
+      <legend>Stock disponible</legend>
       {% endblock %}
       {% if stocksa.0 is not defined %}
         <div class="alert alert-error">
-        <p>No existe Stock disponible para el producto ID <strong>{{ id }}</strong></p>
+          <p>No existe stock disponible para el producto con ID <strong>{{ id }}</strong>.</p>
         </div>
       {% else %}
-      <p><strong>ID Material:</strong> {{ id }}</p>
-      <p><strong>Descripción Material:</strong> {{ stocksa.0.Desc_Mat }}</p>
-      <a href="{{ path ('arauco_stock_csvextend', {'id': id}) }}">Exportar CSV</a></p>
+      <p>
+        <strong>ID Material:</strong> {{ id }}
+        <br />
+        <strong>Descripción Material:</strong> {{ stocksa.0.Desc_Mat }}
+      </p>
+      <a class ="text-info" href="{{ path ('arauco_stock_csv') }}">Exportar a .csv <i class="icon-download-alt"></i></a>
+      <br />
+      <br />
       <table class="table" id="myTable">
         <thead>
           <tr>
             <th>Lote</th>
             <th>Centro</th>
-            <th>Almacen</th>
+            <th>Almacén</th>
             <th>Volumen</th>
           </tr>
         </thead>
