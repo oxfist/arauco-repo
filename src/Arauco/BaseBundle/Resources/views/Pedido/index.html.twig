@@ -22,7 +22,8 @@
     {% endjavascripts %}
 	<script class="code" type="text/javascript">
 			$(document).ready(function(){
-  				var s1 = [{{ cantEntregas [0] }}, {{ cantEntregas [1] }}, {{ cantEntregas [2] }}, {{ cantEntregas [3] }}];
+  				var s1 = [{{ cantEntregasCom [0] }}, {{ cantEntregasCom [1] }}, {{ cantEntregasCom [2] }}, {{ cantEntregasCom [3] }}];
+  				var s2 = [{{ cantEntregasInc [0] }}, {{ cantEntregasInc [1] }}, {{ cantEntregasInc [2] }}, {{ cantEntregasInc [3] }}];
   				plot3 = $.jqplot('chart3', [s1], {
 
 					// Tell the plot to stack the bars.
@@ -33,9 +34,10 @@
       					rendererOptions: {
           					// Put a 30 pixel margin between bars.
           					barMargin: 30,
+                                                barDirection: 'vertical',
          					// Highlight bars when mouse button pressed.
           					// Disables default highlighting on mouse over.
-          					highlightMouseDown: true    
+          					highlightMouseDown: true
       					},
       					pointLabels: {show: true}
     				},
