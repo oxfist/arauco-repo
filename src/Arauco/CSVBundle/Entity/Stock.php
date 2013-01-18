@@ -77,6 +77,49 @@ class Stock
     private $Desc_Mat;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="STO_STATUS_ASI_ETA", type="string", length=1 , nullable=true)
+     */
+    private $STO_STATUS_ASI_ETA;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="STO_DOCENTREGA_ASI_ETA", type="string", length=30, nullable=true)
+     */
+    private $STO_DOCENTREGA_ASI_ETA;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="STO_POSPEDIDO_ASI_ETA", type="string", length=30, nullable=true)
+     */
+    private $STO_POSPEDIDO_ASI_ETA;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="STO_STATUS_ASI_FPE", type="string", length=1, nullable=true)
+     */
+    private $STO_STATUS_ASI_FPE;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="STO_DOCENTREGA_ASI_FPE", type="string", length=30, nullable=true)
+     */
+    private $STO_DOCENTREGA_ASI_FPE;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="STO_POSPEDIDO_ASI_FPE", type="string", length=30, nullable=true)
+     */
+    private $STO_POSPEDIDO_ASI_FPE;
+
+
+    /**
      * Set Centro
      *
      * @param string $centro
@@ -281,5 +324,143 @@ class Stock
     public function getLote()
     {
         return $this->Lote;
+    }
+
+    /**
+     * Set STO_STATUS_ASI_ETA
+     *
+     * @param string $sTOSTATUSASIETA
+     * @return Stock
+     */
+    public function setSTOSTATUSASIETA($sTOSTATUSASIETA)
+    {
+        $this->STO_STATUS_ASI_ETA = $sTOSTATUSASIETA;
+    
+        return $this;
+    }
+
+    /**
+     * Get STO_STATUS_ASI_ETA
+     *
+     * @return string 
+     */
+    public function getSTOSTATUSASIETA()
+    {
+        return $this->STO_STATUS_ASI_ETA;
+    }
+
+    /**
+     * Set STO_DOCENTREGA_ASI_ETA
+     *
+     * @param string $sTODOCENTREGAASIETA
+     * @return Stock
+     */
+    public function setSTODOCENTREGAASIETA($sTODOCENTREGAASIETA)
+    {
+        $this->STO_DOCENTREGA_ASI_ETA = $sTODOCENTREGAASIETA;
+    
+        return $this;
+    }
+
+    /**
+     * Get STO_DOCENTREGA_ASI_ETA
+     *
+     * @return string 
+     */
+    public function getSTODOCENTREGAASIETA()
+    {
+        return $this->STO_DOCENTREGA_ASI_ETA;
+    }
+
+    /**
+     * Set STO_POSPEDIDO_ASI_ETA
+     *
+     * @param string $sTOPOSPEDIDOASIETA
+     * @return Stock
+     */
+    public function setSTOPOSPEDIDOASIETA($sTOPOSPEDIDOASIETA)
+    {
+        $this->STO_POSPEDIDO_ASI_ETA = $sTOPOSPEDIDOASIETA;
+    
+        return $this;
+    }
+
+    /**
+     * Get STO_POSPEDIDO_ASI_ETA
+     *
+     * @return string 
+     */
+    public function getSTOPOSPEDIDOASIETA()
+    {
+        return $this->STO_POSPEDIDO_ASI_ETA;
+    }
+
+    /**
+     * Set STO_STATUS_ASI_FPE
+     *
+     * @param string $sTOSTATUSASIFPE
+     * @return Stock
+     */
+    public function setSTOSTATUSASIFPE($sTOSTATUSASIFPE)
+    {
+        $this->STO_STATUS_ASI_FPE = $sTOSTATUSASIFPE;
+    
+        return $this;
+    }
+
+    /**
+     * Get STO_STATUS_ASI_FPE
+     *
+     * @return string 
+     */
+    public function getSTOSTATUSASIFPE()
+    {
+        return $this->STO_STATUS_ASI_FPE;
+    }
+
+    /**
+     * Set STO_DOCENTREGA_ASI_FPE
+     *
+     * @param string $sTODOCENTREGAASIFPE
+     * @return Stock
+     */
+    public function setSTODOCENTREGAASIFPE($sTODOCENTREGAASIFPE)
+    {
+        $this->STO_DOCENTREGA_ASI_FPE = $sTODOCENTREGAASIFPE;
+    
+        return $this;
+    }
+
+    /**
+     * Get STO_DOCENTREGA_ASI_FPE
+     *
+     * @return string 
+     */
+    public function getSTODOCENTREGAASIFPE()
+    {
+        return $this->STO_DOCENTREGA_ASI_FPE;
+    }
+
+    /**
+     * Set STO_POSPEDIDO_ASI_FPE
+     *
+     * @param string $sTOPOSPEDIDOASIFPE
+     * @return Stock
+     */
+    public function setSTOPOSPEDIDOASIFPE($sTOPOSPEDIDOASIFPE)
+    {
+        $this->STO_POSPEDIDO_ASI_FPE = $sTOPOSPEDIDOASIFPE;
+    
+        return $this;
+    }
+
+    /**
+     * Get STO_POSPEDIDO_ASI_FPE
+     *
+     * @return string 
+     */
+    public function getSTOPOSPEDIDOASIFPE()
+    {
+        return $this->STO_POSPEDIDO_ASI_FPE;
     }
 }

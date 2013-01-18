@@ -7,9 +7,7 @@
   {% block body %}
   <div class="tab-pane active" id="inicio">
     <div class="hero-unit">
-      {% block titulo %}
-      <h2>Balance de Volumen según Stock y Pedidos</h2>
-      {% endblock %}
+      <legend>Balance de Volumen según Stock y Pedidos</legend>
       <p>Total Balance = 
       {% if totalBalance > 0 %}
       <span class="label label-success">{{ totalBalance }}</span>
@@ -20,6 +18,7 @@
       Total Stock = {{ totalStock }} m&sup3;.<br />
       Total Pedidos = {{ totalPedidos }} m&sup3;.<br />
       </p>
+      <br />
       <table class="table" id="myTable">
         <thead>
           <tr>

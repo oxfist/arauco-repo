@@ -77,6 +77,49 @@ class Stock
     private $Desc_Mat;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="STO_STATUS_ASI_ETA", type="string", length=1 , nullable=true)
+     */
+    private $STO_STATUS_ASI_ETA;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="STO_DOCENTREGA_ASI_ETA", type="string", length=30, nullable=true)
+     */
+    private $STO_DOCENTREGA_ASI_ETA;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="STO_POSPEDIDO_ASI_ETA", type="string", length=30, nullable=true)
+     */
+    private $STO_POSPEDIDO_ASI_ETA;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="STO_STATUS_ASI_FPE", type="string", length=1, nullable=true)
+     */
+    private $STO_STATUS_ASI_FPE;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="STO_DOCENTREGA_ASI_FPE", type="string", length=30, nullable=true)
+     */
+    private $STO_DOCENTREGA_ASI_FPE;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="STO_POSPEDIDO_ASI_FPE", type="string", length=30, nullable=true)
+     */
+    private $STO_POSPEDIDO_ASI_FPE;
+
+
+    /**
      * Set Centro
      *
      * @param string $centro
