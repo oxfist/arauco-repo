@@ -114,15 +114,80 @@ class PedidosController extends Controller
 
 
         $em = $this->getDoctrine()->getManager();
-        $query = $em->createQuery("SELECT P.DocEntrega, P.PosPedido, S.Material, S.Desc_Mat, P.VolPedido, SUM( S.M3 ) as M3 FROM AraucoCSVBundle:Pedidos P, AraucoCSVBundle:Stock S WHERE P.DocEntrega = S.Nro_Entrega AND P.PosPedido = S.Pos_Entrega AND P.Eta >='".$start_week."' AND P.Eta <='".$end_week."' AND P.StatusMovimientodeMcia = 'A' GROUP BY P.DocEntrega, P.PosPedido ORDER BY P.DocEntrega");
+        $query = $em->createQuery("
+            SELECT
+                P.DocEntrega,
+                P.PosPedido,
+                S.Material,
+                S.Desc_Mat,
+                P.VolPedido,
+                SUM( S.M3 ) as M3
+            FROM
+                AraucoCSVBundle:Pedidos P,
+                AraucoCSVBundle:Stock S
+            WHERE
+                P.DocEntrega = S.Nro_Entrega
+                AND P.PosPedido = S.Pos_Entrega
+                AND P.Eta >='".$start_week."'
+                AND P.Eta <='".$end_week."'
+                AND P.StatusMovimientodeMcia = 'A'
+            GROUP BY
+                P.DocEntrega,
+                P.PosPedido
+            ORDER BY
+                P.DocEntrega
+                ");
 
         $EntregasAsignadas = $query->getResult();
 
-        $query2 = $em->createQuery("SELECT P.DocEntrega, P.PosPedido, S.Material, S.Desc_Mat, P.VolPedido, SUM( S.M3 ) as M3 FROM AraucoCSVBundle:Pedidos P, AraucoCSVBundle:Stock S WHERE P.DocEntrega = S.STO_DOCENTREGA_ASI_ETA AND P.PosPedido = S.STO_POSPEDIDO_ASI_ETA AND P.Eta >='".$start_week."' AND P.Eta <='".$end_week."' AND P.StatusMovimientodeMcia = 'A' GROUP BY P.DocEntrega, P.PosPedido ORDER BY P.DocEntrega");
+        $query2 = $em->createQuery("
+            SELECT
+                P.DocEntrega,
+                P.PosPedido,
+                S.Material,
+                S.Desc_Mat,
+                P.VolPedido,
+                SUM( S.M3 ) as M3
+            FROM
+                AraucoCSVBundle:Pedidos P,
+                AraucoCSVBundle:Stock S
+            WHERE
+                P.DocEntrega = S.STO_DOCENTREGA_ASI_ETA
+                AND P.PosPedido = S.STO_POSPEDIDO_ASI_ETA
+                AND P.Eta >='".$start_week."'
+                AND P.Eta <='".$end_week."'
+                AND P.StatusMovimientodeMcia = 'A'
+            GROUP BY
+                P.DocEntrega,
+                P.PosPedido
+            ORDER BY
+                P.DocEntrega
+                ");
 
         $EntregasETA = $query2->getResult();
 
-        $query3 = $em->createQuery("SELECT P.DocEntrega, P.PosPedido, S.Material, S.Desc_Mat, P.VolPedido, SUM( S.M3 ) as M3 FROM AraucoCSVBundle:Pedidos P, AraucoCSVBundle:Stock S WHERE P.DocEntrega = S.STO_DOCENTREGA_ASI_FPE AND P.PosPedido = S.STO_POSPEDIDO_ASI_FPE AND P.Eta >='".$start_week."' AND P.Eta <='".$end_week."' AND P.StatusMovimientodeMcia = 'A' GROUP BY P.DocEntrega, P.PosPedido ORDER BY P.DocEntrega");
+        $query3 = $em->createQuery("
+            SELECT
+                P.DocEntrega,
+                P.PosPedido,
+                S.Material,
+                S.Desc_Mat,
+                P.VolPedido,
+                SUM( S.M3 ) as M3
+            FROM
+                AraucoCSVBundle:Pedidos P,
+                AraucoCSVBundle:Stock S
+            WHERE
+                P.DocEntrega = S.STO_DOCENTREGA_ASI_FPE
+                AND P.PosPedido = S.STO_POSPEDIDO_ASI_FPE
+                AND P.Eta >='".$start_week."'
+                AND P.Eta <='".$end_week."'
+                AND P.StatusMovimientodeMcia = 'A'
+            GROUP BY
+                P.DocEntrega,
+                P.PosPedido
+            ORDER BY
+                P.DocEntrega");
 
         $EntregasFPE = $query3->getResult();
 
@@ -130,7 +195,11 @@ class PedidosController extends Controller
          * AGREGAR FOREACHS ACA
          */
 
-        return array('Entregas' => $EntregasAsignadas, 'sWeek' => $sWeek, 'eWeek' => $eWeek, 'week' => $week);
+        return array(
+            'Entregas' => $EntregasAsignadas,
+            'sWeek' => $sWeek,
+            'eWeek' => $eWeek,
+            'week' => $week);
     }
 
     /**
@@ -155,7 +224,29 @@ class PedidosController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $query = $em->createQuery("SELECT P.DocEntrega, P.PosPedido, S.Material, S.Desc_Mat, P.VolPedido, SUM( S.M3 ) as M3 FROM AraucoCSVBundle:Pedidos P, AraucoCSVBundle:Stock S WHERE P.DocEntrega = S.Nro_Entrega AND P.PosPedido = S.Pos_Entrega AND P.Eta >='".$start_week."' AND P.Eta <='".$end_week."' AND P.StatusMovimientodeMcia = 'A' GROUP BY P.DocEntrega, P.PosPedido ORDER BY P.DocEntrega");
+        $query = $em->createQuery("
+            SELECT
+                P.DocEntrega,
+                P.PosPedido,
+                S.Material,
+                S.Desc_Mat,
+                P.VolPedido,
+                SUM( S.M3 ) as M3
+            FROM
+                AraucoCSVBundle:Pedidos P,
+                AraucoCSVBundle:Stock S
+            WHERE
+                P.DocEntrega = S.Nro_Entrega
+                AND P.PosPedido = S.Pos_Entrega
+                AND P.Eta >='".$start_week."'
+                AND P.Eta <='".$end_week."'
+                AND P.StatusMovimientodeMcia = 'A'
+            GROUP BY
+                P.DocEntrega,
+                P.PosPedido
+            ORDER BY
+                P.DocEntrega
+                ");
 
         $data = $query->getResult();
 
