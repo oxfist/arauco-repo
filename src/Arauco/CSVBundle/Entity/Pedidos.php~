@@ -87,6 +87,13 @@ class Pedidos
     /**
      * @var string
      *
+     * @ORM\Column(name="StatusComplete", type="string", length=2, nullable=true)
+     */
+    private $StatusComplete;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="DescripcionMaterial", type="string", length=255, nullable=true)
      */
     private $DescripcionMaterial;

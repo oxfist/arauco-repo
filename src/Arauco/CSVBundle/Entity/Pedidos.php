@@ -352,4 +352,27 @@ class Pedidos
     {
         return $this->DescripcionMaterial;
     }
+
+    /**
+     * Set StatusComplete
+     *
+     * @param string $statusComplete
+     * @return Pedidos
+     */
+    public function setStatusComplete($statusComplete)
+    {
+        $this->StatusComplete = $statusComplete;
+    
+        return $this;
+    }
+
+    /**
+     * Get StatusComplete
+     *
+     * @return string 
+     */
+    public function getStatusComplete()
+    {
+        return $this->StatusComplete;
+    }
 }
