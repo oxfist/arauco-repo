@@ -59,13 +59,25 @@ class PedidosController extends Controller
         $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year)); 
 
         $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
-        $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year)); 
+        $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year));
+
 
         $em = $this->getDoctrine()->getManager();
-
         $query = $em->createQuery("SELECT P.DocEntrega, P.PosPedido, S.Material, S.Desc_Mat, P.VolPedido, SUM( S.M3 ) as M3 FROM AraucoCSVBundle:Pedidos P, AraucoCSVBundle:Stock S WHERE P.DocEntrega = S.Nro_Entrega AND P.PosPedido = S.Pos_Entrega AND P.Eta >='".$start_week."' AND P.Eta <='".$end_week."' AND P.StatusMovimientodeMcia = 'A' GROUP BY P.DocEntrega, P.PosPedido ORDER BY P.DocEntrega");
 
-        $Entregas = $query->getResult();
+        $EntregasAsignadas = $query->getResult();
+
+        $query = $em->createQuery("SELECT P.DocEntrega, P.PosPedido, S.Material, S.Desc_Mat, P.VolPedido, SUM( S.M3 ) as M3 FROM AraucoCSVBundle:Pedidos P, AraucoCSVBundle:Stock S WHERE P.DocEntrega = S.STO_DOCENTREGA_ASI_ETA AND P.PosPedido = S.STO_POSPEDIDO_ASI_ETA AND P.Eta >='".$start_week."' AND P.Eta <='".$end_week."' AND P.StatusMovimientodeMcia = 'A' GROUP BY P.DocEntrega, P.PosPedido ORDER BY P.DocEntrega");
+
+        $EntregasETA = $query->getResult();
+
+        $query = $em->createQuery("SELECT P.DocEntrega, P.PosPedido, S.Material, S.Desc_Mat, P.VolPedido, SUM( S.M3 ) as M3 FROM AraucoCSVBundle:Pedidos P, AraucoCSVBundle:Stock S WHERE P.DocEntrega = S.STO_DOCENTREGA_ASI_FPE AND P.PosPedido = S.STO_POSPEDIDO_FPE AND P.Eta >='".$start_week."' AND P.Eta <='".$end_week."' AND P.StatusMovimientodeMcia = 'A' GROUP BY P.DocEntrega, P.PosPedido ORDER BY P.DocEntrega");
+
+        $EntregasFPE = $query->getResult();
+
+        /*
+         * AGREGAR FOREACHS ACA
+         */
 
         return array('Entregas' => $Entregas, 'sWeek' => $sWeek, 'eWeek' => $eWeek, 'week' => $week);
     }

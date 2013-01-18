@@ -76,6 +76,7 @@ class Stock
      */
     private $Desc_Mat;
 
+
     /**
      * @var string
      *
