@@ -29,7 +29,7 @@ class PedidosController extends Controller
             $sunday  = $day - $weekday;
 
             $start_week = date('Ymd', mktime(0,0,0,$month, $sunday+1, $year));
-            $end_week   = date('Ymd', mktime(0,0,0,$month, $sunday+7, $year)); 
+            $end_week   = date('Ymd', mktime(0,0,0,$month, $sunday+7, $year));
 
             $em = $this->getDoctrine()->getManager();
 
@@ -108,7 +108,7 @@ class PedidosController extends Controller
         $sunday  = $day - $weekday;
 
         $start_week = date('Y-m-d', mktime(0,0,0,$month, $sunday+1, $year));
-        $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year)); 
+        $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year));
 
         $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
         $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year));
@@ -206,18 +206,26 @@ class PedidosController extends Controller
             $sumaVolAsiETA = 0;
             $sumaVolAsiFPE = 0;
 
-            if ( isset( $EntregasETA[0] )
-                && $docEntrega == $EntregasETA[0]['DocEntrega']
-                && $posPedido == $EntregasETA[0]['PosPedido'] ) {
-                $sumaVolAsiETA = $EntregasETA[0]['M3'];
-                unset( $EntregasETA[ $docEntrega ] );
+            foreach ( $EntregasETA as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsiETA = $item['M3'];
+                    unset( $EntregasETA[ $docEntrega ] );
+                    break;
+                }
+
             }
 
-            if ( isset ( $EntregasFPE[0] )
-                && $docEntrega == $EntregasFPE[0]['DocEntrega']
-                && $posPedido == $EntregasFPE[0]['PosPedido'] ) {
-                $sumaVolAsiFPE = $EntregasFPE[0]['M3'];
-                unset( $EntregasFPE[ $docEntrega ] );
+            foreach ( $EntregasFPE as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsiFPE = $item['M3'];
+                    unset( $EntregasFPE[ $docEntrega ] );
+                    break;
+                }
+
             }
 
             array_push(
@@ -416,7 +424,6 @@ class PedidosController extends Controller
         $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year)); 
 
         $em = $this->getDoctrine()->getManager();
-
         $query = $em->createQuery("
             SELECT
                 P.DocEntrega,
@@ -433,19 +440,119 @@ class PedidosController extends Controller
                 AND P.PosPedido = S.Pos_Entrega
                 AND P.Eta >='".$start_week."'
                 AND P.Eta <='".$end_week."'
+                AND P.StatusComplete = 'NO'
                 AND P.StatusMovimientodeMcia = 'A'
             GROUP BY
                 P.DocEntrega,
                 P.PosPedido
             ORDER BY
-                P.DocEntrega
+                P.DocEntrega ASC
                 ");
 
-        $data = $query->getResult();
+        $EntregasAsignadas = $query->getResult();
+
+        $query2 = $em->createQuery("
+            SELECT
+                P.DocEntrega,
+                P.PosPedido,
+                S.Material,
+                S.Desc_Mat,
+                P.VolPedido,
+                SUM( S.M3 ) as M3
+            FROM
+                AraucoCSVBundle:Pedidos P,
+                AraucoCSVBundle:Stock S
+            WHERE
+                P.DocEntrega = S.STO_DOCENTREGA_ASI_ETA
+                AND P.PosPedido = S.STO_POSPEDIDO_ASI_ETA
+                AND P.Eta >='".$start_week."'
+                AND P.Eta <='".$end_week."'
+                AND P.StatusComplete = 'NO'
+                AND P.StatusMovimientodeMcia = 'A'
+            GROUP BY
+                P.DocEntrega,
+                P.PosPedido
+            ORDER BY
+                P.DocEntrega ASC
+                ");
+
+        $EntregasETA = $query2->getResult();
+
+        $query3 = $em->createQuery("
+            SELECT
+                P.DocEntrega,
+                P.PosPedido,
+                S.Material,
+                S.Desc_Mat,
+                P.VolPedido,
+                SUM( S.M3 ) as M3
+            FROM
+                AraucoCSVBundle:Pedidos P,
+                AraucoCSVBundle:Stock S
+            WHERE
+                P.DocEntrega = S.STO_DOCENTREGA_ASI_FPE
+                AND P.PosPedido = S.STO_POSPEDIDO_ASI_FPE
+                AND P.Eta >='".$start_week."'
+                AND P.Eta <='".$end_week."'
+                AND P.StatusComplete = 'NO'
+                AND P.StatusMovimientodeMcia = 'A'
+            GROUP BY
+                P.DocEntrega,
+                P.PosPedido
+            ORDER BY
+                P.DocEntrega ASC");
+
+        $EntregasFPE = $query3->getResult();
+
+        $entregasFinal = array();
+
+        foreach ( $EntregasAsignadas as $entrega ) {
+
+            $docEntrega = $entrega['DocEntrega'];
+            $posPedido = $entrega['PosPedido'];
+            $material = $entrega['Material'];
+            $descripcion = $entrega['Desc_Mat'];
+            $volPedido = $entrega['VolPedido'];
+            $sumaVolAsignado = $entrega['M3'];
+            $sumaVolAsiETA = 0;
+            $sumaVolAsiFPE = 0;
+
+            foreach ( $EntregasETA as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsiETA = $item['M3'];
+                    unset( $EntregasETA[ $docEntrega ] );
+                    break;
+                }
+
+            }
+
+            foreach ( $EntregasFPE as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsiFPE = $item['M3'];
+                    unset( $EntregasFPE[ $docEntrega ] );
+                    break;
+                }
+
+            }
+
+            array_push(
+                $entregasFinal, array(
+                    $docEntrega, $posPedido, $material, $descripcion,
+                    $volPedido, round( $sumaVolAsignado, 3 ),
+                    round( $sumaVolAsiETA, 3 ),
+                    round( $sumaVolAsiFPE, 3 )
+                )
+            );
+
+        }
 
         $filename = "Pedidos_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
 
-        $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $data));
+        $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $entregasFinal ));
 
         $response->headers->set('Content-Type', 'text/csv');
         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);

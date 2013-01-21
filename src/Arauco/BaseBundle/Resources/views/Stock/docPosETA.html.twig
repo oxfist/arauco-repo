@@ -1,0 +1,9 @@
+{% extends 'AraucoBaseBundle:Stock:docPos.html.twig' %}
+
+{% block title %} Stock Simulado ETA -{% endblock %}
+{% block titulo %}
+<legend>Stock Simulado ETA</legend>
+{% endblock %}
+{% block csv %}
+<a class ="text-info" href="{{ path ('arauco_stock_docpos_eta_csv', {'docentrega': docentrega, 'pospedido': pospedido }) }}">Exportar a .csv <i class="icon-download-alt"></i></a>
+{% endblock %}

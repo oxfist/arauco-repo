@@ -101,4 +101,154 @@ class StockController extends Controller
         return $response;
     }
 
+    /**
+     * @Route("/stock/{docentrega}/{pospedido}/asig", name="arauco_stock_docpos_asig")
+     * @Template("AraucoBaseBundle:Stock:docPosAsig.html.twig")
+     */
+    public function showdocposasigAction($docentrega, $pospedido)
+    {
+    	$em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery(
+            "SELECT
+                S.Lote, S.Desc_Mat, S.Centro, S.Almacen, S.M3
+             FROM
+                AraucoCSVBundle:Stock S
+             WHERE
+                S.Nro_Entrega = ".$docentrega."
+                AND S.Pos_Entrega = ".$pospedido."
+            ");
+
+        $stock = $query->getResult();
+
+        return array('stock' => $stock, 'docentrega' => $docentrega, 'pospedido' => $pospedido);
+    }
+
+    /**
+     * @Route("/stock/{docentrega}/{pospedido}/asig/csv", name="arauco_stock_docpos_asig_csv")
+     */
+    public function showdocposasigcsvAction($docentrega, $pospedido)
+    {
+    	$em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery(
+            "SELECT
+                S.Lote, S.Desc_Mat, S.Centro, S.Almacen, S.M3
+             FROM
+                AraucoCSVBundle:Stock S
+             WHERE
+                S.Nro_Entrega = ".$docentrega."
+                AND S.Pos_Entrega = ".$pospedido."
+            ");
+        $data = $query->getResult();
+
+        $filename = "StockAsig_".$docentrega."_".$pospedido."_".date("Y_m_d_His").".csv";
+
+        $response = $this->render('AraucoBaseBundle:Stock:stockextendCsv.html.twig', array('data' => $data));
+
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
+
+        return $response;
+
+    }
+
+    /**
+     * @Route("/stock/{docentrega}/{pospedido}/eta", name="arauco_stock_docpos_eta")
+     * @Template("AraucoBaseBundle:Stock:docPosETA.html.twig")
+     */
+    public function showdocposetaAction($docentrega, $pospedido)
+    {
+    	$em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery(
+            "SELECT
+                S.Lote, S.Desc_Mat, S.Centro, S.Almacen, S.M3
+             FROM
+                AraucoCSVBundle:Stock S
+             WHERE
+                S.STO_DOCENTREGA_ASI_ETA = ".$docentrega."
+                AND S.STO_POSPEDIDO_ASI_ETA = ".$pospedido."
+            ");
+
+        $stock = $query->getResult();
+
+        return array('stock' => $stock, 'docentrega' => $docentrega, 'pospedido' => $pospedido);
+    }
+
+    /**
+     * @Route("/stock/{docentrega}/{pospedido}/eta/csv", name="arauco_stock_docpos_eta_csv")
+     */
+    public function showdocposetacsvAction($docentrega, $pospedido)
+    {
+    	$em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery(
+            "SELECT
+                S.Lote, S.Desc_Mat, S.Centro, S.Almacen, S.M3
+             FROM
+                AraucoCSVBundle:Stock S
+             WHERE
+                S.STO_DOCENTREGA_ASI_ETA = ".$docentrega."
+                AND S.STO_POSPEDIDO_ASI_ETA = ".$pospedido."
+            ");
+
+        $data = $query->getResult();
+
+        $filename = "StockETA_".$docentrega."_".$pospedido."_".date("Y_m_d_His").".csv";
+
+        $response = $this->render('AraucoBaseBundle:Stock:stockextendCsv.html.twig', array('data' => $data));
+
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
+
+        return $response;
+    }
+
+    /**
+     * @Route("/stock/{docentrega}/{pospedido}/fpe", name="arauco_stock_docpos_fpe")
+     * @Template("AraucoBaseBundle:Stock:docPosFPE.html.twig")
+     */
+    public function showdocposfpeAction($docentrega, $pospedido)
+    {
+    	$em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery(
+            "SELECT
+                S.Lote, S.Desc_Mat, S.Centro, S.Almacen, S.M3
+             FROM
+                AraucoCSVBundle:Stock S
+             WHERE
+                S.STO_DOCENTREGA_ASI_FPE = ".$docentrega."
+                AND S.STO_POSPEDIDO_ASI_FPE = ".$pospedido."
+            ");
+
+        $stock = $query->getResult();
+
+        return array('stock' => $stock, 'docentrega' => $docentrega, 'pospedido' => $pospedido);
+    }
+
+    /**
+     * @Route("/stock/{docentrega}/{pospedido}/fpe/csv", name="arauco_stock_docpos_fpe_csv")
+     */
+    public function showdocposfpecsvAction($docentrega, $pospedido)
+    {
+    	$em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery(
+            "SELECT
+                S.Lote, S.Desc_Mat, S.Centro, S.Almacen, S.M3
+             FROM
+                AraucoCSVBundle:Stock S
+             WHERE
+                S.STO_DOCENTREGA_ASI_FPE = ".$docentrega."
+                AND S.STO_POSPEDIDO_ASI_FPE = ".$pospedido."
+            ");
+
+        $data = $query->getResult();
+
+        $filename = "StockFPE_".$docentrega."_".$pospedido."_".date("Y_m_d_His").".csv";
+
+        $response = $this->render('AraucoBaseBundle:Stock:stockextendCsv.html.twig', array('data' => $data));
+
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
+
+        return $response;
+    }
+
 }
