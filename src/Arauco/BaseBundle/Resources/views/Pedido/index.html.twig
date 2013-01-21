@@ -56,15 +56,16 @@
                     }
             },
             legend: {
-                    show: false,
+                    show: true,
                     location: 'e',
+                    labels: ["Incompletos","Completos"],
                     placement: 'outside'
             }
             });
             // Bind a listener to the "jqplotDataClick" event.  Here, simply change
             // the text of the info3 element to show what series and ponit were
             // clicked along with the data for that point.
-            $('#chart3').bind('jqplotDataClick', 
+            $('#chart3').bind('jqplotDataClick',
             function (ev, seriesIndex, pointIndex, data) {
 //$('#info3').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);
                 if (seriesIndex == 0) {

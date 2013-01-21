@@ -72,6 +72,69 @@ class BalanceController extends Controller
             );
     }
 
+    /**
+     * @Route("/balance/csv", name="arauco_balance_csv")
+     */
+    public function csvAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $stock = $em->getRepository('AraucoCSVBundle:Stock')
+                ->findAllTotalStock();
+        $pedidos = $em->getRepository('AraucoCSVBundle:Pedidos')
+                ->findAllTotalPedidos();
+
+        $total = array();
+
+        foreach ($stock as $item) {
+            $material = $item['Material'];
+            $descMaterial = $item['Desc_Mat'];
+            $stock = $item['Suma'];
+            $totalPedidosPorMaterial = NULL;
+            $balance = NULL;
+            $totalBalance = 0;
+            $totalStock = 0;
+            $totalPedidos = 0;
+
+            foreach ($pedidos as $pedido) {
+                if ( $pedido['Material'] == $material ) {
+                    $totalPedidosPorMaterial = $pedido['Suma'];
+                    $balance = $stock - $totalPedidosPorMaterial;
+                    unset( $pedidos[$material] );
+                    break;
+                }
+            }
+
+            if ( !$totalPedidosPorMaterial ) {
+                $totalPedidosPorMaterial = 0;
+                $balance = $stock;
+            }
+
+            array_push(
+                    $total, array(
+                        $material, $descMaterial, round( $stock, 3 ),
+                        round( $totalPedidosPorMaterial, 3 ), round( $balance, 3 )
+                        )
+                    );
+        }
+
+        foreach ( $total as $item ) {
+            $totalStock = $totalStock + $item[2];
+            $totalPedidos = $totalPedidos + $item[3];
+            $totalBalance = $totalBalance + $item[4];
+        }
+
+        usort( $total, array( $this, "Compare" ) );
+
+        $filename = "Balance".date("Y_m_d_His").".csv";
+
+        $response = $this->render('AraucoBaseBundle:Balance:balanceCSV.html.twig', array('data' => $total ));
+
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
+
+        return $response;
+    }
+
     private static function Compare( $a, $b )
     {
         return $a[4] < $b[4];

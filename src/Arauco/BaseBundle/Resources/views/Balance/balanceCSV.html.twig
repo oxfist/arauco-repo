@@ -1,0 +1,4 @@
+Código,Material,Stock, Total pedidos, Balance
+{% for materialStock in data %}
+{{ materialStock.0 }},"{{ materialStock.1 }}",{{ materialStock.2 }},{{ materialStock.3 }},{{ materialStock.4}}
+{% endfor %}
