@@ -29,18 +29,22 @@
             <th>Material</th>
             <th>Descripción</th>
             <th>Volumen Pedido</th>
-            <th>Total Asignado</th>
+            <th>TA</th>
+            <th>TA ETA</th>
+            <th>TA FPE</th>
           </tr>
         </thead>
         <tbody>
           {% for entrega in Entregas %}
           <tr>
-            <th>{{ entrega.DocEntrega }}</th>
-            <th>{{ entrega.PosPedido }}</th>
-            <th><a href="{{ path('arauco_stock_extend', {'id': entrega.Material}) }}">{{ entrega.Material }}</a></th>
-            <th>{{ entrega.Desc_Mat }}</th>
-            <th>{{ entrega.VolPedido }}</th>
-            <th>{{ entrega.M3 }}</th>
+            <th>{{ entrega[0] }}</th>
+            <th>{{ entrega[1] }}</th>
+            <th><a href="{{ path('arauco_stock_extend', {'id': entrega[2] }) }}">{{ entrega[2] }}</a></th>
+            <th>{{ entrega[3] }}</th>
+            <th>{{ entrega[4] }}</th>
+            <th>{{ entrega[5] }}</th>
+            <th>{{ entrega[6] }}</th>
+            <th>{{ entrega[7] }}</th>
           </tr>
           {% endfor %}
         </tbody>

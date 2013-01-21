@@ -26,7 +26,7 @@
             var s1 = [{{ cantEntregasCompletas [0] }}, {{ cantEntregasCompletas [1] }}, {{ cantEntregasCompletas [2] }}, {{ cantEntregasCompletas [3] }}];
             var s2 = [{{ cantEntregasCompletables [0] }}, {{ cantEntregasCompletables [1] }}, {{ cantEntregasCompletables [2] }}, {{ cantEntregasCompletables [3] }}];
             var s3 = [{{ cantEntregasIncompletas [0] }}, {{ cantEntregasIncompletas [1] }}, {{ cantEntregasIncompletas [2] }}, {{ cantEntregasIncompletas [3] }}];
-            plot3 = $.jqplot('chart3', [s2,s3], {
+            plot3 = $.jqplot('chart3', [s2, s3], {
 
                     // Tell the plot to stack the bars.
             stackSeries: true,
@@ -66,9 +66,15 @@
             // clicked along with the data for that point.
             $('#chart3').bind('jqplotDataClick', 
             function (ev, seriesIndex, pointIndex, data) {
-                    //$('#info3').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);
-                    var route = "{{ path('arauco_pedido_extend', { 'week': "jsWeek" }) }}";
+//$('#info3').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);
+                if (seriesIndex == 0) {
+                    var route = "{{ path('arauco_pedido_extend_inc', { 'week': "jsWeek" }) }}";
                     window.location = route.replace("jsWeek", pointIndex);
+                }
+                else {
+                    var route = "{{ path('arauco_pedido_extend_com', { 'week': "jsWeek" }) }}";
+                    window.location = route.replace("jsWeek", pointIndex);
+                }
             }
             );
     });
