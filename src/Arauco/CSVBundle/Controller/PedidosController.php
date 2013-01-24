@@ -101,7 +101,7 @@ class PedidosController extends Controller
 
     /**
      * @Route("/pedido/comcpu/{week}", name="arauco_pedido_extend_com_cpu")
-     * @Template("AraucoBaseBundle:Pedido:extend.html.twig")
+     * @Template("AraucoBaseBundle:Pedido:extendCPU.html.twig")
      */
     public function extendcomcpuAction ($week)
     {
@@ -120,85 +120,13 @@ class PedidosController extends Controller
         $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
         $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year));
 
-
+        $status = "CPU";
         $em = $this->getDoctrine()->getManager();
-        $query = $em->createQuery("
-            SELECT
-                P.DocEntrega,
-                P.PosPedido,
-                S.Material,
-                S.Desc_Mat,
-                P.VolPedido,
-                SUM( S.M3 ) as M3
-            FROM
-                AraucoCSVBundle:Pedidos P,
-                AraucoCSVBundle:Stock S
-            WHERE
-                P.DocEntrega = S.Nro_Entrega
-                AND P.PosPedido = S.Pos_Entrega
-                AND P.Eta >='".$start_week."'
-                AND P.Eta <='".$end_week."'
-                AND P.StatusComplete = 'CPU'
-                AND P.StatusMovimientodeMcia = 'A'
-            GROUP BY
-                P.DocEntrega,
-                P.PosPedido
-            ORDER BY
-                P.DocEntrega,
-                P.PosPedido
-                ");
+        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsig($start_week, $end_week, $status);
 
-        $EntregasAsignadas = $query->getResult();
+        $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETA($start_week, $end_week, $status);
 
-        $query2 = $em->createQuery("
-            SELECT
-                P.DocEntrega,
-                P.PosPedido,
-                SUM( S.M3 ) as M3
-            FROM
-                AraucoCSVBundle:Pedidos P,
-                AraucoCSVBundle:Stock S
-            WHERE
-                P.DocEntrega = S.STO_DOCENTREGA_ASI_ETA
-                AND P.PosPedido = S.STO_POSPEDIDO_ASI_ETA
-                AND P.Eta >='".$start_week."'
-                AND P.Eta <='".$end_week."'
-                AND P.StatusComplete = 'CPU'
-                AND P.StatusMovimientodeMcia = 'A'
-            GROUP BY
-                P.DocEntrega,
-                P.PosPedido
-            ORDER BY
-                P.DocEntrega,
-                P.PosPedido
-                ");
-
-        $EntregasETA = $query2->getResult();
-
-        $query3 = $em->createQuery("
-            SELECT
-                P.DocEntrega,
-                P.PosPedido,
-                SUM( S.M3 ) as M3
-            FROM
-                AraucoCSVBundle:Pedidos P,
-                AraucoCSVBundle:Stock S
-            WHERE
-                P.DocEntrega = S.STO_DOCENTREGA_ASI_FPE
-                AND P.PosPedido = S.STO_POSPEDIDO_ASI_FPE
-                AND P.Eta >='".$start_week."'
-                AND P.Eta <='".$end_week."'
-                AND P.StatusComplete = 'CPU'
-                AND P.StatusMovimientodeMcia = 'A'
-            GROUP BY
-                P.DocEntrega,
-                P.PosPedido
-            ORDER BY
-                P.DocEntrega,
-                P.PosPedido
-            ");
-
-        $EntregasFPE = $query3->getResult();
+        $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPE($start_week, $end_week, $status);
 
         $entregasFinal = array();
 
@@ -256,7 +184,7 @@ class PedidosController extends Controller
 
     /**
      * @Route("/pedido/comcpl/{week}", name="arauco_pedido_extend_com_cpl")
-     * @Template("AraucoBaseBundle:Pedido:extend.html.twig")
+     * @Template("AraucoBaseBundle:Pedido:extendCPL.html.twig")
      */
     public function extendcomcplAction ($week)
     {
@@ -275,85 +203,13 @@ class PedidosController extends Controller
         $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
         $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year));
 
-
+        $status = "CPL";
         $em = $this->getDoctrine()->getManager();
-        $query = $em->createQuery("
-            SELECT
-                P.DocEntrega,
-                P.PosPedido,
-                S.Material,
-                S.Desc_Mat,
-                P.VolPedido,
-                SUM( S.M3 ) as M3
-            FROM
-                AraucoCSVBundle:Pedidos P,
-                AraucoCSVBundle:Stock S
-            WHERE
-                P.DocEntrega = S.Nro_Entrega
-                AND P.PosPedido = S.Pos_Entrega
-                AND P.Eta >='".$start_week."'
-                AND P.Eta <='".$end_week."'
-                AND P.StatusComplete = 'CPL'
-                AND P.StatusMovimientodeMcia = 'A'
-            GROUP BY
-                P.DocEntrega,
-                P.PosPedido
-            ORDER BY
-                P.DocEntrega,
-                P.PosPedido
-                ");
+        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsig($start_week, $end_week, $status);
 
-        $EntregasAsignadas = $query->getResult();
+        $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETA($start_week, $end_week, $status);
 
-        $query2 = $em->createQuery("
-            SELECT
-                P.DocEntrega,
-                P.PosPedido,
-                SUM( S.M3 ) as M3
-            FROM
-                AraucoCSVBundle:Pedidos P,
-                AraucoCSVBundle:Stock S
-            WHERE
-                P.DocEntrega = S.STO_DOCENTREGA_ASI_ETA
-                AND P.PosPedido = S.STO_POSPEDIDO_ASI_ETA
-                AND P.Eta >='".$start_week."'
-                AND P.Eta <='".$end_week."'
-                AND P.StatusComplete = 'CPL'
-                AND P.StatusMovimientodeMcia = 'A'
-            GROUP BY
-                P.DocEntrega,
-                P.PosPedido
-            ORDER BY
-                P.DocEntrega,
-                P.PosPedido
-                ");
-
-        $EntregasETA = $query2->getResult();
-
-        $query3 = $em->createQuery("
-            SELECT
-                P.DocEntrega,
-                P.PosPedido,
-                SUM( S.M3 ) as M3
-            FROM
-                AraucoCSVBundle:Pedidos P,
-                AraucoCSVBundle:Stock S
-            WHERE
-                P.DocEntrega = S.STO_DOCENTREGA_ASI_FPE
-                AND P.PosPedido = S.STO_POSPEDIDO_ASI_FPE
-                AND P.Eta >='".$start_week."'
-                AND P.Eta <='".$end_week."'
-                AND P.StatusComplete = 'CPL'
-                AND P.StatusMovimientodeMcia = 'A'
-            GROUP BY
-                P.DocEntrega,
-                P.PosPedido
-            ORDER BY
-                P.DocEntrega,
-                P.PosPedido
-            ");
-
-        $EntregasFPE = $query3->getResult();
+        $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPE($start_week, $end_week, $status);
 
         $entregasFinal = array();
 
@@ -411,7 +267,7 @@ class PedidosController extends Controller
 
     /**
      * @Route("/pedido/inc/{week}", name="arauco_pedido_extend_inc")
-     * @Template("AraucoBaseBundle:Pedido:extend.html.twig")
+     * @Template("AraucoBaseBundle:Pedido:extendINC.html.twig")
      */
     public function extendincAction ($week)
     {
@@ -430,87 +286,13 @@ class PedidosController extends Controller
         $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
         $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year));
 
-
+        $status = "NO";
         $em = $this->getDoctrine()->getManager();
-        $query = $em->createQuery("
-            SELECT
-                P.DocEntrega,
-                P.PosPedido,
-                S.Material,
-                S.Desc_Mat,
-                P.VolPedido,
-                SUM( S.M3 ) as M3
-            FROM
-                AraucoCSVBundle:Pedidos P,
-                AraucoCSVBundle:Stock S
-            WHERE
-                P.DocEntrega = S.Nro_Entrega
-                AND P.PosPedido = S.Pos_Entrega
-                AND P.Eta >='".$start_week."'
-                AND P.Eta <='".$end_week."'
-                AND P.StatusComplete = 'NO'
-                AND P.StatusMovimientodeMcia = 'A'
-            GROUP BY
-                P.DocEntrega,
-                P.PosPedido
-            ORDER BY
-                P.DocEntrega ASC
-                ");
+        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsig($start_week, $end_week, $status);
 
-        $EntregasAsignadas = $query->getResult();
+        $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETA($start_week, $end_week, $status);
 
-        $query2 = $em->createQuery("
-            SELECT
-                P.DocEntrega,
-                P.PosPedido,
-                S.Material,
-                S.Desc_Mat,
-                P.VolPedido,
-                SUM( S.M3 ) as M3
-            FROM
-                AraucoCSVBundle:Pedidos P,
-                AraucoCSVBundle:Stock S
-            WHERE
-                P.DocEntrega = S.STO_DOCENTREGA_ASI_ETA
-                AND P.PosPedido = S.STO_POSPEDIDO_ASI_ETA
-                AND P.Eta >='".$start_week."'
-                AND P.Eta <='".$end_week."'
-                AND P.StatusComplete = 'NO'
-                AND P.StatusMovimientodeMcia = 'A'
-            GROUP BY
-                P.DocEntrega,
-                P.PosPedido
-            ORDER BY
-                P.DocEntrega ASC
-                ");
-
-        $EntregasETA = $query2->getResult();
-
-        $query3 = $em->createQuery("
-            SELECT
-                P.DocEntrega,
-                P.PosPedido,
-                S.Material,
-                S.Desc_Mat,
-                P.VolPedido,
-                SUM( S.M3 ) as M3
-            FROM
-                AraucoCSVBundle:Pedidos P,
-                AraucoCSVBundle:Stock S
-            WHERE
-                P.DocEntrega = S.STO_DOCENTREGA_ASI_FPE
-                AND P.PosPedido = S.STO_POSPEDIDO_ASI_FPE
-                AND P.Eta >='".$start_week."'
-                AND P.Eta <='".$end_week."'
-                AND P.StatusComplete = 'NO'
-                AND P.StatusMovimientodeMcia = 'A'
-            GROUP BY
-                P.DocEntrega,
-                P.PosPedido
-            ORDER BY
-                P.DocEntrega ASC");
-
-        $EntregasFPE = $query3->getResult();
+        $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPE($start_week, $end_week, $status);
 
         $entregasFinal = array();
 
@@ -566,9 +348,93 @@ class PedidosController extends Controller
     }
 
     /**
-     * @Route("/pedido/{week}/csv", name="arauco_pedido_extendcsv")
+     * @Route("/pedido/{week}/comcpu/csv", name="arauco_pedido_extendcsv_comcpu")
      */
-    public function extendcsvAction ($week)
+    public function extendcsvcomcpuAction ($week)
+    {
+        $cantOfWeeks = $week;
+
+        $day = date('d', strtotime("+". $cantOfWeeks." week"));
+        $month = date('m', strtotime("+". $cantOfWeeks." week"));
+        $year = date('Y', strtotime("+". $cantOfWeeks." week"));
+
+        $weekday = date('w', mktime(0,0,0,$month, $day, $year));
+        $sunday  = $day - $weekday;
+
+        $start_week = date('Y-m-d', mktime(0,0,0,$month, $sunday+1, $year));
+        $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year));
+
+        $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
+        $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year));
+
+        $status = "CPU";
+        $em = $this->getDoctrine()->getManager();
+        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsig($start_week, $end_week, $status);
+
+        $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETA($start_week, $end_week, $status);
+
+        $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPE($start_week, $end_week, $status);
+
+        $entregasFinal = array();
+
+        foreach ( $EntregasAsignadas as $entrega ) {
+
+            $docEntrega = $entrega['DocEntrega'];
+            $posPedido = $entrega['PosPedido'];
+            $material = $entrega['Material'];
+            $descripcion = $entrega['Desc_Mat'];
+            $volPedido = $entrega['VolPedido'];
+            $sumaVolAsignado = $entrega['M3'];
+            $sumaVolAsiETA = 0;
+            $sumaVolAsiFPE = 0;
+
+            foreach ( $EntregasETA as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsiETA = $item['M3'];
+                    unset( $EntregasETA[ $docEntrega ] );
+                    break;
+                }
+
+            }
+
+            foreach ( $EntregasFPE as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsiFPE = $item['M3'];
+                    unset( $EntregasFPE[ $docEntrega ] );
+                    break;
+                }
+
+            }
+
+            array_push(
+                $entregasFinal, array(
+                    $docEntrega, $posPedido, $material, $descripcion,
+                    $volPedido, round( $sumaVolAsignado, 3 ),
+                    round( $sumaVolAsiETA, 3 ),
+                    round( $sumaVolAsiFPE, 3 )
+                )
+            );
+
+        }
+
+        $filename = "Pedidos_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
+
+        $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $entregasFinal ));
+
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
+
+        return $response;
+    }
+
+    /**
+     * @Route("/pedido/{week}/comcpl/csv", name="arauco_pedido_extendcsv_comcpl")
+     */
+    public function extendcsvcomcplAction ($week)
     {
         $cantOfWeeks = $week;
 
@@ -585,86 +451,98 @@ class PedidosController extends Controller
         $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
         $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year)); 
 
+        $status = "CPL";
+
         $em = $this->getDoctrine()->getManager();
-        $query = $em->createQuery("
-            SELECT
-                P.DocEntrega,
-                P.PosPedido,
-                S.Material,
-                S.Desc_Mat,
-                P.VolPedido,
-                SUM( S.M3 ) as M3
-            FROM
-                AraucoCSVBundle:Pedidos P,
-                AraucoCSVBundle:Stock S
-            WHERE
-                P.DocEntrega = S.Nro_Entrega
-                AND P.PosPedido = S.Pos_Entrega
-                AND P.Eta >='".$start_week."'
-                AND P.Eta <='".$end_week."'
-                AND P.StatusComplete = 'NO'
-                AND P.StatusMovimientodeMcia = 'A'
-            GROUP BY
-                P.DocEntrega,
-                P.PosPedido
-            ORDER BY
-                P.DocEntrega ASC
-                ");
+        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsig($start_week, $end_week, $status);
 
-        $EntregasAsignadas = $query->getResult();
+        $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETA($start_week, $end_week, $status);
 
-        $query2 = $em->createQuery("
-            SELECT
-                P.DocEntrega,
-                P.PosPedido,
-                S.Material,
-                S.Desc_Mat,
-                P.VolPedido,
-                SUM( S.M3 ) as M3
-            FROM
-                AraucoCSVBundle:Pedidos P,
-                AraucoCSVBundle:Stock S
-            WHERE
-                P.DocEntrega = S.STO_DOCENTREGA_ASI_ETA
-                AND P.PosPedido = S.STO_POSPEDIDO_ASI_ETA
-                AND P.Eta >='".$start_week."'
-                AND P.Eta <='".$end_week."'
-                AND P.StatusComplete = 'NO'
-                AND P.StatusMovimientodeMcia = 'A'
-            GROUP BY
-                P.DocEntrega,
-                P.PosPedido
-            ORDER BY
-                P.DocEntrega ASC
-                ");
+        $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPE($start_week, $end_week, $status);
 
-        $EntregasETA = $query2->getResult();
+        $entregasFinal = array();
 
-        $query3 = $em->createQuery("
-            SELECT
-                P.DocEntrega,
-                P.PosPedido,
-                S.Material,
-                S.Desc_Mat,
-                P.VolPedido,
-                SUM( S.M3 ) as M3
-            FROM
-                AraucoCSVBundle:Pedidos P,
-                AraucoCSVBundle:Stock S
-            WHERE
-                P.DocEntrega = S.STO_DOCENTREGA_ASI_FPE
-                AND P.PosPedido = S.STO_POSPEDIDO_ASI_FPE
-                AND P.Eta >='".$start_week."'
-                AND P.Eta <='".$end_week."'
-                AND P.StatusComplete = 'NO'
-                AND P.StatusMovimientodeMcia = 'A'
-            GROUP BY
-                P.DocEntrega,
-                P.PosPedido
-            ORDER BY
-                P.DocEntrega ASC");
+        foreach ( $EntregasAsignadas as $entrega ) {
 
-        $EntregasFPE = $query3->getResult();
+            $docEntrega = $entrega['DocEntrega'];
+            $posPedido = $entrega['PosPedido'];
+            $material = $entrega['Material'];
+            $descripcion = $entrega['Desc_Mat'];
+            $volPedido = $entrega['VolPedido'];
+            $sumaVolAsignado = $entrega['M3'];
+            $sumaVolAsiETA = 0;
+            $sumaVolAsiFPE = 0;
+
+            foreach ( $EntregasETA as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsiETA = $item['M3'];
+                    unset( $EntregasETA[ $docEntrega ] );
+                    break;
+                }
+
+            }
+
+            foreach ( $EntregasFPE as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsiFPE = $item['M3'];
+                    unset( $EntregasFPE[ $docEntrega ] );
+                    break;
+                }
+
+            }
+
+            array_push(
+                $entregasFinal, array(
+                    $docEntrega, $posPedido, $material, $descripcion,
+                    $volPedido, round( $sumaVolAsignado, 3 ),
+                    round( $sumaVolAsiETA, 3 ),
+                    round( $sumaVolAsiFPE, 3 )
+                )
+            );
+
+        }
+
+        $filename = "Pedidos_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
+
+        $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $entregasFinal ));
+
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
+
+        return $response;
+    }
+
+    /**
+     * @Route("/pedido/{week}/inc/csv", name="arauco_pedido_extendcsv_inc")
+     */
+    public function extendcsvincAction ($week)
+    {
+        $cantOfWeeks = $week;
+
+        $day = date('d', strtotime("+". $cantOfWeeks." week"));
+        $month = date('m', strtotime("+". $cantOfWeeks." week"));
+        $year = date('Y', strtotime("+". $cantOfWeeks." week"));
+
+        $weekday = date('w', mktime(0,0,0,$month, $day, $year));
+        $sunday  = $day - $weekday;
+
+        $start_week = date('Y-m-d', mktime(0,0,0,$month, $sunday+1, $year));
+        $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year));
+
+        $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
+        $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year));
+
+        $status = "NO";
+        $em = $this->getDoctrine()->getManager();
+        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsig($start_week, $end_week, $status);
+
+        $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETA($start_week, $end_week, $status);
+
+        $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPE($start_week, $end_week, $status);
 
         $entregasFinal = array();
 

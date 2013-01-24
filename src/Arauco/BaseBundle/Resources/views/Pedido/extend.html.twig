@@ -18,7 +18,11 @@
   <div class="tab-pane active" id="inicio">
     <div class="hero-unit">
       <legend>Pedidos para semana del {{ sWeek }} al {{ eWeek }}</legend>
-      <a class="text-info" href="{{ path ('arauco_pedido_extendcsv', {'week': week}) }}">Exportar a .csv <i class="icon-download-alt"></i></a>
+
+
+      {% block csv %}
+      {% endblock %}
+
       <br />
       <br />
       <table class="table" id="myTable">

@@ -1,0 +1,6 @@
+{% extends 'AraucoBaseBundle:Pedido:extend.html.twig' %}
+{% block title %} Pedidos -{% endblock %}
+{% block csv %}
+<h2>Pedidos Completos en Planta</h2>
+<a class="text-info" href="{{ path ('arauco_pedido_extendcsv_comcpl', {'week': week}) }}">Exportar a .csv <i class="icon-download-alt"></i></a>
+{% endblock %}

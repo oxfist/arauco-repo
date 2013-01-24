@@ -21,6 +21,90 @@ class PedidosRepository extends EntityRepository
             GROUP By p.Material
             ")->getResult();
     }
+
+    public function findPedidosAsig($startWeek, $endWeek, $status)
+    {
+        return $this->getEntityManager()->createQuery("
+            SELECT
+                P.DocEntrega,
+                P.PosPedido,
+                S.Material,
+                S.Desc_Mat,
+                P.VolPedido,
+                SUM( S.M3 ) as M3
+            FROM
+                AraucoCSVBundle:Pedidos P,
+                AraucoCSVBundle:Stock S
+            WHERE
+                P.DocEntrega = S.Nro_Entrega
+                AND P.PosPedido = S.Pos_Entrega
+                AND P.Eta >='".$startWeek."'
+                AND P.Eta <='".$endWeek."'
+                AND P.StatusComplete = '".$status."'
+                AND P.StatusMovimientodeMcia = 'A'
+            GROUP BY
+                P.DocEntrega,
+                P.PosPedido
+            ORDER BY
+                P.DocEntrega,
+                P.PosPedido")->getResult();
+    }
+
+    public function findPedidosETA($startWeek, $endWeek, $status)
+    {
+        return $this->getEntityManager()->createQuery("
+            SELECT
+                P.DocEntrega,
+                P.PosPedido,
+                S.Material,
+                S.Desc_Mat,
+                P.VolPedido,
+                SUM( S.M3 ) as M3
+            FROM
+                AraucoCSVBundle:Pedidos P,
+                AraucoCSVBundle:Stock S
+            WHERE
+                P.DocEntrega = S.STO_DOCENTREGA_ASI_ETA
+                AND P.PosPedido = S.STO_POSPEDIDO_ASI_ETA
+                AND P.Eta >='".$startWeek."'
+                AND P.Eta <='".$endWeek."'
+                AND P.StatusComplete = '".$status."'
+                AND P.StatusMovimientodeMcia = 'A'
+            GROUP BY
+                P.DocEntrega,
+                P.PosPedido
+            ORDER BY
+                P.DocEntrega,
+                P.PosPedido")->getResult();
+    }
+
+    public function findPedidosFPE($startWeek, $endWeek, $status)
+    {
+        return $this->getEntityManager()->createQuery("
+            SELECT
+                P.DocEntrega,
+                P.PosPedido,
+                S.Material,
+                S.Desc_Mat,
+                P.VolPedido,
+                SUM( S.M3 ) as M3
+            FROM
+                AraucoCSVBundle:Pedidos P,
+                AraucoCSVBundle:Stock S
+            WHERE
+                P.DocEntrega = S.STO_DOCENTREGA_ASI_FPE
+                AND P.PosPedido = S.STO_POSPEDIDO_ASI_FPE
+                AND P.Eta >='".$startWeek."'
+                AND P.Eta <='".$endWeek."'
+                AND P.StatusComplete = '".$status."'
+                AND P.StatusMovimientodeMcia = 'A'
+            GROUP BY
+                P.DocEntrega,
+                P.PosPedido
+            ORDER BY
+                P.DocEntrega,
+                P.PosPedido")->getResult();
+    }
 }
 
 //Total volumen de pedidos por material
