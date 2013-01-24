@@ -98,6 +98,19 @@ class Pedidos
      */
     private $DescripcionMaterial;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="PED_COMPLETABLE_ETA", type="boolean", nullable=true)
+     */
+    private $PED_COMPLETABLE_ETA;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="PED_COMPLETABLE_FPE", type="boolean", nullable=true)
+     */
+    private $PED_COMPLETABLE_FPE;
 
 
     /**
@@ -374,5 +387,51 @@ class Pedidos
     public function getStatusComplete()
     {
         return $this->StatusComplete;
+    }
+
+    /**
+     * Set PED_COMPLETABLE_ETA
+     *
+     * @param boolean $pEDCOMPLETABLEETA
+     * @return Pedidos
+     */
+    public function setPEDCOMPLETABLEETA($pEDCOMPLETABLEETA)
+    {
+        $this->PED_COMPLETABLE_ETA = $pEDCOMPLETABLEETA;
+    
+        return $this;
+    }
+
+    /**
+     * Get PED_COMPLETABLE_ETA
+     *
+     * @return boolean 
+     */
+    public function getPEDCOMPLETABLEETA()
+    {
+        return $this->PED_COMPLETABLE_ETA;
+    }
+
+    /**
+     * Set PED_COMPLETABLE_FPE
+     *
+     * @param boolean $pEDCOMPLETABLEFPE
+     * @return Pedidos
+     */
+    public function setPEDCOMPLETABLEFPE($pEDCOMPLETABLEFPE)
+    {
+        $this->PED_COMPLETABLE_FPE = $pEDCOMPLETABLEFPE;
+    
+        return $this;
+    }
+
+    /**
+     * Get PED_COMPLETABLE_FPE
+     *
+     * @return boolean 
+     */
+    public function getPEDCOMPLETABLEFPE()
+    {
+        return $this->PED_COMPLETABLE_FPE;
     }
 }

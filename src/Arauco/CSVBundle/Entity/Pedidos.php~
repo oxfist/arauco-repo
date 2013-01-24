@@ -98,6 +98,19 @@ class Pedidos
      */
     private $DescripcionMaterial;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="PED_COMPLETABLE_ETA", type="boolean", nullable=true)
+     */
+    private $PED_COMPLETABLE_ETA;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="PED_COMPLETABLE_FPE", type="boolean", nullable=true)
+     */
+    private $PED_COMPLETABLE_FPE;
 
 
     /**
@@ -351,5 +364,28 @@ class Pedidos
     public function getDescripcionMaterial()
     {
         return $this->DescripcionMaterial;
+    }
+
+    /**
+     * Set StatusComplete
+     *
+     * @param string $statusComplete
+     * @return Pedidos
+     */
+    public function setStatusComplete($statusComplete)
+    {
+        $this->StatusComplete = $statusComplete;
+    
+        return $this;
+    }
+
+    /**
+     * Get StatusComplete
+     *
+     * @return string 
+     */
+    public function getStatusComplete()
+    {
+        return $this->StatusComplete;
     }
 }
