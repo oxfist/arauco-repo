@@ -22,13 +22,12 @@
     {% endjavascripts %}
     <script class="code" type="text/javascript">
     $(document).ready(function(){
-            // ARREGLAR CONSULTA PARA s1
-            var s1 = [{{ cantEntregasCompletas [0] }}, {{ cantEntregasCompletas [1] }}, {{ cantEntregasCompletas [2] }}, {{ cantEntregasCompletas [3] }}];
-            var s2 = [{{ cantEntregasCompletables [0] }}, {{ cantEntregasCompletables [1] }}, {{ cantEntregasCompletables [2] }}, {{ cantEntregasCompletables [3] }}];
-            var s3 = [{{ cantEntregasIncompletas [0] }}, {{ cantEntregasIncompletas [1] }}, {{ cantEntregasIncompletas [2] }}, {{ cantEntregasIncompletas [3] }}];
-            plot3 = $.jqplot('chart3', [s2, s3], {
+            var s3 = [{{ cantEntregasCompletasEnPuerto [0] }}, {{ cantEntregasCompletasEnPuerto [1] }}, {{ cantEntregasCompletasEnPuerto [2] }}, {{ cantEntregasCompletasEnPuerto [3] }}];
+            var s2 = [{{ cantEntregasCompletasEnPlanta [0] }}, {{ cantEntregasCompletasEnPlanta [1] }}, {{ cantEntregasCompletasEnPlanta [2] }}, {{ cantEntregasCompletasEnPlanta [3] }}];
+            var s1 = [{{ cantEntregasIncompletas [0] }}, {{ cantEntregasIncompletas [1] }}, {{ cantEntregasIncompletas [2] }}, {{ cantEntregasIncompletas [3] }}];
+            plot3 = $.jqplot('chart3', [s1,s2, s3], {
 
-                    // Tell the plot to stack the bars.
+            // Tell the plot to stack the bars.
             stackSeries: true,
             captureRightClick: true,
             seriesDefaults:{
@@ -58,7 +57,7 @@
             legend: {
                     show: true,
                     location: 'e',
-                    labels: ["Incompletos","Completos"],
+                    labels: ["Completas En Puerto","Completas en Plata", "Incompletas"],
                     placement: 'outside'
             }
             });
@@ -72,8 +71,12 @@
                     var route = "{{ path('arauco_pedido_extend_inc', { 'week': "jsWeek" }) }}";
                     window.location = route.replace("jsWeek", pointIndex);
                 }
+                else if (seriesIndex == 1) {
+                    var route = "{{ path('arauco_pedido_extend_com_cpl', { 'week': "jsWeek" }) }}";
+                    window.location = route.replace("jsWeek", pointIndex);
+                }
                 else {
-                    var route = "{{ path('arauco_pedido_extend_com', { 'week': "jsWeek" }) }}";
+                    var route = "{{ path('arauco_pedido_extend_com_cpu', { 'week': "jsWeek" }) }}";
                     window.location = route.replace("jsWeek", pointIndex);
                 }
             }
@@ -86,16 +89,57 @@
 
 {% block content %}
 <div class="tab-content">
-  {% block body %}
-  <div class="tab-pane active" id="inicio">
-    <div class="hero-unit">
-      <legend>Gráfico de pedidos por semana</legend>
-      <br />
-      <center>
-            <div id="chart3" style="width:800px; height:300px;"></div>
-      </center>
-    </div> <!-- hero-unit -->
-  </div> <!-- tab-pane active -->
-  {% endblock %}
+{% block body %}
+    <div class="tab-pane active" id="inicio">
+        <div class="hero-unit">
+            <legend>Gráfico de pedidos por semana</legend>
+            <br />
+            <center>
+                <div id="chart3" style="width:800px; height:300px;"></div>
+                <table class="table table-striped">
+                <caption>...</caption>
+                <thead>
+                    <tr>
+                        <th><center>Semana</center></th>
+                        <th><center>Completas en Puerto</center></th>
+                        <th><center>Completas en Planta</center></th>
+                        <th><center>Incompletas</center</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><center>1</center></td>
+                        <td><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 0 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 0 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_inc', { 'week': 0 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                    </tr>
+                    <tr>
+                        <td><center>2</center></td>
+                        <td><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 1 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 1 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_inc', { 'week': 1 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                    </tr>
+                    <tr>
+                        <td><center>3</center></td>
+                        <td><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 2 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 2 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_inc', { 'week': 2 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                    </tr>
+                    <tr>
+                        <td><center>4</center></td>
+                        <td><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 3 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 3 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_inc', { 'week': 3 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                    </tr>
+                </tbody>
+                </table>
+            </center>
+            <br />
+            <div class="alert alert-info">
+                <strong>NOTA</strong>: Todas las cantidades mostradas en el gráfico están en m&sup3;.
+            </div>
+        </div> <!-- hero-unit -->
+    </div> <!-- tab-pane active -->
+{% endblock %}
 </div> <!-- tab-content -->
 {% endblock %}
