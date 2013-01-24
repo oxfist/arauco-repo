@@ -87,7 +87,7 @@ class Pedidos
     /**
      * @var string
      *
-     * @ORM\Column(name="StatusComplete", type="string", length=2, nullable=true)
+     * @ORM\Column(name="StatusComplete", type="string", length=3, nullable=true)
      */
     private $StatusComplete;
 

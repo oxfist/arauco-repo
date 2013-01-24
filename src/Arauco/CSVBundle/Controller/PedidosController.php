@@ -44,13 +44,36 @@ class PedidosController extends Controller
                     AND P.PosPedido = S.Pos_Entrega
                     AND P.Eta >='".$start_week."'
                     AND P.Eta <='".$end_week."'
-                    AND P.StatusComplete IS NULL
-                    AND P.StatusMovimientodeMcia != 'A'
+                    AND P.StatusComplete = 'CPU'
+                    AND P.StatusMovimientodeMcia = 'A'
                     ");
 
-            $cantEntregasCompletas[$i] = $query->getSingleScalarResult();
+            $cantEntregasCompletasEnPuerto[$i] = $query->getSingleScalarResult();
+
+            if(!isset($cantEntregasCompletasEnPuerto[$i]))
+                $cantEntregasCompletasEnPuerto[$i] = 0;
 
             $query2 = $em->createQuery("
+                SELECT
+                    SUM( S.M3 ) as M3
+                FROM
+                    AraucoCSVBundle:Pedidos P,
+                    AraucoCSVBundle:Stock S
+                WHERE
+                    P.DocEntrega = S.Nro_Entrega
+                    AND P.PosPedido = S.Pos_Entrega
+                    AND P.Eta >='".$start_week."'
+                    AND P.Eta <='".$end_week."'
+                    AND P.StatusComplete = 'CPL'
+                    AND P.StatusMovimientodeMcia = 'A'
+                    ");
+
+            $cantEntregasCompletasEnPlanta[$i] = $query2->getSingleScalarResult();
+
+            if(!isset($cantEntregasCompletasEnPlanta[$i]))
+                $cantEntregasCompletasEnPlanta[$i] = 0;
+
+            $query3 = $em->createQuery("
                 SELECT
                     SUM( S.M3 ) as M3
                 FROM
@@ -65,38 +88,22 @@ class PedidosController extends Controller
                     AND P.StatusMovimientodeMcia = 'A'
                     ");
 
-            $cantEntregasCompletables[$i] = $query2->getSingleScalarResult();
-
-            $query3 = $em->createQuery("
-                SELECT
-                    SUM( S.M3 ) as M3
-                FROM
-                    AraucoCSVBundle:Pedidos P,
-                    AraucoCSVBundle:Stock S
-                WHERE
-                    P.DocEntrega = S.Nro_Entrega
-                    AND P.PosPedido = S.Pos_Entrega
-                    AND P.Eta >='".$start_week."'
-                    AND P.Eta <='".$end_week."'
-                    AND P.StatusComplete IS NULL
-                    AND P.StatusMovimientodeMcia = 'A'
-                    ");
-
             $cantEntregasIncompletas[$i] = $query3->getSingleScalarResult();
+
         }
 
         return array(
-            'cantEntregasCompletas' => $cantEntregasCompletas,
-            'cantEntregasCompletables' => $cantEntregasCompletables,
+            'cantEntregasCompletasEnPuerto' => $cantEntregasCompletasEnPuerto,
+            'cantEntregasCompletasEnPlanta' => $cantEntregasCompletasEnPlanta,
             'cantEntregasIncompletas' => $cantEntregasIncompletas
             );
     }
 
     /**
-     * @Route("/pedido/com/{week}", name="arauco_pedido_extend_com")
+     * @Route("/pedido/comcpu/{week}", name="arauco_pedido_extend_com_cpu")
      * @Template("AraucoBaseBundle:Pedido:extend.html.twig")
      */
-    public function extendcomAction ($week)
+    public function extendcomcpuAction ($week)
     {
         $cantOfWeeks = $week;
 
@@ -131,7 +138,7 @@ class PedidosController extends Controller
                 AND P.PosPedido = S.Pos_Entrega
                 AND P.Eta >='".$start_week."'
                 AND P.Eta <='".$end_week."'
-                AND P.StatusComplete IS NULL
+                AND P.StatusComplete = 'CPU'
                 AND P.StatusMovimientodeMcia = 'A'
             GROUP BY
                 P.DocEntrega,
@@ -156,7 +163,7 @@ class PedidosController extends Controller
                 AND P.PosPedido = S.STO_POSPEDIDO_ASI_ETA
                 AND P.Eta >='".$start_week."'
                 AND P.Eta <='".$end_week."'
-                AND P.StatusComplete != 'NO'
+                AND P.StatusComplete = 'CPU'
                 AND P.StatusMovimientodeMcia = 'A'
             GROUP BY
                 P.DocEntrega,
@@ -181,7 +188,162 @@ class PedidosController extends Controller
                 AND P.PosPedido = S.STO_POSPEDIDO_ASI_FPE
                 AND P.Eta >='".$start_week."'
                 AND P.Eta <='".$end_week."'
-                AND P.StatusComplete != 'NO'
+                AND P.StatusComplete = 'CPU'
+                AND P.StatusMovimientodeMcia = 'A'
+            GROUP BY
+                P.DocEntrega,
+                P.PosPedido
+            ORDER BY
+                P.DocEntrega,
+                P.PosPedido
+            ");
+
+        $EntregasFPE = $query3->getResult();
+
+        $entregasFinal = array();
+
+        foreach ( $EntregasAsignadas as $item ) {
+
+            $docEntrega = $item['DocEntrega'];
+            $posPedido = $item['PosPedido'];
+            $material = $item['Material'];
+            $descripcion = $item['Desc_Mat'];
+            $volPedido = $item['VolPedido'];
+            $sumaVolAsignado = $item['M3'];
+            $sumaVolAsiETA = 0;
+            $sumaVolAsiFPE = 0;
+
+            foreach ( $EntregasETA as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsiETA = $item['M3'];
+                    unset( $EntregasETA[ $docEntrega ] );
+                    break;
+                }
+
+            }
+
+            foreach ( $EntregasFPE as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsiFPE = $item['M3'];
+                    unset( $EntregasFPE[ $docEntrega ] );
+                    break;
+                }
+
+            }
+
+            array_push(
+                $entregasFinal, array(
+                    $docEntrega, $posPedido, $material, $descripcion,
+                    $volPedido, round( $sumaVolAsignado, 3 ),
+                    round( $sumaVolAsiETA, 3 ),
+                    round( $sumaVolAsiFPE, 3 )
+                )
+            );
+
+        }
+
+        return array(
+            'Entregas' => $entregasFinal,
+            'sWeek' => $sWeek,
+            'eWeek' => $eWeek,
+            'week' => $week
+        );
+    }
+
+    /**
+     * @Route("/pedido/comcpl/{week}", name="arauco_pedido_extend_com_cpl")
+     * @Template("AraucoBaseBundle:Pedido:extend.html.twig")
+     */
+    public function extendcomcplAction ($week)
+    {
+        $cantOfWeeks = $week;
+
+        $day = date('d', strtotime("+". $cantOfWeeks." week"));
+        $month = date('m', strtotime("+". $cantOfWeeks." week"));
+        $year = date('Y', strtotime("+". $cantOfWeeks." week"));
+
+        $weekday = date('w', mktime(0,0,0,$month, $day, $year));
+        $sunday  = $day - $weekday;
+
+        $start_week = date('Y-m-d', mktime(0,0,0,$month, $sunday+1, $year));
+        $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year));
+
+        $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
+        $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year));
+
+
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery("
+            SELECT
+                P.DocEntrega,
+                P.PosPedido,
+                S.Material,
+                S.Desc_Mat,
+                P.VolPedido,
+                SUM( S.M3 ) as M3
+            FROM
+                AraucoCSVBundle:Pedidos P,
+                AraucoCSVBundle:Stock S
+            WHERE
+                P.DocEntrega = S.Nro_Entrega
+                AND P.PosPedido = S.Pos_Entrega
+                AND P.Eta >='".$start_week."'
+                AND P.Eta <='".$end_week."'
+                AND P.StatusComplete = 'CPL'
+                AND P.StatusMovimientodeMcia = 'A'
+            GROUP BY
+                P.DocEntrega,
+                P.PosPedido
+            ORDER BY
+                P.DocEntrega,
+                P.PosPedido
+                ");
+
+        $EntregasAsignadas = $query->getResult();
+
+        $query2 = $em->createQuery("
+            SELECT
+                P.DocEntrega,
+                P.PosPedido,
+                SUM( S.M3 ) as M3
+            FROM
+                AraucoCSVBundle:Pedidos P,
+                AraucoCSVBundle:Stock S
+            WHERE
+                P.DocEntrega = S.STO_DOCENTREGA_ASI_ETA
+                AND P.PosPedido = S.STO_POSPEDIDO_ASI_ETA
+                AND P.Eta >='".$start_week."'
+                AND P.Eta <='".$end_week."'
+                AND P.StatusComplete = 'CPL'
+                AND P.StatusMovimientodeMcia = 'A'
+            GROUP BY
+                P.DocEntrega,
+                P.PosPedido
+            ORDER BY
+                P.DocEntrega,
+                P.PosPedido
+                ");
+
+        $EntregasETA = $query2->getResult();
+
+        $query3 = $em->createQuery("
+            SELECT
+                P.DocEntrega,
+                P.PosPedido,
+                SUM( S.M3 ) as M3
+            FROM
+                AraucoCSVBundle:Pedidos P,
+                AraucoCSVBundle:Stock S
+            WHERE
+                P.DocEntrega = S.STO_DOCENTREGA_ASI_FPE
+                AND P.PosPedido = S.STO_POSPEDIDO_ASI_FPE
+                AND P.Eta >='".$start_week."'
+                AND P.Eta <='".$end_week."'
+                AND P.StatusComplete = 'CPL'
                 AND P.StatusMovimientodeMcia = 'A'
             GROUP BY
                 P.DocEntrega,

@@ -1,13 +1,13 @@
 {% extends '::base.html.twig' %}
 
-{% block title %} Balance de masa -{% endblock %}
+{% block title %} Balance de volumen -{% endblock %}
 
 {% block content %}
 <div class="tab-content">
   {% block body %}
   <div class="tab-pane active" id="inicio">
     <div class="hero-unit">
-      <legend>Balance de Volumen según Stock y Pedidos</legend>
+      <legend>Balance de volumen según Stock y Pedidos</legend>
       <p>Total Balance = 
       {% if totalBalance > 0 %}
       <span class="label label-success">{{ totalBalance }}</span>
