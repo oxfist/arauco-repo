@@ -85,16 +85,40 @@ class PedidosController extends Controller
                     AND P.Eta >='".$start_week."'
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'NO'
+                    AND P.PED_COMPLETABLE_ETA = TRUE
                     AND P.StatusMovimientodeMcia = 'A'
                     ");
 
-            $cantEntregasIncompletas[$i] = $query3->getSingleScalarResult();
+            $cantEntregasCompletables[$i] = $query3->getSingleScalarResult();
+            if(!isset($cantEntregasCompletables[$i]))
+                $cantEntregasCompletables[$i] = 0;
+            $query4 = $em->createQuery("
+                SELECT
+                    SUM( S.M3 ) as M3
+                FROM
+                    AraucoCSVBundle:Pedidos P,
+                    AraucoCSVBundle:Stock S
+                WHERE
+                    P.DocEntrega = S.Nro_Entrega
+                    AND P.PosPedido = S.Pos_Entrega
+                    AND P.Eta >='".$start_week."'
+                    AND P.Eta <='".$end_week."'
+                    AND P.StatusComplete = 'NO'
+                    AND P.PED_COMPLETABLE_ETA = FALSE
+                    AND P.StatusMovimientodeMcia = 'A'
+                    ");
+
+            $cantEntregasIncompletas[$i] = $query4->getSingleScalarResult();
+
+            if(!isset($cantEntregasIncompletas[$i]))
+                $cantEntregasIncompletas[$i] = 0;
 
         }
 
         return array(
             'cantEntregasCompletasEnPuerto' => $cantEntregasCompletasEnPuerto,
             'cantEntregasCompletasEnPlanta' => $cantEntregasCompletasEnPlanta,
+            'cantEntregasCompletables' => $cantEntregasCompletables,
             'cantEntregasIncompletas' => $cantEntregasIncompletas
             );
     }
@@ -266,10 +290,10 @@ class PedidosController extends Controller
     }
 
     /**
-     * @Route("/pedido/inc/{week}", name="arauco_pedido_extend_inc")
+     * @Route("/pedido/complet/eta/{week}", name="arauco_pedido_extend_complet_eta")
      * @Template("AraucoBaseBundle:Pedido:extendINC.html.twig")
      */
-    public function extendincAction ($week)
+    public function extendcompletaAction ($week)
     {
         $cantOfWeeks = $week;
 
@@ -281,18 +305,102 @@ class PedidosController extends Controller
         $sunday  = $day - $weekday;
 
         $start_week = date('Y-m-d', mktime(0,0,0,$month, $sunday+1, $year));
-        $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year)); 
+        $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year));
 
         $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
         $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year));
 
         $status = "NO";
+        $completable = TRUE;
         $em = $this->getDoctrine()->getManager();
-        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsig($start_week, $end_week, $status);
+        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETA($start_week, $end_week, $status, $completable);
 
-        $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETA($start_week, $end_week, $status);
+        $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncETA($start_week, $end_week, $status, $completable);
 
-        $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPE($start_week, $end_week, $status);
+        $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncETA($start_week, $end_week, $status, $completable);
+
+        $entregasFinal = array();
+
+        foreach ( $EntregasAsignadas as $entrega ) {
+
+            $docEntrega = $entrega['DocEntrega'];
+            $posPedido = $entrega['PosPedido'];
+            $material = $entrega['Material'];
+            $descripcion = $entrega['Desc_Mat'];
+            $volPedido = $entrega['VolPedido'];
+            $sumaVolAsignado = $entrega['M3'];
+            $sumaVolAsiETA = 0;
+            $sumaVolAsiFPE = 0;
+
+            foreach ( $EntregasETA as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsiETA = $item['M3'];
+                    unset( $EntregasETA[ $docEntrega ] );
+                    break;
+                }
+
+            }
+
+            foreach ( $EntregasFPE as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsiFPE = $item['M3'];
+                    unset( $EntregasFPE[ $docEntrega ] );
+                    break;
+                }
+
+            }
+
+            array_push(
+                $entregasFinal, array(
+                    $docEntrega, $posPedido, $material, $descripcion,
+                    $volPedido, round( $sumaVolAsignado, 3 ),
+                    round( $sumaVolAsiETA, 3 ),
+                    round( $sumaVolAsiFPE, 3 )
+                )
+            );
+
+        }
+
+        return array(
+            'Entregas' => $entregasFinal,
+            'sWeek' => $sWeek,
+            'eWeek' => $eWeek,
+            'week' => $week);
+    }
+
+    /**
+     * @Route("/pedido/inc/eta/{week}", name="arauco_pedido_extend_inc_eta")
+     * @Template("AraucoBaseBundle:Pedido:extendINC.html.twig")
+     */
+    public function extendincetaAction ($week)
+    {
+        $cantOfWeeks = $week;
+
+        $day = date('d', strtotime("+". $cantOfWeeks." week"));
+        $month = date('m', strtotime("+". $cantOfWeeks." week"));
+        $year = date('Y', strtotime("+". $cantOfWeeks." week"));
+
+        $weekday = date('w', mktime(0,0,0,$month, $day, $year));
+        $sunday  = $day - $weekday;
+
+        $start_week = date('Y-m-d', mktime(0,0,0,$month, $sunday+1, $year));
+        $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year));
+
+        $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
+        $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year));
+
+        $status = "NO";
+        $completable = FALSE;
+        $em = $this->getDoctrine()->getManager();
+        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETA($start_week, $end_week, $status, $completable);
+
+        $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncETA($start_week, $end_week, $status, $completable);
+
+        $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncETA($start_week, $end_week, $status, $completable);
 
         $entregasFinal = array();
 
