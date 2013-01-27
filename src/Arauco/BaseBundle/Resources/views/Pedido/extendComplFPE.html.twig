@@ -1,0 +1,6 @@
+{% extends 'AraucoBaseBundle:Pedido:extend.html.twig' %}
+{% block title %} Pedidos -{% endblock %}
+{% block csv %}
+<h2>Pedidos Completables por FPE</h2>
+<a class="text-info" href="{{ path ('arauco_pedido_extend_complet_fpe_csv', {'week': week}) }}">Exportar a .csv <i class="icon-download-alt"></i></a>
+{% endblock %}

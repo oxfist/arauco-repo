@@ -22,10 +22,17 @@
     {% endjavascripts %}
     <script class="code" type="text/javascript">
     $(document).ready(function(){
-            var s3 = [{{ cantEntregasCompletasEnPuerto [0] }}, {{ cantEntregasCompletasEnPuerto [1] }}, {{ cantEntregasCompletasEnPuerto [2] }}, {{ cantEntregasCompletasEnPuerto [3] }}];
-            var s2 = [{{ cantEntregasCompletasEnPlanta [0] }}, {{ cantEntregasCompletasEnPlanta [1] }}, {{ cantEntregasCompletasEnPlanta [2] }}, {{ cantEntregasCompletasEnPlanta [3] }}];
-            var s1 = [{{ cantEntregasIncompletas [0] }}, {{ cantEntregasIncompletas [1] }}, {{ cantEntregasIncompletas [2] }}, {{ cantEntregasIncompletas [3] }}];
-            plot3 = $.jqplot('chart3', [s1,s2, s3], {
+
+            var s4 = [{{ cantEntregasCompletasEnPuerto [0] }}, {{ cantEntregasCompletasEnPuerto [1] }}, {{ cantEntregasCompletasEnPuerto [2] }}, {{ cantEntregasCompletasEnPuerto [3] }}];
+            var s3 = [{{ cantEntregasCompletasEnPlanta [0] }}, {{ cantEntregasCompletasEnPlanta [1] }}, {{ cantEntregasCompletasEnPlanta [2] }}, {{ cantEntregasCompletasEnPlanta [3] }}];
+
+            var s2 = [{{ cantEntregasCompletablesETA [0] }}, {{ cantEntregasCompletablesETA [1] }}, {{ cantEntregasCompletablesETA [2] }}, {{ cantEntregasCompletablesETA [3] }}];
+            var s1 = [{{ cantEntregasIncompletasETA [0] }}, {{ cantEntregasIncompletasETA [1] }}, {{ cantEntregasIncompletasETA [2] }}, {{ cantEntregasIncompletasETA [3] }}];
+
+            var s21 = [{{ cantEntregasCompletablesFPE [0] }}, {{ cantEntregasCompletablesFPE [1] }}, {{ cantEntregasCompletablesFPE [2] }}, {{ cantEntregasCompletablesFPE [3] }}];
+            var s11 = [{{ cantEntregasIncompletasFPE [0] }}, {{ cantEntregasIncompletasFPE [1] }}, {{ cantEntregasIncompletasFPE [2] }}, {{ cantEntregasIncompletasFPE [3] }}];
+
+            plot3 = $.jqplot('chart3', [s1, s2, s3, s4], {
 
             // Tell the plot to stack the bars.
             stackSeries: true,
@@ -57,21 +64,82 @@
             legend: {
                     show: true,
                     location: 'e',
-                    labels: ["Incompletas","Completas en Plata", "Completas en Puerto"],
+                    labels: ["Incompletos","Completables","Completos en Plata", "Completos en Puerto"],
                     placement: 'outside'
             }
             });
+
+            plot3 = $.jqplot('chart4', [s11, s21, s3, s4], {
+
+            // Tell the plot to stack the bars.
+            stackSeries: true,
+            captureRightClick: true,
+            seriesDefaults:{
+                    renderer:$.jqplot.BarRenderer,
+                    rendererOptions: {
+                            // Put a 30 pixel margin between bars.
+                            barMargin: 30,
+                            barDirection: 'vertical',
+                            // Highlight bars when mouse button pressed.
+                            // Disables default highlighting on mouse over.
+                            highlightMouseDown: true
+                    },
+                    pointLabels: {show: true}
+            },
+            axes: {
+                    xaxis: {
+                            renderer: $.jqplot.CategoryAxisRenderer
+                    },
+                    yaxis: {
+                            // Don't pad out the bottom of the data range.  By default,
+                            // axes scaled as if data extended 10% above and below the
+                            // actual range to prevent data points right on grid boundaries.
+                            // Don't want to do that here.
+                            padMin:0
+                    }
+            },
+            legend: {
+                    show: true,
+                    location: 'e',
+                    labels: ["Incompletos","Completables","Completos en Plata", "Completos en Puerto"],
+                    placement: 'outside'
+            }
+            });
+
             // Bind a listener to the "jqplotDataClick" event.  Here, simply change
             // the text of the info3 element to show what series and ponit were
             // clicked along with the data for that point.
             $('#chart3').bind('jqplotDataClick',
             function (ev, seriesIndex, pointIndex, data) {
-//$('#info3').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);
                 if (seriesIndex == 0) {
-                    var route = "{{ path('arauco_pedido_extend_inc', { 'week': "jsWeek" }) }}";
+                    var route = "{{ path('arauco_pedido_extend_inc_eta', { 'week': "jsWeek" }) }}";
                     window.location = route.replace("jsWeek", pointIndex);
                 }
                 else if (seriesIndex == 1) {
+                    var route = "{{ path('arauco_pedido_extend_complet_eta', { 'week': "jsWeek" }) }}";
+                    window.location = route.replace("jsWeek", pointIndex);
+                }
+                else if (seriesIndex == 2) {
+                    var route = "{{ path('arauco_pedido_extend_com_cpl', { 'week': "jsWeek" }) }}";
+                    window.location = route.replace("jsWeek", pointIndex);
+                }
+                else {
+                    var route = "{{ path('arauco_pedido_extend_com_cpu', { 'week': "jsWeek" }) }}";
+                    window.location = route.replace("jsWeek", pointIndex);
+                }
+            }
+            );
+            $('#chart4').bind('jqplotDataClick',
+            function (ev, seriesIndex, pointIndex, data) {
+                if (seriesIndex == 0) {
+                    var route = "{{ path('arauco_pedido_extend_inc_fpe', { 'week': "jsWeek" }) }}";
+                    window.location = route.replace("jsWeek", pointIndex);
+                }
+                else if (seriesIndex == 1) {
+                    var route = "{{ path('arauco_pedido_extend_complet_fpe', { 'week': "jsWeek" }) }}";
+                    window.location = route.replace("jsWeek", pointIndex);
+                }
+                else if (seriesIndex == 2) {
                     var route = "{{ path('arauco_pedido_extend_com_cpl', { 'week': "jsWeek" }) }}";
                     window.location = route.replace("jsWeek", pointIndex);
                 }
@@ -94,16 +162,17 @@
         <div class="hero-unit">
             <legend>Gráfico de pedidos por semana</legend>
             <br />
+            <h2>Simulación ETA</h2>
             <center>
                 <div id="chart3" style="width:800px; height:300px;"></div>
                 <table class="table table-striped">
-                <caption>...</caption>
                 <thead>
                     <tr>
                         <th><center>Semana</center></th>
-                        <th><center>Completas en Puerto</center></th>
-                        <th><center>Completas en Planta</center></th>
-                        <th><center>Incompletas</center</th>
+                        <th><center>Completos en Puerto</center></th>
+                        <th><center>Completos en Planta</center></th>
+                        <th><center>Completables</center></th>
+                        <th><center>Incompletas</center></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -111,25 +180,75 @@
                         <td><center>1</center></td>
                         <td><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 0 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
                         <td><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 0 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
-                        <td><a href="{{ path('arauco_pedido_extend_inc', { 'week': 0 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_complet_eta', { 'week': 0 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 0 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
                     </tr>
                     <tr>
                         <td><center>2</center></td>
                         <td><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 1 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
                         <td><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 1 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
-                        <td><a href="{{ path('arauco_pedido_extend_inc', { 'week': 1 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_complet_eta', { 'week': 1 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 1 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
                     </tr>
                     <tr>
                         <td><center>3</center></td>
                         <td><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 2 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
                         <td><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 2 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
-                        <td><a href="{{ path('arauco_pedido_extend_inc', { 'week': 2 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_complet_eta', { 'week': 2 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 2 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
                     </tr>
                     <tr>
                         <td><center>4</center></td>
                         <td><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 3 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
                         <td><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 3 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
-                        <td><a href="{{ path('arauco_pedido_extend_inc', { 'week': 3 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_complet_eta', { 'week': 3 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 3 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                    </tr>
+                </tbody>
+                </table>
+            </center>
+            <br />
+            <h2>Simulación FPE</h2>
+            <center>
+            <div id="chart4" style="width:800px; height:300px;"></div>
+                <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th><center>Semana</center></th>
+                        <th><center>Completos en Puerto</center></th>
+                        <th><center>Completos en Planta</center></th>
+                        <th><center>Completables</center></th>
+                        <th><center>Incompletas</center></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><center>1</center></td>
+                        <td><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 0 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 0 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_complet_fpe', { 'week': 0 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 0 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                    </tr>
+                    <tr>
+                        <td><center>2</center></td>
+                        <td><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 1 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 1 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_complet_fpe', { 'week': 1 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 1 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                    </tr>
+                    <tr>
+                        <td><center>3</center></td>
+                        <td><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 2 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 2 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_complet_fpe', { 'week': 2 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 2 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                    </tr>
+                    <tr>
+                        <td><center>4</center></td>
+                        <td><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 3 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 3 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_complet_fpe', { 'week': 3 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
+                        <td><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 3 }) }}"><center><i class="icon-chevron-right"></i></center></a></td>
                     </tr>
                 </tbody>
                 </table>
