@@ -27,12 +27,40 @@ class Stock
     private $Almacen;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="Material", type="float" , nullable=true)
+     */
+    private $Material;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Desc_Mat", type="string", length=255 , nullable=true)
+     */
+    private $Desc_Mat;
+
+    /**
      * @var string
      *
      * @ORM\Id
      * @ORM\Column(name="Lote", type="string" , length=255, nullable=true)
      */
     private $Lote;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="VolLot", type="float" , nullable=true)
+     */
+    private $VolLot;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="VolLotTran", type="float" , nullable=true)
+     */
+    private $VolLotTran;
 
     /**
      * @var float
@@ -61,20 +89,6 @@ class Stock
      * @ORM\Column(name="Status", type="string", length=3 , nullable=true)
      */
     private $Status;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="Material", type="float" , nullable=true)
-     */
-    private $Material;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Desc_Mat", type="string", length=255 , nullable=true)
-     */
-    private $Desc_Mat;
 
 
     /**
