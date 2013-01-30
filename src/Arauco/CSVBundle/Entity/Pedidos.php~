@@ -50,6 +50,13 @@ class Pedidos
     private $VolPedido;
 
     /**
+     * @var smallint
+     *
+     * @ORM\Column(name="PED_UNIDADES_SOLICITADAS", type="smallint", nullable=true)
+     */
+    private $unidadesSolicitadas;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="UMV", type="string", length=2, nullable=true)
@@ -111,7 +118,6 @@ class Pedidos
      * @ORM\Column(name="PED_COMPLETABLE_FPE", type="boolean", nullable=true)
      */
     private $PED_COMPLETABLE_FPE;
-
 
     /**
      * Set Nave
@@ -433,5 +439,28 @@ class Pedidos
     public function getPEDCOMPLETABLEFPE()
     {
         return $this->PED_COMPLETABLE_FPE;
+    }
+
+    /**
+     * Set unidadesSolicitadas
+     *
+     * @param integer $unidadesSolicitadas
+     * @return Pedidos
+     */
+    public function setUnidadesSolicitadas($unidadesSolicitadas)
+    {
+        $this->unidadesSolicitadas = $unidadesSolicitadas;
+    
+        return $this;
+    }
+
+    /**
+     * Get unidadesSolicitadas
+     *
+     * @return integer 
+     */
+    public function getUnidadesSolicitadas()
+    {
+        return $this->unidadesSolicitadas;
     }
 }
