@@ -64,6 +64,20 @@ class Pedidos
     private $unidadesAsignadas;
 
     /**
+     * @var smallint
+     *
+     * @ORM\Column(name="PED_UNIDADES_ASIGNADAS_ETA", type="smallint", nullable=true)
+     */
+    private $unidadesAsignadasETA;
+
+    /**
+     * @var smallint
+     *
+     * @ORM\Column(name="PED_UNIDADES_ASIGNADAS_FPE", type="smallint", nullable=true)
+     */
+    private $unidadesAsignadasFPE;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="UMV", type="string", length=2, nullable=true)
@@ -492,5 +506,51 @@ class Pedidos
     public function getUnidadesAsignadas()
     {
         return $this->unidadesAsignadas;
+    }
+
+    /**
+     * Set unidadesAsignadasETA
+     *
+     * @param integer $unidadesAsignadasETA
+     * @return Pedidos
+     */
+    public function setUnidadesAsignadasETA($unidadesAsignadasETA)
+    {
+        $this->unidadesAsignadasETA = $unidadesAsignadasETA;
+    
+        return $this;
+    }
+
+    /**
+     * Get unidadesAsignadasETA
+     *
+     * @return integer 
+     */
+    public function getUnidadesAsignadasETA()
+    {
+        return $this->unidadesAsignadasETA;
+    }
+
+    /**
+     * Set unidadesAsignadasFPE
+     *
+     * @param integer $unidadesAsignadasFPE
+     * @return Pedidos
+     */
+    public function setUnidadesAsignadasFPE($unidadesAsignadasFPE)
+    {
+        $this->unidadesAsignadasFPE = $unidadesAsignadasFPE;
+    
+        return $this;
+    }
+
+    /**
+     * Get unidadesAsignadasFPE
+     *
+     * @return integer 
+     */
+    public function getUnidadesAsignadasFPE()
+    {
+        return $this->unidadesAsignadasFPE;
     }
 }
