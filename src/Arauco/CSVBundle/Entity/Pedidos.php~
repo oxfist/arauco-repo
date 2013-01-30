@@ -64,6 +64,20 @@ class Pedidos
     private $unidadesAsignadas;
 
     /**
+     * @var smallint
+     *
+     * @ORM\Column(name="PED_UNIDADES_ASIGNADAS_ETA", type="smallint", nullable=true)
+     */
+    private $unidadesAsignadasETA;
+
+    /**
+     * @var smallint
+     *
+     * @ORM\Column(name="PED_UNIDADES_ASIGNADAS_FPE", type="smallint", nullable=true)
+     */
+    private $unidadesAsignadasFPE;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="UMV", type="string", length=2, nullable=true)
