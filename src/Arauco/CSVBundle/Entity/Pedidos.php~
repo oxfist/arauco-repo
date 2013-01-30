@@ -470,27 +470,4 @@ class Pedidos
     {
         return $this->unidadesSolicitadas;
     }
-
-    /**
-     * Set unidadesAsignadas
-     *
-     * @param integer $unidadesAsignadas
-     * @return Pedidos
-     */
-    public function setUnidadesAsignadas($unidadesAsignadas)
-    {
-        $this->unidadesAsignadas = $unidadesAsignadas;
-    
-        return $this;
-    }
-
-    /**
-     * Get unidadesAsignadas
-     *
-     * @return integer 
-     */
-    public function getUnidadesAsignadas()
-    {
-        return $this->unidadesAsignadas;
-    }
 }
