@@ -51,6 +51,20 @@ class Stock
     /**
      * @var float
      *
+     * @ORM\Column(name="VolLot", type="float" , nullable=true)
+     */
+    private $VolLot;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="VolLotTran", type="float" , nullable=true)
+     */
+    private $VolLotTran;
+
+    /**
+     * @var float
+     *
      * @ORM\Column(name="M3", type="float" , nullable=true)
      */
     private $M3;
@@ -463,5 +477,51 @@ class Stock
     public function getSTOPOSPEDIDOASIFPE()
     {
         return $this->STO_POSPEDIDO_ASI_FPE;
+    }
+
+    /**
+     * Set VolLot
+     *
+     * @param float $volLot
+     * @return Stock
+     */
+    public function setVolLot($volLot)
+    {
+        $this->VolLot = $volLot;
+    
+        return $this;
+    }
+
+    /**
+     * Get VolLot
+     *
+     * @return float 
+     */
+    public function getVolLot()
+    {
+        return $this->VolLot;
+    }
+
+    /**
+     * Set VolLotTran
+     *
+     * @param float $volLotTran
+     * @return Stock
+     */
+    public function setVolLotTran($volLotTran)
+    {
+        $this->VolLotTran = $volLotTran;
+    
+        return $this;
+    }
+
+    /**
+     * Get VolLotTran
+     *
+     * @return float 
+     */
+    public function getVolLotTran()
+    {
+        return $this->VolLotTran;
     }
 }
