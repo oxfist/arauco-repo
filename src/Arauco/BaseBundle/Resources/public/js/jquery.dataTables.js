@@ -9225,7 +9225,7 @@
 				 *      } );
 				 *    } );
 				 */
-				"sNext": "Siguiente",
+				"sNext": "Sig.",
 			
 			
 				/**
@@ -9246,7 +9246,7 @@
 				 *      } );
 				 *    } );
 				 */
-				"sPrevious": "Anterior"
+				"sPrevious": "Ant."
 			},
 		
 			/**

@@ -1,4 +1,5 @@
-Lote, Centro, Almacen, M3
+{% set point = '.' %}
+Lote;Centro;Almacen;M3
 {% for row in data %}
-{{ row.Lote }},{{ row.Centro }},{{ row.Almacen }},{{ row.M3 }}
+{{ row.Lote }};{{ row.Centro }};{{ row.Almacen }};{{ row.M3|replace({ (point) : ','})|trim  }}
 {% endfor %}

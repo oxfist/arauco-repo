@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Pedidos
  *
- * @ORM\Table()
+ * @ORM\Table(name="Pedidos")
  * @ORM\Entity(repositoryClass="Arauco\CSVBundle\Entity\Repository\PedidosRepository")
  */
 class Pedidos
@@ -64,20 +64,6 @@ class Pedidos
     private $unidadesAsignadas;
 
     /**
-     * @var smallint
-     *
-     * @ORM\Column(name="PED_UNIDADES_ASIGNADAS_ETA", type="smallint", nullable=true)
-     */
-    private $unidadesAsignadasETA;
-
-    /**
-     * @var smallint
-     *
-     * @ORM\Column(name="PED_UNIDADES_ASIGNADAS_FPE", type="smallint", nullable=true)
-     */
-    private $unidadesAsignadasFPE;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="UMV", type="string", length=2, nullable=true)
@@ -127,6 +113,14 @@ class Pedidos
     private $DescripcionMaterial;
 
     /**
+     * @var integer unsigned
+     *
+     * @ORM\Id
+     * @ORM\Column(name="PosOrdenFac", type="integer", nullable=false)
+     */
+    private $PosOrdenFac;
+
+    /**
      * @var boolean
      *
      * @ORM\Column(name="PED_COMPLETABLE_ETA", type="boolean", nullable=true)
@@ -139,6 +133,14 @@ class Pedidos
      * @ORM\Column(name="PED_COMPLETABLE_FPE", type="boolean", nullable=true)
      */
     private $PED_COMPLETABLE_FPE;
+    
+    /**
+     * @var integer unsigned
+     *
+     * @ORM\Column(name="OrgVenta", type="integer", nullable=false)
+     */
+    private $OrgVenta;
+
 
     /**
      * Set Nave
@@ -253,6 +255,52 @@ class Pedidos
     public function getVolPedido()
     {
         return $this->VolPedido;
+    }
+
+    /**
+     * Set unidadesSolicitadas
+     *
+     * @param integer $unidadesSolicitadas
+     * @return Pedidos
+     */
+    public function setUnidadesSolicitadas($unidadesSolicitadas)
+    {
+        $this->unidadesSolicitadas = $unidadesSolicitadas;
+    
+        return $this;
+    }
+
+    /**
+     * Get unidadesSolicitadas
+     *
+     * @return integer 
+     */
+    public function getUnidadesSolicitadas()
+    {
+        return $this->unidadesSolicitadas;
+    }
+
+    /**
+     * Set unidadesAsignadas
+     *
+     * @param integer $unidadesAsignadas
+     * @return Pedidos
+     */
+    public function setUnidadesAsignadas($unidadesAsignadas)
+    {
+        $this->unidadesAsignadas = $unidadesAsignadas;
+    
+        return $this;
+    }
+
+    /**
+     * Get unidadesAsignadas
+     *
+     * @return integer 
+     */
+    public function getUnidadesAsignadas()
+    {
+        return $this->unidadesAsignadas;
     }
 
     /**
@@ -371,29 +419,6 @@ class Pedidos
     }
 
     /**
-     * Set DescripcionMaterial
-     *
-     * @param string $descripcionMaterial
-     * @return Pedidos
-     */
-    public function setDescripcionMaterial($descripcionMaterial)
-    {
-        $this->DescripcionMaterial = $descripcionMaterial;
-    
-        return $this;
-    }
-
-    /**
-     * Get DescripcionMaterial
-     *
-     * @return string 
-     */
-    public function getDescripcionMaterial()
-    {
-        return $this->DescripcionMaterial;
-    }
-
-    /**
      * Set StatusComplete
      *
      * @param string $statusComplete
@@ -414,6 +439,29 @@ class Pedidos
     public function getStatusComplete()
     {
         return $this->StatusComplete;
+    }
+
+    /**
+     * Set DescripcionMaterial
+     *
+     * @param string $descripcionMaterial
+     * @return Pedidos
+     */
+    public function setDescripcionMaterial($descripcionMaterial)
+    {
+        $this->DescripcionMaterial = $descripcionMaterial;
+    
+        return $this;
+    }
+
+    /**
+     * Get DescripcionMaterial
+     *
+     * @return string 
+     */
+    public function getDescripcionMaterial()
+    {
+        return $this->DescripcionMaterial;
     }
 
     /**
@@ -463,48 +511,48 @@ class Pedidos
     }
 
     /**
-     * Set unidadesSolicitadas
+     * Set PosOrdenFac
      *
-     * @param integer $unidadesSolicitadas
+     * @param integer $posOrdenFac
      * @return Pedidos
      */
-    public function setUnidadesSolicitadas($unidadesSolicitadas)
+    public function setPosOrdenFac($posOrdenFac)
     {
-        $this->unidadesSolicitadas = $unidadesSolicitadas;
+        $this->PosOrdenFac = $posOrdenFac;
     
         return $this;
     }
 
     /**
-     * Get unidadesSolicitadas
+     * Get PosOrdenFac
      *
      * @return integer 
      */
-    public function getUnidadesSolicitadas()
+    public function getPosOrdenFac()
     {
-        return $this->unidadesSolicitadas;
+        return $this->PosOrdenFac;
     }
 
     /**
-     * Set unidadesAsignadas
+     * Set OrgVenta
      *
-     * @param integer $unidadesAsignadas
+     * @param integer $orgVenta
      * @return Pedidos
      */
-    public function setUnidadesAsignadas($unidadesAsignadas)
+    public function setOrgVenta($orgVenta)
     {
-        $this->unidadesAsignadas = $unidadesAsignadas;
+        $this->OrgVenta = $orgVenta;
     
         return $this;
     }
 
     /**
-     * Get unidadesAsignadas
+     * Get OrgVenta
      *
      * @return integer 
      */
-    public function getUnidadesAsignadas()
+    public function getOrgVenta()
     {
-        return $this->unidadesAsignadas;
+        return $this->OrgVenta;
     }
 }

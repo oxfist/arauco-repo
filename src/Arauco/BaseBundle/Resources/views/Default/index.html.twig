@@ -6,12 +6,38 @@
   <div class="tab-pane active" id="inicio">
     <div class="hero-unit">
       {% block titulo %}
-      <h2>Arauco y Constitución S.A.</h2>
+      <h2>Bienvenido</h2>
       {% endblock %}
+      <p align="justify">En este sistema le brindamos acceso a datos sobre el <strong>stock disponible</strong> y a informaci&oacute;n y gr&aacute;ficos acerca del <strong>estado de avance de los pedidos</strong>. Adem&aacute;s, realizamos una <strong>simulaci&oacute;n con los criterios ETA y FPE</strong> para la asignaci&oacute;n de lotes disponibles. Finalmente, ponemos a disposici&oacute;n un <strong>balance por material</strong>, tanto asignados como disponibles.</p><br />
+    <div align="right">
+      <h4>Arauco y Constituci&oacute;n S.A.</h4>
       <h4><i>Sembremos futuro</i></h4>
-      <p>Home</p>
-      </br>
+    </div>
+    <strong>Última actualización:</strong> {{ update }}
     </div> <!-- hero-unit -->
+<div class="row">
+        <div class="span4">
+          <center><h2>Stock disponible</h2></center>
+          <p align="justify">Detalle de todos los lotes que actualmente no se encuentran asignados a alguna venta. </p>
+      </br>
+          <center><p ><a class="btn btn-success" href="{{ path('arauco_stock_index') }}">Ir &raquo;</a></p></center>
+        </div><!-- /.span4 -->
+        <div class="span4">
+
+          <center> <h2>Pedidos</h2></center>
+         <p align="justify">Gr&aacute;ficos con estados de avance de los pedidos y simulación con criterio de ETA y FPE para asignación de lotes disponibles.</p>
+      </br>
+          <center><p><a class="btn btn-success" href="{{ path('arauco_pedido_index') }}">Ir &raquo;</a></p></center>
+        </div><!-- /.span4 -->
+        <div class="span4">
+
+          <center> <h2>Balance de volumen</h2></center>
+            <p align="justify">Balance por material del volumen disponible y asignado.</p>
+      </br>
+          <center><p><a class="btn btn-success" href="{{ path('arauco_balance_index') }}">Ir &raquo;</a></p>
+        </div><!-- /.span4 -->
+      </div><!-- /.row -->
+      </br>
   </div> <!-- tab-pane active -->
   {% endblock %}
 </div> <!-- tab-content -->

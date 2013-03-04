@@ -17,24 +17,24 @@
       <table class="table" id="myTable">
         <thead>
           <tr>
-            <th>Lote</th>
             <th>Material</th>
             <th>Descripción</th>
+            <th>Volumen Disponible</th>
           </tr>
         </thead>
         <tbody>
           {% for material in stocksa %}
           <tr>
-            <th>{{ material.Lote }}</th>
             <th>{{ material.Material }}</th>
             <th>{{ material.Desc_Mat }}</th>
+            <th><a href="{{ path('arauco_stock_extend', {'id': material.Material }) }}">{{ material.tm3 | number_format(2) }}</a></th>
           </tr>
           {% endfor %}
         </tbody>
       </table>
       <br />
       <div class="alert alert-info">
-        <strong>NOTA</strong>: Todas las cantidades mostradas en la tabla están en m&sup3;.
+        <strong>NOTA</strong>: Todos los Lotes mostrados en esta página están en Almacen 100 y todas las cantidades mostradas en la tabla están en m&sup3;.
       </div>
     </div> <!-- hero-unit -->
   </div> <!-- tab-pane active -->

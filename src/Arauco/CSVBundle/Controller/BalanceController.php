@@ -22,38 +22,68 @@ class BalanceController extends Controller
         $pedidos = $em->getRepository('AraucoCSVBundle:Pedidos')
                 ->findAllTotalPedidos();
 
+        $totalBalance = 0;
+        $totalStock = 0;
+        $totalPedidos = 0;
+
         $total = array();
 
-        foreach ($stock as $item) {
-            $material = $item['Material'];
-            $descMaterial = $item['Desc_Mat'];
-            $stock = $item['Suma'];
-            $totalPedidosPorMaterial = NULL;
-            $balance = NULL;
-            $totalBalance = 0;
-            $totalStock = 0;
-            $totalPedidos = 0;
+        foreach ($pedidos as $item) {
 
-            foreach ($pedidos as $pedido) {
-                if ( $pedido['Material'] == $material ) {
-                    $totalPedidosPorMaterial = $pedido['Suma'];
-                    $balance = $stock - $totalPedidosPorMaterial;
+            $material = $item['Material'];
+            $descMaterial = $item['DescripcionMaterial'];
+            $totalPedidosPorMaterial = $item['Suma'];
+            $balance = NULL;
+            $stockMaterial = NULL;
+
+            foreach ($stock as $stockCurrent) {
+                if ( $stockCurrent['Material'] == $material ) {
+                    $stockMaterial = $stockCurrent['Suma'];
+                    $balance = $stockMaterial - $totalPedidosPorMaterial;
                     unset( $pedidos[$material] );
                     break;
                 }
             }
 
-            if ( !$totalPedidosPorMaterial ) {
-                $totalPedidosPorMaterial = 0;
-                $balance = $stock;
+            if ( !$stockMaterial ) {
+                $stockMaterial = 0;
+                $balance = $totalPedidosPorMaterial * -1;
             }
 
-            array_push(
+array_push(
                     $total, array(
-                        $material, $descMaterial, round( $stock, 3 ),
-                        round( $totalPedidosPorMaterial, 3 ), round( $balance, 3 )
+                        $material, $descMaterial, round( $stockMaterial, 3 ),
+                        round($totalPedidosPorMaterial, 3) , round( $balance, 3 )
                         )
                     );
+
+
+        }
+
+        foreach ($stock as $item) {
+            $material = $item['Material'];
+            $descMaterial = $item['Desc_Mat'];
+            $stockMaterial = $item['Suma'];
+            $flag = NULL;
+            $balance = NULL;
+
+            foreach ($pedidos as $pedidoCurrent) {
+                if ( $pedidoCurrent['Material'] == $material ) {
+                    $flag = 1;
+                    break;
+                }
+            }
+
+            if ( !$flag ) {
+                $balance = $stockMaterial;
+                array_push(
+                    $total, array(
+                        $material, $descMaterial, round( $stockMaterial, 3 ),
+                        0 , round( $balance, 3 )
+                        )
+                    );
+            }
+
         }
 
         foreach ( $total as $item ) {
@@ -85,36 +115,62 @@ class BalanceController extends Controller
 
         $total = array();
 
-        foreach ($stock as $item) {
-            $material = $item['Material'];
-            $descMaterial = $item['Desc_Mat'];
-            $stock = $item['Suma'];
-            $totalPedidosPorMaterial = NULL;
-            $balance = NULL;
-            $totalBalance = 0;
-            $totalStock = 0;
-            $totalPedidos = 0;
+                foreach ($pedidos as $item) {
 
-            foreach ($pedidos as $pedido) {
-                if ( $pedido['Material'] == $material ) {
-                    $totalPedidosPorMaterial = $pedido['Suma'];
-                    $balance = $stock - $totalPedidosPorMaterial;
+            $material = $item['Material'];
+            $descMaterial = $item['DescripcionMaterial'];
+            $totalPedidosPorMaterial = $item['Suma'];
+            $balance = NULL;
+            $stockMaterial = NULL;
+
+            foreach ($stock as $stockCurrent) {
+                if ( $stockCurrent['Material'] == $material ) {
+                    $stockMaterial = $stockCurrent['Suma'];
+                    $balance = $stockMaterial - $totalPedidosPorMaterial;
                     unset( $pedidos[$material] );
                     break;
                 }
             }
 
-            if ( !$totalPedidosPorMaterial ) {
-                $totalPedidosPorMaterial = 0;
-                $balance = $stock;
+            if ( !$stockMaterial ) {
+                $stockMaterial = 0;
+                $balance = $totalPedidosPorMaterial * -1;
             }
 
-            array_push(
+array_push(
                     $total, array(
-                        $material, $descMaterial, round( $stock, 3 ),
-                        round( $totalPedidosPorMaterial, 3 ), round( $balance, 3 )
+                        $material, $descMaterial, round( $stockMaterial, 3 ),
+                        round($totalPedidosPorMaterial, 3) , round( $balance, 3 )
                         )
                     );
+
+
+        }
+
+        foreach ($stock as $item) {
+            $material = $item['Material'];
+            $descMaterial = $item['Desc_Mat'];
+            $stockMaterial = $item['Suma'];
+            $flag = NULL;
+            $balance = NULL;
+
+            foreach ($pedidos as $pedidoCurrent) {
+                if ( $pedidoCurrent['Material'] == $material ) {
+                    $flag = 1;
+                    break;
+                }
+            }
+
+            if ( !$flag ) {
+                $balance = $stockMaterial;
+                array_push(
+                    $total, array(
+                        $material, $descMaterial, round( $stockMaterial, 3 ),
+                        0 , round( $balance, 3 )
+                        )
+                    );
+            }
+
         }
 
         foreach ( $total as $item ) {

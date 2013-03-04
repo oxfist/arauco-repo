@@ -22,15 +22,16 @@ class StockController extends Controller
     	$query = $em->createQuery(
                 "SELECT COUNT ( S.Lote )
                 FROM AraucoCSVBundle:Stock S
-                WHERE S.Status <> 'A'"
+                WHERE S.Status = ''"
                 );
 
         $total = $query->getSingleScalarResult ( );
 
         $query = $em->createQuery(
-                "SELECT S.Lote, S.Material, S.Desc_Mat
+                "SELECT S.Material, S.Desc_Mat, SUM(S.M3) as tm3
                 FROM AraucoCSVBundle:Stock S
-                WHERE S.Status <> 'A'"
+                WHERE S.Status = ''
+			GROUP BY S.Material"
                 );
 
         $StockSinAsignar = $query->getResult();
@@ -47,7 +48,7 @@ class StockController extends Controller
     {
     	$em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
-                "SELECT S.Lote, S.Desc_Mat, S.Centro, S.Almacen, S.M3
+                "SELECT S.Material, S.Desc_Mat, S.Lote, S.Centro, S.Almacen, S.M3
                 FROM AraucoCSVBundle:Stock S
                 WHERE S.Material = ".$id." AND S.Status <> 'A'"
                 );
@@ -64,9 +65,10 @@ class StockController extends Controller
 
     	$em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
-                "SELECT S.Lote, S.Material, S.Desc_Mat
+                "SELECT S.Material, S.Desc_Mat, SUM(S.M3) as tm3
                 FROM AraucoCSVBundle:Stock S
-                WHERE S.Status <> 'A'"
+                WHERE S.Status = ''
+			GROUP BY S.Material"
                 );
         $data = $query->getResult();
 
@@ -89,7 +91,7 @@ class StockController extends Controller
         $query = $em->createQuery(
                 "SELECT S.Lote, S.Centro, S.Almacen, S.M3
                 FROM AraucoCSVBundle:Stock S
-                WHERE S.Material = ".$id." AND S.Status <> 'A'"
+                WHERE S.Material = ".$id." AND S.Status = ''"
                 );
         $data = $query->getResult();
 

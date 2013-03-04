@@ -1,4 +1,5 @@
-Código,Material,Stock, Total pedidos, Balance
+{% set point = '.' %}
+Codigo;Material;Stock;Total Pedidos;Balance
 {% for materialStock in data %}
-{{ materialStock.0 }},"{{ materialStock.1 }}",{{ materialStock.2 }},{{ materialStock.3 }},{{ materialStock.4}}
+{{ materialStock.0 }};"{{ materialStock.1|raw }}";{{ materialStock.2|replace({ (point) : ','})|trim }};{{ materialStock.3|replace({ (point) : ','})|raw }};{{ materialStock.4|replace({ (point): ','})|trim }}
 {% endfor %}

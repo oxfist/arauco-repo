@@ -18,7 +18,7 @@ class PedidosController extends Controller
      */
     public function importAction ()
     {
-        for ($i = 0; $i < 4; $i++) {
+        for ($i = 0; $i < 8; $i++) {
             $cantOfWeeks = $i;
 
             $day = date('d', strtotime("+". $cantOfWeeks." week"));
@@ -32,90 +32,78 @@ class PedidosController extends Controller
             $end_week   = date('Ymd', mktime(0,0,0,$month, $sunday+7, $year));
 
             $em = $this->getDoctrine()->getManager();
-
+//////////
             $query = $em->createQuery("
                 SELECT
-                    SUM( S.M3 ) as M3
+                    SUM( P.VolPedido ) as M3
                 FROM
-                    AraucoCSVBundle:Pedidos P,
-                    AraucoCSVBundle:Stock S
+                    AraucoCSVBundle:Pedidos P
                 WHERE
-                    P.DocEntrega = S.Nro_Entrega
-                    AND P.PosPedido = S.Pos_Entrega
-                    AND P.Eta >='".$start_week."'
+                    P.Eta >='".$start_week."'
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'CPU'
                     AND P.StatusMovimientodeMcia = 'A'
                     ");
 
-            $cantEntregasCompletasEnPuerto[$i] = $query->getSingleScalarResult();
+            $cantEntregasCompletasEnPuerto[$i] = round($query->getSingleScalarResult()/1000,3);
 
             if(!isset($cantEntregasCompletasEnPuerto[$i]))
                 $cantEntregasCompletasEnPuerto[$i] = 0;
-
+//////////
             $query2 = $em->createQuery("
                 SELECT
-                    SUM( S.M3 ) as M3
+                    SUM( P.VolPedido ) as M3
                 FROM
-                    AraucoCSVBundle:Pedidos P,
-                    AraucoCSVBundle:Stock S
+                    AraucoCSVBundle:Pedidos P
                 WHERE
-                    P.DocEntrega = S.Nro_Entrega
-                    AND P.PosPedido = S.Pos_Entrega
-                    AND P.Eta >='".$start_week."'
+                    P.Eta >='".$start_week."'
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'CPL'
                     AND P.StatusMovimientodeMcia = 'A'
                     ");
 
-            $cantEntregasCompletasEnPlanta[$i] = $query2->getSingleScalarResult();
+            $cantEntregasCompletasEnPlanta[$i] = round($query2->getSingleScalarResult()/1000,3);
 
             if(!isset($cantEntregasCompletasEnPlanta[$i]))
                 $cantEntregasCompletasEnPlanta[$i] = 0;
-
+//////////
             $query3 = $em->createQuery("
                 SELECT
-                    SUM( S.M3 ) as M3
+                    SUM( P.VolPedido ) as M3
                 FROM
-                    AraucoCSVBundle:Pedidos P,
-                    AraucoCSVBundle:Stock S
+                    AraucoCSVBundle:Pedidos P
                 WHERE
-                    P.DocEntrega = S.Nro_Entrega
-                    AND P.PosPedido = S.Pos_Entrega
-                    AND P.Eta >='".$start_week."'
+                    P.Eta >='".$start_week."'
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_ETA = TRUE
                     AND P.StatusMovimientodeMcia = 'A'
                     ");
 
-            $cantEntregasCompletablesETA[$i] = $query3->getSingleScalarResult();
+            $cantEntregasCompletablesETA[$i] = round($query3->getSingleScalarResult()/1000,3);
 
             if(!isset($cantEntregasCompletablesETA[$i]))
                 $cantEntregasCompletablesETA[$i] = 0;
-
+//////////
             $query31 = $em->createQuery("
                 SELECT
-                    SUM( S.M3 ) as M3
+                    SUM( P.VolPedido ) as M3
                 FROM
-                    AraucoCSVBundle:Pedidos P,
-                    AraucoCSVBundle:Stock S
+                    AraucoCSVBundle:Pedidos P
                 WHERE
-                    P.DocEntrega = S.Nro_Entrega
-                    AND P.PosPedido = S.Pos_Entrega
-                    AND P.Eta >='".$start_week."'
+                    P.Eta >='".$start_week."'
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_FPE = TRUE
                     AND P.StatusMovimientodeMcia = 'A'
                     ");
 
-            $cantEntregasCompletablesFPE[$i] = $query31->getSingleScalarResult();
+            $cantEntregasCompletablesFPE[$i] = round($query31->getSingleScalarResult()/1000,3);
 
             if(!isset($cantEntregasCompletablesFPE[$i]))
                 $cantEntregasCompletablesFPE[$i] = 0;
-
-            $query4 = $em->createQuery("
+//////////
+            $query41 = $em->createQuery("
                 SELECT
                     SUM( S.M3 ) as M3
                 FROM
@@ -131,12 +119,32 @@ class PedidosController extends Controller
                     AND P.StatusMovimientodeMcia = 'A'
                     ");
 
-            $cantEntregasIncompletasETA[$i] = $query4->getSingleScalarResult();
+            $cantCompletadeEntregasIncompletasETA[$i] = round($query41->getSingleScalarResult()/1000,3);
 
-            if(!isset($cantEntregasIncompletasETA[$i]))
-                $cantEntregasIncompletasETA[$i] = 0;
+            if(!isset($cantCompletadeEntregasIncompletasETA[$i]))
+                $cantCompletadeEntregasIncompletasETA[$i] = 0;
+//////////
+            $query42 = $em->createQuery("
+                SELECT
+                    SUM( P.VolPedido ) as M3
+                FROM
+                    AraucoCSVBundle:Pedidos P
+                WHERE
+                    P.Eta >='".$start_week."'
+                    AND P.Eta <='".$end_week."'
+                    AND P.StatusComplete = 'NO'
+                    AND P.PED_COMPLETABLE_ETA = FALSE
+                    AND P.StatusMovimientodeMcia = 'A'
+                    ");
 
-            $query41 = $em->createQuery("
+            $cantIncompletadeEntregasIncompletasETA[$i] = round($query42->getSingleScalarResult()/1000,3);
+
+            if(!isset($cantIncompletadeEntregasIncompletasETA[$i]))
+                $cantIncompletadeEntregasIncompletasETA[$i] = 0;
+             else
+                $cantIncompletadeEntregasIncompletasETA[$i] = $cantIncompletadeEntregasIncompletasETA[$i] - $cantCompletadeEntregasIncompletasETA[$i];
+//////////            
+            $query51 = $em->createQuery("
                 SELECT
                     SUM( S.M3 ) as M3
                 FROM
@@ -151,12 +159,33 @@ class PedidosController extends Controller
                     AND P.PED_COMPLETABLE_FPE = FALSE
                     AND P.StatusMovimientodeMcia = 'A'
                     ");
+            
+            $cantCompletadeEntregasIncompletasFPE[$i] = round($query51->getSingleScalarResult()/1000,3);
+                               
+            if(!isset($cantCompletadeEntregasIncompletasFPE[$i]))
+                $cantCompletadeEntregasIncompletasFPE[$i] = 0;
+//////////
+            $query52 = $em->createQuery("
+                SELECT
+                    SUM( P.VolPedido ) as M3
+                FROM
+                    AraucoCSVBundle:Pedidos P
+                WHERE
+                    P.Eta >='".$start_week."'
+                    AND P.Eta <='".$end_week."'
+                    AND P.StatusComplete = 'NO'
+                    AND P.PED_COMPLETABLE_FPE = FALSE
+                    AND P.StatusMovimientodeMcia = 'A'
+                    ");
 
-            $cantEntregasIncompletasFPE[$i] = $query41->getSingleScalarResult();
-
-            if(!isset($cantEntregasIncompletasFPE[$i]))
-                $cantEntregasIncompletasFPE[$i] = 0;
-
+            $cantIncompletadeEntregasIncompletasFPE[$i] = round($query52->getSingleScalarResult()/1000,3);
+                               
+            if(!isset($cantIncompletadeEntregasIncompletasFPE[$i]))
+                $cantIncompletadeEntregasIncompletasFPE[$i] = 0;
+            else
+                $cantIncompletadeEntregasIncompletasFPE[$i] = $cantIncompletadeEntregasIncompletasFPE[$i] - $cantCompletadeEntregasIncompletasFPE[$i];
+//////////
+            
         }
 
         return array(
@@ -164,11 +193,406 @@ class PedidosController extends Controller
             'cantEntregasCompletasEnPlanta' => $cantEntregasCompletasEnPlanta,
             'cantEntregasCompletablesETA' => $cantEntregasCompletablesETA,
             'cantEntregasCompletablesFPE' => $cantEntregasCompletablesFPE,
-            'cantEntregasIncompletasETA' => $cantEntregasIncompletasETA,
-            'cantEntregasIncompletasFPE' => $cantEntregasIncompletasFPE
+            'cantCompletadeEntregasIncompletasETA' => $cantCompletadeEntregasIncompletasETA,
+            'cantCompletadeEntregasIncompletasFPE' => $cantCompletadeEntregasIncompletasFPE,
+            'cantIncompletadeEntregasIncompletasETA' => $cantIncompletadeEntregasIncompletasETA,
+            'cantIncompletadeEntregasIncompletasFPE' => $cantIncompletadeEntregasIncompletasFPE
             );
     }
+     /**
+     * @Route("/pedido/pasa", name="arauco_pedido_index_pasa")
+     * @Template("AraucoBaseBundle:Pedido:pasa.html.twig")
+     */
+    public function importpasaAction ()
+    {
+        for ($i = 0; $i < 8; $i++) {
+            $cantOfWeeks = $i;
 
+            $day = date('d', strtotime("+". $cantOfWeeks." week"));
+            $month = date('m', strtotime("+". $cantOfWeeks." week"));
+            $year = date('Y', strtotime("+". $cantOfWeeks." week"));
+
+            $weekday = date('w', mktime(0,0,0,$month, $day, $year));
+            $sunday  = $day - $weekday;
+
+            $start_week = date('Ymd', mktime(0,0,0,$month, $sunday+1, $year));
+            $end_week   = date('Ymd', mktime(0,0,0,$month, $sunday+7, $year));
+
+            $em = $this->getDoctrine()->getManager();
+//////////
+            $query = $em->createQuery("
+                SELECT
+                    SUM( P.VolPedido ) as M3
+                FROM
+                    AraucoCSVBundle:Pedidos P
+                WHERE
+                    P.Eta >='".$start_week."'
+                    AND P.Eta <='".$end_week."'
+                    AND P.StatusComplete = 'CPU'
+                    AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
+                    AND P.StatusMovimientodeMcia = 'A'
+                    ");
+
+            $cantEntregasCompletasEnPuerto[$i] = round($query->getSingleScalarResult()/1000,3);
+
+            if(!isset($cantEntregasCompletasEnPuerto[$i]))
+                $cantEntregasCompletasEnPuerto[$i] = 0;
+//////////
+            $query2 = $em->createQuery("
+                SELECT
+                    SUM( P.VolPedido ) as M3
+                FROM
+                    AraucoCSVBundle:Pedidos P
+                WHERE
+                    P.Eta >='".$start_week."'
+                    AND P.Eta <='".$end_week."'
+                    AND P.StatusComplete = 'CPL'
+                    AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
+                    AND P.StatusMovimientodeMcia = 'A'
+                    ");
+
+            $cantEntregasCompletasEnPlanta[$i] = round($query2->getSingleScalarResult()/1000,3);
+
+            if(!isset($cantEntregasCompletasEnPlanta[$i]))
+                $cantEntregasCompletasEnPlanta[$i] = 0;
+//////////
+            $query3 = $em->createQuery("
+                SELECT
+                    SUM( P.VolPedido ) as M3
+                FROM
+                    AraucoCSVBundle:Pedidos P
+                WHERE
+                    P.Eta >='".$start_week."'
+                    AND P.Eta <='".$end_week."'
+                    AND P.StatusComplete = 'NO'
+                    AND P.PED_COMPLETABLE_ETA = TRUE
+                    AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
+                    AND P.StatusMovimientodeMcia = 'A'
+                    ");
+
+            $cantEntregasCompletablesETA[$i] = round($query3->getSingleScalarResult()/1000,3);
+
+            if(!isset($cantEntregasCompletablesETA[$i]))
+                $cantEntregasCompletablesETA[$i] = 0;
+//////////
+            $query31 = $em->createQuery("
+                SELECT
+                    SUM( P.VolPedido ) as M3
+                FROM
+                    AraucoCSVBundle:Pedidos P
+                WHERE
+                    P.Eta >='".$start_week."'
+                    AND P.Eta <='".$end_week."'
+                    AND P.StatusComplete = 'NO'
+                    AND P.PED_COMPLETABLE_FPE = TRUE
+                    AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
+                    AND P.StatusMovimientodeMcia = 'A'
+                    ");
+
+            $cantEntregasCompletablesFPE[$i] = round($query31->getSingleScalarResult()/1000,3);
+
+            if(!isset($cantEntregasCompletablesFPE[$i]))
+                $cantEntregasCompletablesFPE[$i] = 0;
+//////////
+            $query41 = $em->createQuery("
+                SELECT
+                    SUM( S.M3 ) as M3
+                FROM
+                    AraucoCSVBundle:Pedidos P,
+                    AraucoCSVBundle:Stock S
+                WHERE
+                    P.DocEntrega = S.Nro_Entrega
+                    AND P.PosPedido = S.Pos_Entrega
+                    AND P.Eta >='".$start_week."'
+                    AND P.Eta <='".$end_week."'
+                    AND P.StatusComplete = 'NO'
+                    AND P.PED_COMPLETABLE_ETA = FALSE
+                    AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
+                    AND P.StatusMovimientodeMcia = 'A'
+                    ");
+
+            $cantCompletadeEntregasIncompletasETA[$i] = round($query41->getSingleScalarResult()/1000,3);
+
+            if(!isset($cantCompletadeEntregasIncompletasETA[$i]))
+                $cantCompletadeEntregasIncompletasETA[$i] = 0;
+//////////
+            $query42 = $em->createQuery("
+                SELECT
+                    SUM( P.VolPedido ) as M3
+                FROM
+                    AraucoCSVBundle:Pedidos P
+                WHERE
+                    P.Eta >='".$start_week."'
+                    AND P.Eta <='".$end_week."'
+                    AND P.StatusComplete = 'NO'
+                    AND P.PED_COMPLETABLE_ETA = FALSE
+                    AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
+                    AND P.StatusMovimientodeMcia = 'A'
+                    ");
+
+            $cantIncompletadeEntregasIncompletasETA[$i] = round($query42->getSingleScalarResult()/1000,3);
+
+            if(!isset($cantIncompletadeEntregasIncompletasETA[$i]))
+                $cantIncompletadeEntregasIncompletasETA[$i] = 0;
+             else
+                $cantIncompletadeEntregasIncompletasETA[$i] = $cantIncompletadeEntregasIncompletasETA[$i] - $cantCompletadeEntregasIncompletasETA[$i];
+//////////            
+            $query51 = $em->createQuery("
+                SELECT
+                    SUM( S.M3 ) as M3
+                FROM
+                    AraucoCSVBundle:Pedidos P,
+                    AraucoCSVBundle:Stock S
+                WHERE
+                    P.DocEntrega = S.Nro_Entrega
+                    AND P.PosPedido = S.Pos_Entrega
+                    AND P.Eta >='".$start_week."'
+                    AND P.Eta <='".$end_week."'
+                    AND P.StatusComplete = 'NO'
+                    AND P.PED_COMPLETABLE_FPE = FALSE
+                    AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
+                    AND P.StatusMovimientodeMcia = 'A'
+                    ");
+            
+            $cantCompletadeEntregasIncompletasFPE[$i] = round($query51->getSingleScalarResult()/1000,3);
+                               
+            if(!isset($cantCompletadeEntregasIncompletasFPE[$i]))
+                $cantCompletadeEntregasIncompletasFPE[$i] = 0;
+//////////
+            $query52 = $em->createQuery("
+                SELECT
+                    SUM( P.VolPedido ) as M3
+                FROM
+                    AraucoCSVBundle:Pedidos P
+                WHERE
+                    P.Eta >='".$start_week."'
+                    AND P.Eta <='".$end_week."'
+                    AND P.StatusComplete = 'NO'
+                    AND P.PED_COMPLETABLE_FPE = FALSE
+                    AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
+                    AND P.StatusMovimientodeMcia = 'A'
+                    ");
+
+            $cantIncompletadeEntregasIncompletasFPE[$i] = round($query52->getSingleScalarResult()/1000,3);
+                               
+            if(!isset($cantIncompletadeEntregasIncompletasFPE[$i]))
+                $cantIncompletadeEntregasIncompletasFPE[$i] = 0;
+            else
+                $cantIncompletadeEntregasIncompletasFPE[$i] = $cantIncompletadeEntregasIncompletasFPE[$i] - $cantCompletadeEntregasIncompletasFPE[$i];
+//////////
+            
+        }
+
+        return array(
+            'cantEntregasCompletasEnPuerto' => $cantEntregasCompletasEnPuerto,
+            'cantEntregasCompletasEnPlanta' => $cantEntregasCompletasEnPlanta,
+            'cantEntregasCompletablesETA' => $cantEntregasCompletablesETA,
+            'cantEntregasCompletablesFPE' => $cantEntregasCompletablesFPE,
+            'cantCompletadeEntregasIncompletasETA' => $cantCompletadeEntregasIncompletasETA,
+            'cantCompletadeEntregasIncompletasFPE' => $cantCompletadeEntregasIncompletasFPE,
+            'cantIncompletadeEntregasIncompletasETA' => $cantIncompletadeEntregasIncompletasETA,
+            'cantIncompletadeEntregasIncompletasFPE' => $cantIncompletadeEntregasIncompletasFPE
+            );
+            
+    }
+    
+     /**
+     * @Route("/pedido/aasa", name="arauco_pedido_index_aasa")
+     * @Template("AraucoBaseBundle:Pedido:aasa.html.twig")
+     */
+    public function importaasaAction ()
+    {
+        for ($i = 0; $i < 8; $i++) {
+            $cantOfWeeks = $i;
+
+            $day = date('d', strtotime("+". $cantOfWeeks." week"));
+            $month = date('m', strtotime("+". $cantOfWeeks." week"));
+            $year = date('Y', strtotime("+". $cantOfWeeks." week"));
+
+            $weekday = date('w', mktime(0,0,0,$month, $day, $year));
+            $sunday  = $day - $weekday;
+
+            $start_week = date('Ymd', mktime(0,0,0,$month, $sunday+1, $year));
+            $end_week   = date('Ymd', mktime(0,0,0,$month, $sunday+7, $year));
+
+            $em = $this->getDoctrine()->getManager();
+//////////
+            $query = $em->createQuery("
+                SELECT
+                    SUM( P.VolPedido ) as M3
+                FROM
+                    AraucoCSVBundle:Pedidos P
+                WHERE
+                    P.Eta >='".$start_week."'
+                    AND P.Eta <='".$end_week."'
+                    AND P.StatusComplete = 'CPU'
+                    AND P.OrgVenta = 1000
+                    AND P.StatusMovimientodeMcia = 'A'
+                    ");
+
+            $cantEntregasCompletasEnPuerto[$i] = round($query->getSingleScalarResult()/1000,3);
+
+            if(!isset($cantEntregasCompletasEnPuerto[$i]))
+                $cantEntregasCompletasEnPuerto[$i] = 0;
+//////////
+            $query2 = $em->createQuery("
+                SELECT
+                    SUM( P.VolPedido ) as M3
+                FROM
+                    AraucoCSVBundle:Pedidos P
+                WHERE
+                    P.Eta >='".$start_week."'
+                    AND P.Eta <='".$end_week."'
+                    AND P.StatusComplete = 'CPL'
+                    AND P.OrgVenta = 1000
+                    AND P.StatusMovimientodeMcia = 'A'
+                    ");
+
+            $cantEntregasCompletasEnPlanta[$i] = round($query2->getSingleScalarResult()/1000,3);
+
+            if(!isset($cantEntregasCompletasEnPlanta[$i]))
+                $cantEntregasCompletasEnPlanta[$i] = 0;
+//////////
+            $query3 = $em->createQuery("
+                SELECT
+                    SUM( P.VolPedido ) as M3
+                FROM
+                    AraucoCSVBundle:Pedidos P
+                WHERE
+                    P.Eta >='".$start_week."'
+                    AND P.Eta <='".$end_week."'
+                    AND P.StatusComplete = 'NO'
+                    AND P.PED_COMPLETABLE_ETA = TRUE
+                    AND P.OrgVenta = 1000
+                    AND P.StatusMovimientodeMcia = 'A'
+                    ");
+
+            $cantEntregasCompletablesETA[$i] = round($query3->getSingleScalarResult()/1000,3);
+
+            if(!isset($cantEntregasCompletablesETA[$i]))
+                $cantEntregasCompletablesETA[$i] = 0;
+//////////
+            $query31 = $em->createQuery("
+                SELECT
+                    SUM( P.VolPedido ) as M3
+                FROM
+                    AraucoCSVBundle:Pedidos P
+                WHERE
+                    P.Eta >='".$start_week."'
+                    AND P.Eta <='".$end_week."'
+                    AND P.StatusComplete = 'NO'
+                    AND P.PED_COMPLETABLE_FPE = TRUE
+                    AND P.OrgVenta = 1000
+                    AND P.StatusMovimientodeMcia = 'A'
+                    ");
+
+            $cantEntregasCompletablesFPE[$i] = round($query31->getSingleScalarResult()/1000,3);
+
+            if(!isset($cantEntregasCompletablesFPE[$i]))
+                $cantEntregasCompletablesFPE[$i] = 0;
+//////////
+            $query41 = $em->createQuery("
+                SELECT
+                    SUM( S.M3 ) as M3
+                FROM
+                    AraucoCSVBundle:Pedidos P,
+                    AraucoCSVBundle:Stock S
+                WHERE
+                    P.DocEntrega = S.Nro_Entrega
+                    AND P.PosPedido = S.Pos_Entrega
+                    AND P.Eta >='".$start_week."'
+                    AND P.Eta <='".$end_week."'
+                    AND P.StatusComplete = 'NO'
+                    AND P.PED_COMPLETABLE_ETA = FALSE
+                    AND P.OrgVenta = 1000
+                    AND P.StatusMovimientodeMcia = 'A'
+                    ");
+
+            $cantCompletadeEntregasIncompletasETA[$i] = round($query41->getSingleScalarResult()/1000,3);
+
+            if(!isset($cantCompletadeEntregasIncompletasETA[$i]))
+                $cantCompletadeEntregasIncompletasETA[$i] = 0;
+//////////
+            $query42 = $em->createQuery("
+                SELECT
+                    SUM( P.VolPedido ) as M3
+                FROM
+                    AraucoCSVBundle:Pedidos P
+                WHERE
+                    P.Eta >='".$start_week."'
+                    AND P.Eta <='".$end_week."'
+                    AND P.StatusComplete = 'NO'
+                    AND P.PED_COMPLETABLE_ETA = FALSE
+                    AND P.OrgVenta = 1000
+                    AND P.StatusMovimientodeMcia = 'A'
+                    ");
+
+            $cantIncompletadeEntregasIncompletasETA[$i] = round($query42->getSingleScalarResult()/1000,3);
+
+            if(!isset($cantIncompletadeEntregasIncompletasETA[$i]))
+                $cantIncompletadeEntregasIncompletasETA[$i] = 0;
+             else
+                $cantIncompletadeEntregasIncompletasETA[$i] = $cantIncompletadeEntregasIncompletasETA[$i] - $cantCompletadeEntregasIncompletasETA[$i];
+//////////            
+            $query51 = $em->createQuery("
+                SELECT
+                    SUM( S.M3 ) as M3
+                FROM
+                    AraucoCSVBundle:Pedidos P,
+                    AraucoCSVBundle:Stock S
+                WHERE
+                    P.DocEntrega = S.Nro_Entrega
+                    AND P.PosPedido = S.Pos_Entrega
+                    AND P.Eta >='".$start_week."'
+                    AND P.Eta <='".$end_week."'
+                    AND P.StatusComplete = 'NO'
+                    AND P.PED_COMPLETABLE_FPE = FALSE
+                    AND P.OrgVenta = 1000
+                    AND P.StatusMovimientodeMcia = 'A'
+                    ");
+            
+            $cantCompletadeEntregasIncompletasFPE[$i] = round($query51->getSingleScalarResult()/1000,3);
+                               
+            if(!isset($cantCompletadeEntregasIncompletasFPE[$i]))
+                $cantCompletadeEntregasIncompletasFPE[$i] = 0;
+//////////
+            $query52 = $em->createQuery("
+                SELECT
+                    SUM( P.VolPedido ) as M3
+                FROM
+                    AraucoCSVBundle:Pedidos P
+                WHERE
+                    P.Eta >='".$start_week."'
+                    AND P.Eta <='".$end_week."'
+                    AND P.StatusComplete = 'NO'
+                    AND P.PED_COMPLETABLE_FPE = FALSE
+                    AND P.OrgVenta = 1000
+                    AND P.StatusMovimientodeMcia = 'A'
+                    ");
+
+            $cantIncompletadeEntregasIncompletasFPE[$i] = round($query52->getSingleScalarResult()/1000,3);
+                               
+            if(!isset($cantIncompletadeEntregasIncompletasFPE[$i]))
+                $cantIncompletadeEntregasIncompletasFPE[$i] = 0;
+            else
+                $cantIncompletadeEntregasIncompletasFPE[$i] = $cantIncompletadeEntregasIncompletasFPE[$i] - $cantCompletadeEntregasIncompletasFPE[$i];
+//////////
+            
+        }
+
+        return array(
+            'cantEntregasCompletasEnPuerto' => $cantEntregasCompletasEnPuerto,
+            'cantEntregasCompletasEnPlanta' => $cantEntregasCompletasEnPlanta,
+            'cantEntregasCompletablesETA' => $cantEntregasCompletablesETA,
+            'cantEntregasCompletablesFPE' => $cantEntregasCompletablesFPE,
+            'cantCompletadeEntregasIncompletasETA' => $cantCompletadeEntregasIncompletasETA,
+            'cantCompletadeEntregasIncompletasFPE' => $cantCompletadeEntregasIncompletasFPE,
+            'cantIncompletadeEntregasIncompletasETA' => $cantIncompletadeEntregasIncompletasETA,
+            'cantIncompletadeEntregasIncompletasFPE' => $cantIncompletadeEntregasIncompletasFPE
+            );
+          
+    }
+    
     /**
      * @Route("/pedido/comcpu/{week}", name="arauco_pedido_extend_com_cpu")
      * @Template("AraucoBaseBundle:Pedido:extendCPU.html.twig")
@@ -204,6 +628,8 @@ class PedidosController extends Controller
 
             $docEntrega = $item['DocEntrega'];
             $posPedido = $item['PosPedido'];
+            $orgVenta = $item['OrgVenta'];
+            $fpe = $item['FPE'];
             $material = $item['Material'];
             $descripcion = $item['Desc_Mat'];
             $volPedido = $item['VolPedido'];
@@ -216,7 +642,7 @@ class PedidosController extends Controller
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiETA = $item['M3'];
-                    unset( $EntregasETA[ $docEntrega ] );
+                  //  unset( $EntregasETA[ $docEntrega ] );
                     break;
                 }
 
@@ -227,7 +653,7 @@ class PedidosController extends Controller
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiFPE = $item['M3'];
-                    unset( $EntregasFPE[ $docEntrega ] );
+                   // unset( $EntregasFPE[ $docEntrega ] );
                     break;
                 }
 
@@ -235,7 +661,7 @@ class PedidosController extends Controller
 
             array_push(
                 $entregasFinal, array(
-                    $docEntrega, $posPedido, $material, $descripcion,
+                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
                     $volPedido, round( $sumaVolAsignado, 3 ),
                     round( $sumaVolAsiETA, 3 ),
                     round( $sumaVolAsiFPE, 3 )
@@ -287,6 +713,8 @@ class PedidosController extends Controller
 
             $docEntrega = $item['DocEntrega'];
             $posPedido = $item['PosPedido'];
+            $orgVenta = $item['OrgVenta'];
+            $fpe = $item['FPE'];
             $material = $item['Material'];
             $descripcion = $item['Desc_Mat'];
             $volPedido = $item['VolPedido'];
@@ -299,7 +727,7 @@ class PedidosController extends Controller
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiETA = $item['M3'];
-                    unset( $EntregasETA[ $docEntrega ] );
+                 //   unset( $EntregasETA[ $docEntrega ] );
                     break;
                 }
 
@@ -310,7 +738,7 @@ class PedidosController extends Controller
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiFPE = $item['M3'];
-                    unset( $EntregasFPE[ $docEntrega ] );
+                //    unset( $EntregasFPE[ $docEntrega ] );
                     break;
                 }
 
@@ -318,7 +746,7 @@ class PedidosController extends Controller
 
             array_push(
                 $entregasFinal, array(
-                    $docEntrega, $posPedido, $material, $descripcion,
+                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
                     $volPedido, round( $sumaVolAsignado, 3 ),
                     round( $sumaVolAsiETA, 3 ),
                     round( $sumaVolAsiFPE, 3 )
@@ -358,34 +786,58 @@ class PedidosController extends Controller
 
         $status = "NO";
         $completable = TRUE;
+        
         $em = $this->getDoctrine()->getManager();
-        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETA($start_week, $end_week, $status, $completable);
-
+        
+        //$totallyInc = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosTotallyIncComETA($start_week, $end_week);
+        
+        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable);
+        $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETASumM3($start_week, $end_week, $status, $completable);
+        
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncETA($start_week, $end_week, $status, $completable);
-
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncETA($start_week, $end_week, $status, $completable);
 
         $entregasFinal = array();
 
-        foreach ( $EntregasAsignadas as $entrega ) {
-
+        foreach ( $Entregas as $entrega ) {
+            
             $docEntrega = $entrega['DocEntrega'];
             $posPedido = $entrega['PosPedido'];
+            $orgVenta = $entrega['OrgVenta'];
+            $fpe = $entrega['FPE'];
             $material = $entrega['Material'];
-            $descripcion = $entrega['Desc_Mat'];
+            $descripcion = $entrega['DescripcionMaterial'];
             $volPedido = $entrega['VolPedido'];
-            $sumaVolAsignado = $entrega['M3'];
+            
+            $sumaVolAsignado = 0;
             $sumaVolAsiETA = 0;
             $sumaVolAsiFPE = 0;
+            
+            foreach ( $EntregasM3 as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsignado = $item['M3'];
+                  //  unset( $EntregasETA[ $docEntrega ] );
+                    break;
+                }
+                
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
+
+            }
 
             foreach ( $EntregasETA as $item ) {
 
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiETA = $item['M3'];
-                    unset( $EntregasETA[ $docEntrega ] );
+                  //  unset( $EntregasETA[ $docEntrega ] );
                     break;
                 }
+                
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
 
             }
 
@@ -394,21 +846,24 @@ class PedidosController extends Controller
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiFPE = $item['M3'];
-                    unset( $EntregasFPE[ $docEntrega ] );
+                 //   unset( $EntregasFPE[ $docEntrega ] );
                     break;
                 }
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
 
             }
 
             array_push(
                 $entregasFinal, array(
-                    $docEntrega, $posPedido, $material, $descripcion,
+                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
                     $volPedido, round( $sumaVolAsignado, 3 ),
                     round( $sumaVolAsiETA, 3 ),
                     round( $sumaVolAsiFPE, 3 )
                 )
             );
 
+     
         }
 
         return array(
@@ -442,33 +897,55 @@ class PedidosController extends Controller
         $status = "NO";
         $completable = FALSE;
         $em = $this->getDoctrine()->getManager();
-        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETA($start_week, $end_week, $status, $completable);
-
+        
+        
+        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable);
+        $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETASumM3($start_week, $end_week, $status, $completable);
+        
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncETA($start_week, $end_week, $status, $completable);
-
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncETA($start_week, $end_week, $status, $completable);
+        //$TotallyInc = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosTotallyIncETA($start_week, $end_week);
 
         $entregasFinal = array();
 
-        foreach ( $EntregasAsignadas as $entrega ) {
+        foreach ( $Entregas as $entrega ) {
 
             $docEntrega = $entrega['DocEntrega'];
             $posPedido = $entrega['PosPedido'];
+            $orgVenta = $entrega['OrgVenta'];
+            $fpe = $entrega['FPE'];
             $material = $entrega['Material'];
-            $descripcion = $entrega['Desc_Mat'];
+            $descripcion = $entrega['DescripcionMaterial'];
             $volPedido = $entrega['VolPedido'];
-            $sumaVolAsignado = $entrega['M3'];
+            $sumaVolAsignado = 0;
             $sumaVolAsiETA = 0;
             $sumaVolAsiFPE = 0;
+            
+            foreach ( $EntregasM3 as $item ) {
 
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsignado = $item['M3'];
+                  //  unset( $EntregasETA[ $docEntrega ] );
+                    break;
+                }
+                
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
+
+            }
+           
             foreach ( $EntregasETA as $item ) {
 
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiETA = $item['M3'];
-                    unset( $EntregasETA[ $docEntrega ] );
+                    //unset( $EntregasETA[ $docEntrega ] );
                     break;
                 }
+                
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
 
             }
 
@@ -477,15 +954,18 @@ class PedidosController extends Controller
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiFPE = $item['M3'];
-                    unset( $EntregasFPE[ $docEntrega ] );
+                    //unset( $EntregasFPE[ $docEntrega ] );
                     break;
                 }
+                
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
 
             }
 
             array_push(
                 $entregasFinal, array(
-                    $docEntrega, $posPedido, $material, $descripcion,
+                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
                     $volPedido, round( $sumaVolAsignado, 3 ),
                     round( $sumaVolAsiETA, 3 ),
                     round( $sumaVolAsiFPE, 3 )
@@ -493,7 +973,7 @@ class PedidosController extends Controller
             );
 
         }
-
+        
         return array(
             'Entregas' => $entregasFinal,
             'sWeek' => $sWeek,
@@ -525,33 +1005,55 @@ class PedidosController extends Controller
         $status = "NO";
         $completable = TRUE;
         $em = $this->getDoctrine()->getManager();
-        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPE($start_week, $end_week, $status, $completable);
-
+        
+        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPEList($start_week, $end_week, $status, $completable);
+        $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPESumM3($start_week, $end_week, $status, $completable);
+        
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncFPE($start_week, $end_week, $status, $completable);
-
-        $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);
-
+        $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);        
+        //$TotallyInc = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosTotallyIncComFPE($start_week, $end_week);
+        
         $entregasFinal = array();
 
-        foreach ( $EntregasAsignadas as $entrega ) {
+        foreach ( $Entregas as $entrega ) {
 
             $docEntrega = $entrega['DocEntrega'];
             $posPedido = $entrega['PosPedido'];
+            $orgVenta = $entrega['OrgVenta'];
+            $fpe = $entrega['FPE'];
             $material = $entrega['Material'];
-            $descripcion = $entrega['Desc_Mat'];
+            $descripcion = $entrega['DescripcionMaterial'];
             $volPedido = $entrega['VolPedido'];
-            $sumaVolAsignado = $entrega['M3'];
+            
+            $sumaVolAsignado = 0;
             $sumaVolAsiETA = 0;
             $sumaVolAsiFPE = 0;
+            
+            foreach ( $EntregasM3 as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsignado = $item['M3'];
+                  //  unset( $EntregasETA[ $docEntrega ] );
+                    break;
+                }
+                
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
+
+            }
 
             foreach ( $EntregasETA as $item ) {
 
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiETA = $item['M3'];
-                    unset( $EntregasETA[ $docEntrega ] );
+                    //unset( $EntregasETA[ $docEntrega ] );
                     break;
                 }
+                
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
 
             }
 
@@ -560,15 +1062,18 @@ class PedidosController extends Controller
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiFPE = $item['M3'];
-                    unset( $EntregasFPE[ $docEntrega ] );
+                    //unset( $EntregasFPE[ $docEntrega ] );
                     break;
                 }
+                
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
 
             }
 
             array_push(
                 $entregasFinal, array(
-                    $docEntrega, $posPedido, $material, $descripcion,
+                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
                     $volPedido, round( $sumaVolAsignado, 3 ),
                     round( $sumaVolAsiETA, 3 ),
                     round( $sumaVolAsiFPE, 3 )
@@ -576,7 +1081,7 @@ class PedidosController extends Controller
             );
 
         }
-
+        
         return array(
             'Entregas' => $entregasFinal,
             'sWeek' => $sWeek,
@@ -608,33 +1113,57 @@ class PedidosController extends Controller
         $status = "NO";
         $completable = FALSE;
         $em = $this->getDoctrine()->getManager();
-        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPE($start_week, $end_week, $status, $completable);
+       
+          
+        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable);
+        $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETASumM3($start_week, $end_week, $status, $completable);
 
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncFPE($start_week, $end_week, $status, $completable);
-
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);
+        
+        //$TotallyInc = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosTotallyIncFPE($start_week, $end_week);
 
         $entregasFinal = array();
 
-        foreach ( $EntregasAsignadas as $entrega ) {
+        foreach ( $Entregas as $entrega ) {
 
             $docEntrega = $entrega['DocEntrega'];
             $posPedido = $entrega['PosPedido'];
+            $orgVenta = $entrega['OrgVenta'];
+            $fpe = $entrega['FPE'];
             $material = $entrega['Material'];
-            $descripcion = $entrega['Desc_Mat'];
+            $descripcion = $entrega['DescripcionMaterial'];
             $volPedido = $entrega['VolPedido'];
-            $sumaVolAsignado = $entrega['M3'];
+            
+            $sumaVolAsignado = 0;
             $sumaVolAsiETA = 0;
             $sumaVolAsiFPE = 0;
 
+            foreach ( $EntregasM3 as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsignado = $item['M3'];
+                  //  unset( $EntregasETA[ $docEntrega ] );
+                    break;
+                }
+                
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
+
+            }
+            
             foreach ( $EntregasETA as $item ) {
 
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiETA = $item['M3'];
-                    unset( $EntregasETA[ $docEntrega ] );
+                   // unset( $EntregasETA[ $docEntrega ] );
                     break;
                 }
+                
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
 
             }
 
@@ -643,15 +1172,18 @@ class PedidosController extends Controller
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiFPE = $item['M3'];
-                    unset( $EntregasFPE[ $docEntrega ] );
+                   // unset( $EntregasFPE[ $docEntrega ] );
                     break;
                 }
+                
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
 
             }
 
             array_push(
                 $entregasFinal, array(
-                    $docEntrega, $posPedido, $material, $descripcion,
+                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
                     $volPedido, round( $sumaVolAsignado, 3 ),
                     round( $sumaVolAsiETA, 3 ),
                     round( $sumaVolAsiFPE, 3 )
@@ -659,7 +1191,7 @@ class PedidosController extends Controller
             );
 
         }
-
+        
         return array(
             'Entregas' => $entregasFinal,
             'sWeek' => $sWeek,
@@ -701,6 +1233,8 @@ class PedidosController extends Controller
 
             $docEntrega = $entrega['DocEntrega'];
             $posPedido = $entrega['PosPedido'];
+            $orgVenta = $entrega['OrgVenta'];
+            $fpe = $entrega['FPE'];
             $material = $entrega['Material'];
             $descripcion = $entrega['Desc_Mat'];
             $volPedido = $entrega['VolPedido'];
@@ -713,7 +1247,7 @@ class PedidosController extends Controller
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiETA = $item['M3'];
-                    unset( $EntregasETA[ $docEntrega ] );
+                   // unset( $EntregasETA[ $docEntrega ] );
                     break;
                 }
 
@@ -724,7 +1258,7 @@ class PedidosController extends Controller
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiFPE = $item['M3'];
-                    unset( $EntregasFPE[ $docEntrega ] );
+                    //unset( $EntregasFPE[ $docEntrega ] );
                     break;
                 }
 
@@ -732,7 +1266,7 @@ class PedidosController extends Controller
 
             array_push(
                 $entregasFinal, array(
-                    $docEntrega, $posPedido, $material, $descripcion,
+                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
                     $volPedido, round( $sumaVolAsignado, 3 ),
                     round( $sumaVolAsiETA, 3 ),
                     round( $sumaVolAsiFPE, 3 )
@@ -786,6 +1320,8 @@ class PedidosController extends Controller
 
             $docEntrega = $entrega['DocEntrega'];
             $posPedido = $entrega['PosPedido'];
+            $orgVenta = $entrega['OrgVenta'];
+            $fpe = $entrega['FPE'];
             $material = $entrega['Material'];
             $descripcion = $entrega['Desc_Mat'];
             $volPedido = $entrega['VolPedido'];
@@ -798,7 +1334,7 @@ class PedidosController extends Controller
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiETA = $item['M3'];
-                    unset( $EntregasETA[ $docEntrega ] );
+                   // unset( $EntregasETA[ $docEntrega ] );
                     break;
                 }
 
@@ -809,7 +1345,7 @@ class PedidosController extends Controller
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiFPE = $item['M3'];
-                    unset( $EntregasFPE[ $docEntrega ] );
+                   // unset( $EntregasFPE[ $docEntrega ] );
                     break;
                 }
 
@@ -817,7 +1353,7 @@ class PedidosController extends Controller
 
             array_push(
                 $entregasFinal, array(
-                    $docEntrega, $posPedido, $material, $descripcion,
+                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
                     $volPedido, round( $sumaVolAsignado, 3 ),
                     round( $sumaVolAsiETA, 3 ),
                     round( $sumaVolAsiFPE, 3 )
@@ -835,7 +1371,7 @@ class PedidosController extends Controller
 
         return $response;
     }
-
+/////////////////////////////////////////////////////////////////////////
     /**
      * @Route("/pedido/complet/eta/{week}/csv", name="arauco_pedido_extend_complet_eta_csv")
      */
@@ -858,34 +1394,58 @@ class PedidosController extends Controller
 
         $status = "NO";
         $completable = TRUE;
+        
         $em = $this->getDoctrine()->getManager();
-        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETA($start_week, $end_week, $status, $completable);
-
+        
+        // $totallyInc = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosTotallyIncComETA($start_week, $end_week);
+        
+        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable);
+        $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETASumM3($start_week, $end_week, $status, $completable);
+        
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncETA($start_week, $end_week, $status, $completable);
-
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncETA($start_week, $end_week, $status, $completable);
 
         $entregasFinal = array();
 
-        foreach ( $EntregasAsignadas as $entrega ) {
-
+        foreach ( $Entregas as $entrega ) {
+            
             $docEntrega = $entrega['DocEntrega'];
             $posPedido = $entrega['PosPedido'];
+            $orgVenta = $entrega['OrgVenta'];
+            $fpe = $entrega['FPE'];
             $material = $entrega['Material'];
-            $descripcion = $entrega['Desc_Mat'];
+            $descripcion = $entrega['DescripcionMaterial'];
             $volPedido = $entrega['VolPedido'];
-            $sumaVolAsignado = $entrega['M3'];
+            
+            $sumaVolAsignado = 0;
             $sumaVolAsiETA = 0;
             $sumaVolAsiFPE = 0;
+            
+            foreach ( $EntregasM3 as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsignado = $item['M3'];
+                  //  unset( $EntregasETA[ $docEntrega ] );
+                    break;
+                }
+                
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
+
+            }
 
             foreach ( $EntregasETA as $item ) {
 
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiETA = $item['M3'];
-                    unset( $EntregasETA[ $docEntrega ] );
+                  //  unset( $EntregasETA[ $docEntrega ] );
                     break;
                 }
+                
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
 
             }
 
@@ -894,15 +1454,17 @@ class PedidosController extends Controller
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiFPE = $item['M3'];
-                    unset( $EntregasFPE[ $docEntrega ] );
+                 //   unset( $EntregasFPE[ $docEntrega ] );
                     break;
                 }
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
 
             }
 
             array_push(
                 $entregasFinal, array(
-                    $docEntrega, $posPedido, $material, $descripcion,
+                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
                     $volPedido, round( $sumaVolAsignado, 3 ),
                     round( $sumaVolAsiETA, 3 ),
                     round( $sumaVolAsiFPE, 3 )
@@ -926,6 +1488,7 @@ class PedidosController extends Controller
      */
     public function extendincetacsvAction ($week)
     {
+        
         $cantOfWeeks = $week;
 
         $day = date('d', strtotime("+". $cantOfWeeks." week"));
@@ -944,33 +1507,55 @@ class PedidosController extends Controller
         $status = "NO";
         $completable = FALSE;
         $em = $this->getDoctrine()->getManager();
-        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETA($start_week, $end_week, $status, $completable);
-
+        
+        
+        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable);
+        $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETASumM3($start_week, $end_week, $status, $completable);
+        
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncETA($start_week, $end_week, $status, $completable);
-
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncETA($start_week, $end_week, $status, $completable);
+        //$TotallyInc = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosTotallyIncETA($start_week, $end_week);
 
         $entregasFinal = array();
 
-        foreach ( $EntregasAsignadas as $entrega ) {
+        foreach ( $Entregas as $entrega ) {
 
             $docEntrega = $entrega['DocEntrega'];
             $posPedido = $entrega['PosPedido'];
+            $orgVenta = $entrega['OrgVenta'];
+            $fpe = $entrega['FPE'];
             $material = $entrega['Material'];
-            $descripcion = $entrega['Desc_Mat'];
+            $descripcion = $entrega['DescripcionMaterial'];
             $volPedido = $entrega['VolPedido'];
-            $sumaVolAsignado = $entrega['M3'];
+            $sumaVolAsignado = 0;
             $sumaVolAsiETA = 0;
             $sumaVolAsiFPE = 0;
+            
+            foreach ( $EntregasM3 as $item ) {
 
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsignado = $item['M3'];
+                  //  unset( $EntregasETA[ $docEntrega ] );
+                    break;
+                }
+                
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
+
+            }
+           
             foreach ( $EntregasETA as $item ) {
 
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiETA = $item['M3'];
-                    unset( $EntregasETA[ $docEntrega ] );
+                    //unset( $EntregasETA[ $docEntrega ] );
                     break;
                 }
+                
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
 
             }
 
@@ -979,22 +1564,25 @@ class PedidosController extends Controller
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiFPE = $item['M3'];
-                    unset( $EntregasFPE[ $docEntrega ] );
+                    //unset( $EntregasFPE[ $docEntrega ] );
                     break;
                 }
+                
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
 
             }
 
             array_push(
                 $entregasFinal, array(
-                    $docEntrega, $posPedido, $material, $descripcion,
+                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
                     $volPedido, round( $sumaVolAsignado, 3 ),
                     round( $sumaVolAsiETA, 3 ),
                     round( $sumaVolAsiFPE, 3 )
                 )
             );
 
-        }
+        }       
 
         $filename = "Pedidos_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
 
@@ -1029,33 +1617,55 @@ class PedidosController extends Controller
         $status = "NO";
         $completable = TRUE;
         $em = $this->getDoctrine()->getManager();
-        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPE($start_week, $end_week, $status, $completable);
-
+        
+        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPEList($start_week, $end_week, $status, $completable);
+        $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPESumM3($start_week, $end_week, $status, $completable);
+        
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncFPE($start_week, $end_week, $status, $completable);
-
-        $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);
-
+        $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);        
+        //$TotallyInc = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosTotallyIncComFPE($start_week, $end_week);
+        
         $entregasFinal = array();
 
-        foreach ( $EntregasAsignadas as $entrega ) {
+        foreach ( $Entregas as $entrega ) {
 
             $docEntrega = $entrega['DocEntrega'];
             $posPedido = $entrega['PosPedido'];
+            $orgVenta = $entrega['OrgVenta'];
+            $fpe = $entrega['FPE'];
             $material = $entrega['Material'];
-            $descripcion = $entrega['Desc_Mat'];
+            $descripcion = $entrega['DescripcionMaterial'];
             $volPedido = $entrega['VolPedido'];
-            $sumaVolAsignado = $entrega['M3'];
+            
+            $sumaVolAsignado = 0;
             $sumaVolAsiETA = 0;
             $sumaVolAsiFPE = 0;
+            
+            foreach ( $EntregasM3 as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsignado = $item['M3'];
+                  //  unset( $EntregasETA[ $docEntrega ] );
+                    break;
+                }
+                
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
+
+            }
 
             foreach ( $EntregasETA as $item ) {
 
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiETA = $item['M3'];
-                    unset( $EntregasETA[ $docEntrega ] );
+                    //unset( $EntregasETA[ $docEntrega ] );
                     break;
                 }
+                
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
 
             }
 
@@ -1064,15 +1674,18 @@ class PedidosController extends Controller
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiFPE = $item['M3'];
-                    unset( $EntregasFPE[ $docEntrega ] );
+                    //unset( $EntregasFPE[ $docEntrega ] );
                     break;
                 }
+                
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
 
             }
 
             array_push(
                 $entregasFinal, array(
-                    $docEntrega, $posPedido, $material, $descripcion,
+                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
                     $volPedido, round( $sumaVolAsignado, 3 ),
                     round( $sumaVolAsiETA, 3 ),
                     round( $sumaVolAsiFPE, 3 )
@@ -1114,33 +1727,57 @@ class PedidosController extends Controller
         $status = "NO";
         $completable = FALSE;
         $em = $this->getDoctrine()->getManager();
-        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPE($start_week, $end_week, $status, $completable);
+       
+          
+        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable);
+        $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETASumM3($start_week, $end_week, $status, $completable);
 
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncFPE($start_week, $end_week, $status, $completable);
-
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);
+        
+        //$TotallyInc = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosTotallyIncFPE($start_week, $end_week);
 
         $entregasFinal = array();
 
-        foreach ( $EntregasAsignadas as $entrega ) {
+        foreach ( $Entregas as $entrega ) {
 
             $docEntrega = $entrega['DocEntrega'];
             $posPedido = $entrega['PosPedido'];
+            $orgVenta = $entrega['OrgVenta'];
+            $fpe = $entrega['FPE'];
             $material = $entrega['Material'];
-            $descripcion = $entrega['Desc_Mat'];
+            $descripcion = $entrega['DescripcionMaterial'];
             $volPedido = $entrega['VolPedido'];
-            $sumaVolAsignado = $entrega['M3'];
+            
+            $sumaVolAsignado = 0;
             $sumaVolAsiETA = 0;
             $sumaVolAsiFPE = 0;
 
+            foreach ( $EntregasM3 as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsignado = $item['M3'];
+                  //  unset( $EntregasETA[ $docEntrega ] );
+                    break;
+                }
+                
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
+
+            }
+            
             foreach ( $EntregasETA as $item ) {
 
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiETA = $item['M3'];
-                    unset( $EntregasETA[ $docEntrega ] );
+                   // unset( $EntregasETA[ $docEntrega ] );
                     break;
                 }
+                
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
 
             }
 
@@ -1149,15 +1786,18 @@ class PedidosController extends Controller
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiFPE = $item['M3'];
-                    unset( $EntregasFPE[ $docEntrega ] );
+                   // unset( $EntregasFPE[ $docEntrega ] );
                     break;
                 }
+                
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
 
             }
 
             array_push(
                 $entregasFinal, array(
-                    $docEntrega, $posPedido, $material, $descripcion,
+                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
                     $volPedido, round( $sumaVolAsignado, 3 ),
                     round( $sumaVolAsiETA, 3 ),
                     round( $sumaVolAsiFPE, 3 )

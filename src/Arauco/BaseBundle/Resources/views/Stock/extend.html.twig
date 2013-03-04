@@ -20,7 +20,7 @@
         <br />
         <strong>Descripción Material:</strong> {{ stocksa.0.Desc_Mat }}
       </p>
-      <a class ="text-info" href="{{ path ('arauco_stock_csv') }}">Exportar a .csv <i class="icon-download-alt"></i></a>
+      <a class ="text-info" href="{{ path ('arauco_stock_csvextend', {'id': id}) }}">Exportar a .csv <i class="icon-download-alt"></i></a>
       <br />
       <br />
       <table class="table" id="myTable">

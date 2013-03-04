@@ -1,4 +1,5 @@
-Lote, Material, Descripcion
+{% set point = '.' %}
+Material;Descripcion;Volumen Disponible
 {% for row in data %}
-{{ row.Lote }},{{ row.Material }},"{{ row.Desc_Mat }}"
+{{ row.Material }};"{{ row.Desc_Mat }}";{{ row.tm3|replace({ (point) : ','})|trim }}
 {% endfor %}

@@ -29,7 +29,9 @@
         <thead>
           <tr>
             <th>DocEntrega</th>
-            <th>PosPedido</th>
+            <th>PP</th>
+            <th>Org.</th>
+            <th>FPE</th>
             <th>Material</th>
             <th>Descripción</th>
             <th>Volumen Pedido</th>
@@ -43,23 +45,25 @@
           <tr>
             <th>{{ entrega[0] }}</th>
             <th>{{ entrega[1] }}</th>
-            <th><a href="{{ path('arauco_stock_extend', {'id': entrega[2] }) }}">{{ entrega[2] }}</a></th>
+            <th>{{ entrega[2] }}</th>
             <th>{{ entrega[3] }}</th>
-            <th>{{ entrega[4] }}</th>
-            {% if entrega[5] == 0 %}
-            <th>0</th>
-            {% else %}
-            <th><a href="{{ path('arauco_stock_docpos_asig', {'docentrega': entrega[0], 'pospedido': entrega[1] }) }}">{{ entrega[5] }}</a></th>
-            {% endif %}
-            {% if entrega[6] == 0 %}
-            <th>0</th>
-            {% else %}
-            <th><a href="{{ path('arauco_stock_docpos_eta', {'docentrega': entrega[0], 'pospedido': entrega[1] }) }}">{{ entrega[6] }}</a></th>
-            {% endif %}
+            <th><a href="{{ path('arauco_stock_extend', {'id': entrega[4] }) }}">{{ entrega[4] }}</a></th>
+            <th>{{ entrega[5] }}</th>
+            <th>{{ entrega[6] }}</th>
             {% if entrega[7] == 0 %}
             <th>0</th>
             {% else %}
-            <th><a href="{{ path('arauco_stock_docpos_fpe', {'docentrega': entrega[0], 'pospedido': entrega[1] }) }}">{{ entrega[7] }}</a></th>
+            <th><a href="{{ path('arauco_stock_docpos_asig', {'docentrega': entrega[0], 'pospedido': entrega[1] }) }}">{{ entrega[7] }}</a></th>
+            {% endif %}
+            {% if entrega[8] == 0 %}
+            <th>0</th>
+            {% else %}
+            <th><a href="{{ path('arauco_stock_docpos_eta', {'docentrega': entrega[0], 'pospedido': entrega[1] }) }}">{{ entrega[8] }}</a></th>
+            {% endif %}
+            {% if entrega[9] == 0 %}
+            <th>0</th>
+            {% else %}
+            <th><a href="{{ path('arauco_stock_docpos_fpe', {'docentrega': entrega[0], 'pospedido': entrega[1] }) }}">{{ entrega[9] }}</a></th>
             {% endif %}
           </tr>
           {% endfor %}

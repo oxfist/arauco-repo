@@ -1,4 +1,5 @@
-DocEntrega, PosPedido, Material, Descripcion, VolPedido, TA, TA ETA, TA FPE
+{% set point = '.' %}
+DocEntrega; PosPedido; Org. Venta; FPE; Material; Descripcion; VolPedido; TA; TA ETA; TA FPE
 {% for entrega in data %}
-{{ entrega[0] }},{{ entrega[1] }},{{ entrega[2] }},"{{ entrega[3] }}", {{ entrega[4] }},{{ entrega[5] }}, {{ entrega[6] }},{{ entrega[7] }}
+{{ entrega[0] }};{{ entrega[1] }};{{ entrega[2] }};"{{ entrega[3] }}"; {{ entrega[4] }}; {{ entrega[5]|raw }};{{ entrega[6]|replace({ (point) : ','})|trim }}; {{ entrega[7]|replace({ (point) : ','})|trim }};{{ entrega[8]|replace({ (point) : ','})|trim }};{{ entrega[9]|replace({ (point) : ','})|trim }}
 {% endfor %}

@@ -5,9 +5,9 @@ namespace Arauco\CSVBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Arauco\CSVBundle\Entity\Stock
+ * Stock
  *
- * @ORM\Table()
+ * @ORM\Table(name="Stock")
  * @ORM\Entity(repositoryClass="Arauco\CSVBundle\Entity\Repository\StockRepository")
  */
 class Stock
@@ -134,6 +134,7 @@ class Stock
     private $STO_POSPEDIDO_ASI_FPE;
 
 
+
     /**
      * Set Centro
      *
@@ -178,6 +179,121 @@ class Stock
     public function getAlmacen()
     {
         return $this->Almacen;
+    }
+
+    /**
+     * Set Material
+     *
+     * @param float $material
+     * @return Stock
+     */
+    public function setMaterial($material)
+    {
+        $this->Material = $material;
+    
+        return $this;
+    }
+
+    /**
+     * Get Material
+     *
+     * @return float 
+     */
+    public function getMaterial()
+    {
+        return $this->Material;
+    }
+
+    /**
+     * Set Desc_Mat
+     *
+     * @param string $descMat
+     * @return Stock
+     */
+    public function setDescMat($descMat)
+    {
+        $this->Desc_Mat = $descMat;
+    
+        return $this;
+    }
+
+    /**
+     * Get Desc_Mat
+     *
+     * @return string 
+     */
+    public function getDescMat()
+    {
+        return $this->Desc_Mat;
+    }
+
+    /**
+     * Set Lote
+     *
+     * @param string $lote
+     * @return Stock
+     */
+    public function setLote($lote)
+    {
+        $this->Lote = $lote;
+    
+        return $this;
+    }
+
+    /**
+     * Get Lote
+     *
+     * @return string 
+     */
+    public function getLote()
+    {
+        return $this->Lote;
+    }
+
+    /**
+     * Set VolLot
+     *
+     * @param float $volLot
+     * @return Stock
+     */
+    public function setVolLot($volLot)
+    {
+        $this->VolLot = $volLot;
+    
+        return $this;
+    }
+
+    /**
+     * Get VolLot
+     *
+     * @return float 
+     */
+    public function getVolLot()
+    {
+        return $this->VolLot;
+    }
+
+    /**
+     * Set VolLotTran
+     *
+     * @param float $volLotTran
+     * @return Stock
+     */
+    public function setVolLotTran($volLotTran)
+    {
+        $this->VolLotTran = $volLotTran;
+    
+        return $this;
+    }
+
+    /**
+     * Get VolLotTran
+     *
+     * @return float 
+     */
+    public function getVolLotTran()
+    {
+        return $this->VolLotTran;
     }
 
     /**
@@ -270,75 +386,6 @@ class Stock
     public function getStatus()
     {
         return $this->Status;
-    }
-
-    /**
-     * Set Material
-     *
-     * @param float $material
-     * @return Stock
-     */
-    public function setMaterial($material)
-    {
-        $this->Material = $material;
-    
-        return $this;
-    }
-
-    /**
-     * Get Material
-     *
-     * @return float 
-     */
-    public function getMaterial()
-    {
-        return $this->Material;
-    }
-
-    /**
-     * Set Desc_Mat
-     *
-     * @param string $descMat
-     * @return Stock
-     */
-    public function setDescMat($descMat)
-    {
-        $this->Desc_Mat = $descMat;
-    
-        return $this;
-    }
-
-    /**
-     * Get Desc_Mat
-     *
-     * @return string 
-     */
-    public function getDescMat()
-    {
-        return $this->Desc_Mat;
-    }
-
-    /**
-     * Set Lote
-     *
-     * @param string $lote
-     * @return Stock
-     */
-    public function setLote($lote)
-    {
-        $this->Lote = $lote;
-    
-        return $this;
-    }
-
-    /**
-     * Get Lote
-     *
-     * @return string 
-     */
-    public function getLote()
-    {
-        return $this->Lote;
     }
 
     /**
@@ -477,51 +524,5 @@ class Stock
     public function getSTOPOSPEDIDOASIFPE()
     {
         return $this->STO_POSPEDIDO_ASI_FPE;
-    }
-
-    /**
-     * Set VolLot
-     *
-     * @param float $volLot
-     * @return Stock
-     */
-    public function setVolLot($volLot)
-    {
-        $this->VolLot = $volLot;
-    
-        return $this;
-    }
-
-    /**
-     * Get VolLot
-     *
-     * @return float 
-     */
-    public function getVolLot()
-    {
-        return $this->VolLot;
-    }
-
-    /**
-     * Set VolLotTran
-     *
-     * @param float $volLotTran
-     * @return Stock
-     */
-    public function setVolLotTran($volLotTran)
-    {
-        $this->VolLotTran = $volLotTran;
-    
-        return $this;
-    }
-
-    /**
-     * Get VolLotTran
-     *
-     * @return float 
-     */
-    public function getVolLotTran()
-    {
-        return $this->VolLotTran;
     }
 }

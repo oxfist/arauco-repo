@@ -1,8 +1,5 @@
-/web/bundles/
-/app/bootstrap*
-/app/cache/*
-/app/logs/*
+/app/
+/nbproject/
+/web/
 /vendor/
-/app/config/parameters.yml
 /composer.phar
-/nbproject/private/
