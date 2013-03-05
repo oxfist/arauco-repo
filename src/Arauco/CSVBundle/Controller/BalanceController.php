@@ -113,9 +113,13 @@ array_push(
         $pedidos = $em->getRepository('AraucoCSVBundle:Pedidos')
                 ->findAllTotalPedidos();
 
+        $totalBalance = 0;
+        $totalStock = 0;
+        $totalPedidos = 0;
+
         $total = array();
 
-                foreach ($pedidos as $item) {
+        foreach ($pedidos as $item) {
 
             $material = $item['Material'];
             $descMaterial = $item['DescripcionMaterial'];

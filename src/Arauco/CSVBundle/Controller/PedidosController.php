@@ -786,14 +786,12 @@ class PedidosController extends Controller
 
         $status = "NO";
         $completable = TRUE;
-        
+
         $em = $this->getDoctrine()->getManager();
-        
-        //$totallyInc = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosTotallyIncComETA($start_week, $end_week);
-        
+
         $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable);
         $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETASumM3($start_week, $end_week, $status, $completable);
-        
+
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncETA($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncETA($start_week, $end_week, $status, $completable);
 
@@ -904,7 +902,6 @@ class PedidosController extends Controller
         
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncETA($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncETA($start_week, $end_week, $status, $completable);
-        //$TotallyInc = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosTotallyIncETA($start_week, $end_week);
 
         $entregasFinal = array();
 
@@ -1011,7 +1008,6 @@ class PedidosController extends Controller
         
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncFPE($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);        
-        //$TotallyInc = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosTotallyIncComFPE($start_week, $end_week);
         
         $entregasFinal = array();
 
@@ -1121,7 +1117,6 @@ class PedidosController extends Controller
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncFPE($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);
         
-        //$TotallyInc = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosTotallyIncFPE($start_week, $end_week);
 
         $entregasFinal = array();
 
@@ -1397,8 +1392,6 @@ class PedidosController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         
-        // $totallyInc = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosTotallyIncComETA($start_week, $end_week);
-        
         $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable);
         $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETASumM3($start_week, $end_week, $status, $completable);
         
@@ -1514,7 +1507,6 @@ class PedidosController extends Controller
         
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncETA($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncETA($start_week, $end_week, $status, $completable);
-        //$TotallyInc = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosTotallyIncETA($start_week, $end_week);
 
         $entregasFinal = array();
 
@@ -1623,7 +1615,6 @@ class PedidosController extends Controller
         
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncFPE($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);        
-        //$TotallyInc = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosTotallyIncComFPE($start_week, $end_week);
         
         $entregasFinal = array();
 
@@ -1727,15 +1718,12 @@ class PedidosController extends Controller
         $status = "NO";
         $completable = FALSE;
         $em = $this->getDoctrine()->getManager();
-       
-          
+
         $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable);
         $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETASumM3($start_week, $end_week, $status, $completable);
 
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncFPE($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);
-        
-        //$TotallyInc = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosTotallyIncFPE($start_week, $end_week);
 
         $entregasFinal = array();
 

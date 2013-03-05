@@ -19,14 +19,13 @@ class sysInfoController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery("SELECT i.LastUpdate FROM AraucoCSVBundle:SysInfo i");
-        
+
         $LastUpdate = $query->getResult();
         foreach ($LastUpdate as $lastest) {
             $LastUpdateDate = $lastest['LastUpdate']->format('d M, Y G:i:s');
         }
-        
+
         return array('update' => $LastUpdateDate);
 
-      // return array();
     }
 }
