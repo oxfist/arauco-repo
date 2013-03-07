@@ -1,0 +1,92 @@
+{% extends '::base.html.twig' %}
+
+{% block styleGrafico %}
+	{{ parent() }}
+	{% stylesheets
+            '@AraucoBaseBundle/Resources/public/css/jquery.jqplot.min.css'
+            filter='yui_css'%}
+    <link rel="stylesheet" type="text/css"
+          media="screen" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block title %} Pedidos -{% endblock %}
+
+{% block content %}
+<div class="tab-content">
+  {% block body %}
+  <div class="tab-pane active" id="inicio">
+    <div class="hero-unit">
+      <legend>Reporte Específico Documento Entrega</legend>
+      <h2>DocEntrega <strong>Nº {{ id }}</strong></h2>
+      <p>
+        <strong>Cód. Cliente:</strong> {{ arrayDocEntrega.0[10] }}
+        <br />
+        <strong>Cliente:</strong> {{ arrayDocEntrega.0[11] }}
+        <br />
+        <strong>Entrega Compartida:</strong> {{ arrayDocEntrega.0[12] }}
+        <br />
+        <strong>Nave:</strong> {{ arrayDocEntrega.0[19] }}
+        <br />
+        <strong>Destino:</strong> {{ arrayDocEntrega.0[13] }}
+        <br />
+        <strong>Pais Puerto Destino:</strong> {{ arrayDocEntrega.0[14] }}
+        <br />
+        <strong>Clase Material:</strong> {{ arrayDocEntrega.0[20] }}
+        <br />
+        <strong>FPAN:</strong> {{ arrayDocEntrega.0[15] }}
+        <br />
+        <strong>FPD:</strong> {{ arrayDocEntrega.0[16] }}
+        <br />
+        <strong>MTS/MTO:</strong> {{ arrayDocEntrega.0[18] }}
+        <br />
+        <strong>Round de Ventas:</strong> {{ arrayDocEntrega.0[17] }}
+        <br />
+      </p>
+
+      {% block csv %}
+        <a class="text-info" href="{{ path ('arauco_pedido_docentrega_csv', {'id': id}) }}">Exportar a .csv <i class="icon-download-alt"></i></a>
+      {% endblock %}
+      <br />
+      <br />
+      <table class="table" id="myTable">
+        <thead>
+          <tr>
+            <th>Posición</th>
+            <th>FPE</th>
+            <th>Eta</th>
+            <th>Fec. Dis.</th>
+            <th>Material</th>
+            <th>Descripción</th>
+            <th>Volumen Pedido</th>
+            <th>TA</th>
+            <th>TA ETA</th>
+            <th>TA FPE</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for posicion in arrayDocEntrega %}
+          <tr>
+            <th>{{ posicion[0] }}</th>
+            <th>{{ posicion[1] }}</th>
+            <th>{{ posicion[2] }}</th>
+            <th>{{ posicion[3] }}</th>
+            <th><a href="{{ path('arauco_stock_extend', {'id': posicion[4] }) }}">{{ posicion[4] }}</a></th>
+            <th>{{ posicion[5] }}</th>
+            <th>{{ posicion[6] }}</th>
+            <th><a href="{{ path('arauco_stock_docpos_asig', {'docentrega': id, 'pospedido': posicion[0] }) }}">{{ posicion[7] }}</a></th>
+            <th><a href="{{ path('arauco_stock_docpos_eta', {'docentrega': id, 'pospedido': posicion[0] }) }}">{{ posicion[8] }}</a></th>
+            <th><a href="{{ path('arauco_stock_docpos_fpe', {'docentrega': id, 'pospedido': posicion[0] }) }}">{{ posicion[9] }}</a></th>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <br />
+      <div class="alert alert-info"> 
+        <strong>NOTA</strong>: Todas las cantidades mostradas en la tabla están en m&sup3;.
+      </div>
+    </div> <!-- hero-unit -->
+  </div> <!-- tab-pane active -->
+  {% endblock %}
+</div> <!-- tab-content -->
+{% endblock %}

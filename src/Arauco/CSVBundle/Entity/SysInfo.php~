@@ -24,7 +24,7 @@ class SysInfo
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="LastUpdate", type="datetime")
+     * @ORM\Column(name="lastUpdate", type="datetime")
      */
     private $LastUpdate;
 

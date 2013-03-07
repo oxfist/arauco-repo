@@ -133,13 +133,83 @@ class Pedidos
      * @ORM\Column(name="PED_COMPLETABLE_FPE", type="boolean", nullable=true)
      */
     private $PED_COMPLETABLE_FPE;
-    
+
     /**
      * @var integer unsigned
      *
      * @ORM\Column(name="OrgVenta", type="integer", nullable=false)
      */
     private $OrgVenta;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="EntComp", type="string", length=2, nullable=false)
+     */
+    private $EntComp;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="CodCliente", type="string", length=10, nullable=false)
+     */
+    private $CodCliente;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="NomCliente", type="string", length=64, nullable=false)
+     */
+    private $NomCliente;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Destino", type="string", length=64, nullable=false)
+     */
+    private $Destino;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="PaisDestino", type="string", length=32, nullable=false)
+     */
+    private $PaisDestino;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="MT", type="string", length=3, nullable=false)
+     */
+    private $MT;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ClaseMaterial", type="string", length=32, nullable=false)
+     */
+    private $ClaseMaterial;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="FecDis", type="date" , nullable=true)
+     */
+    private $FecDis;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="FPD", type="date" , nullable=true)
+     */
+    private $FPD;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="RoundVentas", type="date" , nullable=true)
+     */
+    private $RoundVentas;
 
 
     /**

@@ -133,13 +133,83 @@ class Pedidos
      * @ORM\Column(name="PED_COMPLETABLE_FPE", type="boolean", nullable=true)
      */
     private $PED_COMPLETABLE_FPE;
-    
+
     /**
      * @var integer unsigned
      *
      * @ORM\Column(name="OrgVenta", type="integer", nullable=false)
      */
     private $OrgVenta;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="EntComp", type="string", length=2, nullable=false)
+     */
+    private $EntComp;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="CodCliente", type="string", length=10, nullable=false)
+     */
+    private $CodCliente;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="NomCliente", type="string", length=64, nullable=false)
+     */
+    private $NomCliente;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Destino", type="string", length=64, nullable=false)
+     */
+    private $Destino;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="PaisDestino", type="string", length=32, nullable=false)
+     */
+    private $PaisDestino;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="MT", type="string", length=3, nullable=false)
+     */
+    private $MT;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ClaseMaterial", type="string", length=32, nullable=false)
+     */
+    private $ClaseMaterial;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="FecDis", type="date" , nullable=true)
+     */
+    private $FecDis;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="FPD", type="date" , nullable=true)
+     */
+    private $FPD;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="RoundVentas", type="date" , nullable=true)
+     */
+    private $RoundVentas;
 
 
     /**
@@ -554,5 +624,235 @@ class Pedidos
     public function getOrgVenta()
     {
         return $this->OrgVenta;
+    }
+
+    /**
+     * Set EntComp
+     *
+     * @param string $entComp
+     * @return Pedidos
+     */
+    public function setEntComp($entComp)
+    {
+        $this->EntComp = $entComp;
+    
+        return $this;
+    }
+
+    /**
+     * Get EntComp
+     *
+     * @return string 
+     */
+    public function getEntComp()
+    {
+        return $this->EntComp;
+    }
+
+    /**
+     * Set CodCliente
+     *
+     * @param string $codCliente
+     * @return Pedidos
+     */
+    public function setCodCliente($codCliente)
+    {
+        $this->CodCliente = $codCliente;
+    
+        return $this;
+    }
+
+    /**
+     * Get CodCliente
+     *
+     * @return string 
+     */
+    public function getCodCliente()
+    {
+        return $this->CodCliente;
+    }
+
+    /**
+     * Set NomCliente
+     *
+     * @param string $nomCliente
+     * @return Pedidos
+     */
+    public function setNomCliente($nomCliente)
+    {
+        $this->NomCliente = $nomCliente;
+    
+        return $this;
+    }
+
+    /**
+     * Get NomCliente
+     *
+     * @return string 
+     */
+    public function getNomCliente()
+    {
+        return $this->NomCliente;
+    }
+
+    /**
+     * Set Destino
+     *
+     * @param string $destino
+     * @return Pedidos
+     */
+    public function setDestino($destino)
+    {
+        $this->Destino = $destino;
+    
+        return $this;
+    }
+
+    /**
+     * Get Destino
+     *
+     * @return string 
+     */
+    public function getDestino()
+    {
+        return $this->Destino;
+    }
+
+    /**
+     * Set PaisDestino
+     *
+     * @param string $paisDestino
+     * @return Pedidos
+     */
+    public function setPaisDestino($paisDestino)
+    {
+        $this->PaisDestino = $paisDestino;
+    
+        return $this;
+    }
+
+    /**
+     * Get PaisDestino
+     *
+     * @return string 
+     */
+    public function getPaisDestino()
+    {
+        return $this->PaisDestino;
+    }
+
+    /**
+     * Set MT
+     *
+     * @param string $mT
+     * @return Pedidos
+     */
+    public function setMT($mT)
+    {
+        $this->MT = $mT;
+    
+        return $this;
+    }
+
+    /**
+     * Get MT
+     *
+     * @return string 
+     */
+    public function getMT()
+    {
+        return $this->MT;
+    }
+
+    /**
+     * Set ClaseMaterial
+     *
+     * @param string $claseMaterial
+     * @return Pedidos
+     */
+    public function setClaseMaterial($claseMaterial)
+    {
+        $this->ClaseMaterial = $claseMaterial;
+    
+        return $this;
+    }
+
+    /**
+     * Get ClaseMaterial
+     *
+     * @return string 
+     */
+    public function getClaseMaterial()
+    {
+        return $this->ClaseMaterial;
+    }
+
+    /**
+     * Set FecDis
+     *
+     * @param \DateTime $fecDis
+     * @return Pedidos
+     */
+    public function setFecDis($fecDis)
+    {
+        $this->FecDis = $fecDis;
+    
+        return $this;
+    }
+
+    /**
+     * Get FecDis
+     *
+     * @return \DateTime 
+     */
+    public function getFecDis()
+    {
+        return $this->FecDis;
+    }
+
+    /**
+     * Set FPD
+     *
+     * @param \DateTime $fPD
+     * @return Pedidos
+     */
+    public function setFPD($fPD)
+    {
+        $this->FPD = $fPD;
+    
+        return $this;
+    }
+
+    /**
+     * Get FPD
+     *
+     * @return \DateTime 
+     */
+    public function getFPD()
+    {
+        return $this->FPD;
+    }
+
+    /**
+     * Set RoundVentas
+     *
+     * @param \DateTime $roundVentas
+     * @return Pedidos
+     */
+    public function setRoundVentas($roundVentas)
+    {
+        $this->RoundVentas = $roundVentas;
+    
+        return $this;
+    }
+
+    /**
+     * Get RoundVentas
+     *
+     * @return \DateTime 
+     */
+    public function getRoundVentas()
+    {
+        return $this->RoundVentas;
     }
 }
