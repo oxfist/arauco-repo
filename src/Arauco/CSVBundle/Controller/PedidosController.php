@@ -45,7 +45,7 @@ class PedidosController extends Controller
                     AND P.StatusMovimientodeMcia = 'A'
                     ");
 
-            $cantEntregasCompletasEnPuerto[$i] = round($query->getSingleScalarResult()/1000,3);
+            $cantEntregasCompletasEnPuerto[$i] = round($query->getSingleScalarResult()/1000, 3);
 
             if(!isset($cantEntregasCompletasEnPuerto[$i]))
                 $cantEntregasCompletasEnPuerto[$i] = 0;
@@ -627,6 +627,7 @@ class PedidosController extends Controller
             $docEntrega = $item['DocEntrega'];
             $posPedido = $item['PosPedido'];
             $orgVenta = $item['OrgVenta'];
+            $eta = $item['Eta'];
             $fpe = $item['FPE'];
             $material = $item['Material'];
             $descripcion = $item['Desc_Mat'];
@@ -659,7 +660,8 @@ class PedidosController extends Controller
 
             array_push(
                 $entregasFinal, array(
-                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
+                    $docEntrega, $posPedido, $orgVenta, $eta->format('d-m-Y'),
+                    $fpe->format('d-m-Y'), $material, $descripcion,
                     $volPedido, round( $sumaVolAsignado, 3 ),
                     round( $sumaVolAsiETA, 3 ),
                     round( $sumaVolAsiFPE, 3 )
@@ -712,6 +714,7 @@ class PedidosController extends Controller
             $docEntrega = $item['DocEntrega'];
             $posPedido = $item['PosPedido'];
             $orgVenta = $item['OrgVenta'];
+            $eta = $item['Eta'];
             $fpe = $item['FPE'];
             $material = $item['Material'];
             $descripcion = $item['Desc_Mat'];
@@ -744,7 +747,8 @@ class PedidosController extends Controller
 
             array_push(
                 $entregasFinal, array(
-                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
+                    $docEntrega, $posPedido, $orgVenta,$eta->format('d-m-Y'),
+                    $fpe->format('d-m-Y'), $material, $descripcion,
                     $volPedido, round( $sumaVolAsignado, 3 ),
                     round( $sumaVolAsiETA, 3 ),
                     round( $sumaVolAsiFPE, 3 )
@@ -800,6 +804,7 @@ class PedidosController extends Controller
             $docEntrega = $entrega['DocEntrega'];
             $posPedido = $entrega['PosPedido'];
             $orgVenta = $entrega['OrgVenta'];
+            $eta = $entrega['Eta'];
             $fpe = $entrega['FPE'];
             $material = $entrega['Material'];
             $descripcion = $entrega['DescripcionMaterial'];
@@ -852,7 +857,8 @@ class PedidosController extends Controller
 
             array_push(
                 $entregasFinal, array(
-                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
+                    $docEntrega, $posPedido, $orgVenta, $eta->format('d-m-Y'),
+                    $fpe->format('d-m-Y'), $material, $descripcion,
                     $volPedido, round( $sumaVolAsignado, 3 ),
                     round( $sumaVolAsiETA, 3 ),
                     round( $sumaVolAsiFPE, 3 )
@@ -908,6 +914,7 @@ class PedidosController extends Controller
             $docEntrega = $entrega['DocEntrega'];
             $posPedido = $entrega['PosPedido'];
             $orgVenta = $entrega['OrgVenta'];
+            $eta = $entrega['Eta'];
             $fpe = $entrega['FPE'];
             $material = $entrega['Material'];
             $descripcion = $entrega['DescripcionMaterial'];
@@ -960,7 +967,8 @@ class PedidosController extends Controller
 
             array_push(
                 $entregasFinal, array(
-                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
+                    $docEntrega, $posPedido, $orgVenta, $eta->format('d-m-Y'),
+                    $fpe->format('d-m-Y'), $material, $descripcion,
                     $volPedido, round( $sumaVolAsignado, 3 ),
                     round( $sumaVolAsiETA, 3 ),
                     round( $sumaVolAsiFPE, 3 )
@@ -1014,6 +1022,7 @@ class PedidosController extends Controller
             $docEntrega = $entrega['DocEntrega'];
             $posPedido = $entrega['PosPedido'];
             $orgVenta = $entrega['OrgVenta'];
+            $eta = $entrega['Eta'];
             $fpe = $entrega['FPE'];
             $material = $entrega['Material'];
             $descripcion = $entrega['DescripcionMaterial'];
@@ -1067,7 +1076,8 @@ class PedidosController extends Controller
 
             array_push(
                 $entregasFinal, array(
-                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
+                    $docEntrega, $posPedido, $orgVenta, $eta->format('d-m-Y'),
+                    $fpe->format('d-m-Y'), $material, $descripcion,
                     $volPedido, round( $sumaVolAsignado, 3 ),
                     round( $sumaVolAsiETA, 3 ),
                     round( $sumaVolAsiFPE, 3 )
@@ -1108,8 +1118,8 @@ class PedidosController extends Controller
         $completable = FALSE;
         $em = $this->getDoctrine()->getManager();
 
-        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable);
-        $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETASumM3($start_week, $end_week, $status, $completable);
+        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPEList($start_week, $end_week, $status, $completable);
+        $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPESumM3($start_week, $end_week, $status, $completable);
 
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncFPE($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);
@@ -1121,6 +1131,7 @@ class PedidosController extends Controller
             $docEntrega = $entrega['DocEntrega'];
             $posPedido = $entrega['PosPedido'];
             $orgVenta = $entrega['OrgVenta'];
+            $eta = $entrega['Eta'];
             $fpe = $entrega['FPE'];
             $material = $entrega['Material'];
             $descripcion = $entrega['DescripcionMaterial'];
@@ -1174,7 +1185,8 @@ class PedidosController extends Controller
 
             array_push(
                 $entregasFinal, array(
-                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
+                    $docEntrega, $posPedido, $orgVenta, $eta->format('d-m-Y'),
+                    $fpe->format('d-m-Y'), $material, $descripcion,
                     $volPedido, round( $sumaVolAsignado, 3 ),
                     round( $sumaVolAsiETA, 3 ),
                     round( $sumaVolAsiFPE, 3 )
@@ -2012,5 +2024,16 @@ class PedidosController extends Controller
         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
 
         return $response;
+    }
+    
+    /**
+     * @Route("/pedidos/csv/etageneral", name="arauco_pedido_csv_general_eta")
+     */
+    public function generalCsvEtaAction(){
+        
+        $weekStart =  date( 'Ymd', strtotime('Monday this week') );
+        $weekEndPlusEightWeeks = date( 'Ymd', strtotime("Sunday +7 weeks") );
+        $em = $this->getDoctrine()->getManager();
+        
     }
 }

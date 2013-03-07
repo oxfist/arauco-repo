@@ -166,172 +166,178 @@
     <div class="tab-pane active" id="inicio">
         <div class="hero-unit">
             <h2>Gráfico de pedidos por semana</h2>
-<center><h3><a href="{{ path('arauco_pedido_index_aasa') }}">AASA</a> <a href="{{ path('arauco_pedido_index_pasa') }}">PASA</a></h3></center>
+<center><h3><a href="{{ path('arauco_pedido_index_aasa') }}" class="btn btn-success btn-large">AASA</a> <a href="{{ path('arauco_pedido_index_pasa') }}" class="btn btn-success btn-large">PASA</a></h3></center>
             {% block AASAPASA %}
             {% endblock %}         
             <h3>Simulación ETA</h3>
             <center>
                 <div id="chart3" style="width:800px; height:300px;"></div>
+                <br />
+                <a class="text-info pull-right">Exportar reporte generalizado de Simulación ETA en .csv <i class="icon-download-alt"></i></a>
+                <br /><br />
                 <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th><center>Semana</center></th>
-                        <th><center>Completos en Puerto</center></th>
-                        <th><center>Completos en Planta</center></th>
-                        <th><center>Completables</center></th>
-                        <th><center>Stock Incompleto</center></th>
-                        <th><center>Por Producir</center></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><center>1</center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 0 }) }}">{{ cantEntregasCompletasEnPuerto [0] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 0 }) }}">{{ cantEntregasCompletasEnPlanta [0] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_complet_eta', { 'week': 0 }) }}">{{ cantEntregasCompletablesETA [0] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 0 }) }}">{{ cantCompletadeEntregasIncompletasETA [0] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 0 }) }}">{{ cantIncompletadeEntregasIncompletasETA [0] }}</a></center></td>
-                    </tr>
-                    <tr>
-                        <td><center>2</center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 1 }) }}">{{ cantEntregasCompletasEnPuerto [1] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 1 }) }}">{{ cantEntregasCompletasEnPlanta [1] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_complet_eta', { 'week': 1 }) }}">{{ cantEntregasCompletablesETA [1] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 1 }) }}">{{ cantCompletadeEntregasIncompletasETA [1] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 1 }) }}">{{ cantIncompletadeEntregasIncompletasETA [1] }}</a></center></td>
-                    </tr>
-                    <tr>
-                        <td><center>3</center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 2 }) }}">{{ cantEntregasCompletasEnPuerto [2] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 2 }) }}">{{ cantEntregasCompletasEnPlanta [2] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_complet_eta', { 'week': 2 }) }}">{{ cantEntregasCompletablesETA [2] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 2 }) }}">{{ cantCompletadeEntregasIncompletasETA [2] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 2 }) }}">{{ cantIncompletadeEntregasIncompletasETA [2] }}</a></center></td>
-                    </tr>
-                    <tr>
-                        <td><center>4</center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 3 }) }}">{{ cantEntregasCompletasEnPuerto [3] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 3 }) }}">{{ cantEntregasCompletasEnPlanta [3] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_complet_eta', { 'week': 3 }) }}">{{ cantEntregasCompletablesETA [3] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 3 }) }}">{{ cantCompletadeEntregasIncompletasETA [3] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 3 }) }}">{{ cantIncompletadeEntregasIncompletasETA [3] }}</a></center></td>
-                    </tr>
-                    <tr>
-                        <td><center>5</center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 4 }) }}">{{ cantEntregasCompletasEnPuerto [4] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 4 }) }}">{{ cantEntregasCompletasEnPlanta [4] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_complet_eta', { 'week': 4 }) }}">{{ cantEntregasCompletablesETA [4] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 4 }) }}">{{ cantCompletadeEntregasIncompletasETA [4] }}</a></center></td>
-                         <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 4 }) }}">{{ cantIncompletadeEntregasIncompletasETA [4] }}</a></center></td>
-                    </tr>
-                    <tr>
-                        <td><center>6</center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 5 }) }}">{{ cantEntregasCompletasEnPuerto [5] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 5 }) }}">{{ cantEntregasCompletasEnPlanta [5] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_complet_eta', { 'week': 5 }) }}">{{ cantEntregasCompletablesETA [5] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 5 }) }}">{{ cantCompletadeEntregasIncompletasETA [5] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 5 }) }}">{{ cantIncompletadeEntregasIncompletasETA [5] }}</a></center></td>
-                    </tr>
-                    <tr>
-                        <td><center>7</center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 6 }) }}">{{ cantEntregasCompletasEnPuerto [6] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 6 }) }}">{{ cantEntregasCompletasEnPlanta [6] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_complet_eta', { 'week': 6 }) }}">{{ cantEntregasCompletablesETA [6] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 6 }) }}">{{ cantCompletadeEntregasIncompletasETA [6] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 6 }) }}">{{ cantIncompletadeEntregasIncompletasETA [6] }}</a></center></td>
-                    </tr>
-                    <tr>
-                        <td><center>8</center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 7 }) }}">{{ cantEntregasCompletasEnPuerto [7] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 7 }) }}">{{ cantEntregasCompletasEnPlanta [7] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_complet_eta', { 'week': 7 }) }}">{{ cantEntregasCompletablesETA [7] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 7 }) }}">{{ cantCompletadeEntregasIncompletasETA [7] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 7 }) }}">{{ cantIncompletadeEntregasIncompletasETA [7] }}</a></center></td>
-                    </tr>
-                </tbody>
+                    <thead>
+                        <tr>
+                            <th><center>Semana</center></th>
+                            <th><center>Completos en Puerto</center></th>
+                            <th><center>Completos en Planta</center></th>
+                            <th><center>Completables</center></th>
+                            <th><center>Stock Incompleto</center></th>
+                            <th><center>Por Producir</center></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><center>1</center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 0 }) }}">{{ cantEntregasCompletasEnPuerto [0] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 0 }) }}">{{ cantEntregasCompletasEnPlanta [0] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_complet_eta', { 'week': 0 }) }}">{{ cantEntregasCompletablesETA [0] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 0 }) }}">{{ cantCompletadeEntregasIncompletasETA [0] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 0 }) }}">{{ cantIncompletadeEntregasIncompletasETA [0] }}</a></center></td>
+                        </tr>
+                        <tr>
+                            <td><center>2</center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 1 }) }}">{{ cantEntregasCompletasEnPuerto [1] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 1 }) }}">{{ cantEntregasCompletasEnPlanta [1] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_complet_eta', { 'week': 1 }) }}">{{ cantEntregasCompletablesETA [1] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 1 }) }}">{{ cantCompletadeEntregasIncompletasETA [1] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 1 }) }}">{{ cantIncompletadeEntregasIncompletasETA [1] }}</a></center></td>
+                        </tr>
+                        <tr>
+                            <td><center>3</center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 2 }) }}">{{ cantEntregasCompletasEnPuerto [2] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 2 }) }}">{{ cantEntregasCompletasEnPlanta [2] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_complet_eta', { 'week': 2 }) }}">{{ cantEntregasCompletablesETA [2] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 2 }) }}">{{ cantCompletadeEntregasIncompletasETA [2] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 2 }) }}">{{ cantIncompletadeEntregasIncompletasETA [2] }}</a></center></td>
+                        </tr>
+                        <tr>
+                            <td><center>4</center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 3 }) }}">{{ cantEntregasCompletasEnPuerto [3] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 3 }) }}">{{ cantEntregasCompletasEnPlanta [3] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_complet_eta', { 'week': 3 }) }}">{{ cantEntregasCompletablesETA [3] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 3 }) }}">{{ cantCompletadeEntregasIncompletasETA [3] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 3 }) }}">{{ cantIncompletadeEntregasIncompletasETA [3] }}</a></center></td>
+                        </tr>
+                        <tr>
+                            <td><center>5</center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 4 }) }}">{{ cantEntregasCompletasEnPuerto [4] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 4 }) }}">{{ cantEntregasCompletasEnPlanta [4] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_complet_eta', { 'week': 4 }) }}">{{ cantEntregasCompletablesETA [4] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 4 }) }}">{{ cantCompletadeEntregasIncompletasETA [4] }}</a></center></td>
+                             <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 4 }) }}">{{ cantIncompletadeEntregasIncompletasETA [4] }}</a></center></td>
+                        </tr>
+                        <tr>
+                            <td><center>6</center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 5 }) }}">{{ cantEntregasCompletasEnPuerto [5] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 5 }) }}">{{ cantEntregasCompletasEnPlanta [5] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_complet_eta', { 'week': 5 }) }}">{{ cantEntregasCompletablesETA [5] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 5 }) }}">{{ cantCompletadeEntregasIncompletasETA [5] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 5 }) }}">{{ cantIncompletadeEntregasIncompletasETA [5] }}</a></center></td>
+                        </tr>
+                        <tr>
+                            <td><center>7</center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 6 }) }}">{{ cantEntregasCompletasEnPuerto [6] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 6 }) }}">{{ cantEntregasCompletasEnPlanta [6] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_complet_eta', { 'week': 6 }) }}">{{ cantEntregasCompletablesETA [6] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 6 }) }}">{{ cantCompletadeEntregasIncompletasETA [6] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 6 }) }}">{{ cantIncompletadeEntregasIncompletasETA [6] }}</a></center></td>
+                        </tr>
+                        <tr>
+                            <td><center>8</center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 7 }) }}">{{ cantEntregasCompletasEnPuerto [7] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 7 }) }}">{{ cantEntregasCompletasEnPlanta [7] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_complet_eta', { 'week': 7 }) }}">{{ cantEntregasCompletablesETA [7] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 7 }) }}">{{ cantCompletadeEntregasIncompletasETA [7] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_eta', { 'week': 7 }) }}">{{ cantIncompletadeEntregasIncompletasETA [7] }}</a></center></td>
+                        </tr>
+                    </tbody>
                 </table>
             </center>
             <br />
             <h3>Simulación FPE</h3>
             <center>
-            <div id="chart4" style="width:800px; height:300px;"></div>
+                <div id="chart4" style="width:800px; height:300px;"></div>
+                <br />
+                <a class="text-info pull-right">Exportar reporte generalizado de Simulación FPE en .csv <i class="icon-download-alt"></i></a>
+                <br /><br />
                 <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th><center>Semana</center></th>
-                        <th><center>Completos en Puerto</center></th>
-                        <th><center>Completos en Planta</center></th>
-                        <th><center>Completables</center></th>
-                        <th><center>Stock Incompleto</center></th>
-                        <th><center>Por Producir</center></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><center>1</center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 0 }) }}">{{ cantEntregasCompletasEnPuerto [0] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 0 }) }}">{{ cantEntregasCompletasEnPlanta [0] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_complet_fpe', { 'week': 0 }) }}">{{ cantEntregasCompletablesFPE [0] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 0 }) }}">{{ cantCompletadeEntregasIncompletasFPE [0] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 0 }) }}">{{ cantIncompletadeEntregasIncompletasFPE [0] }}</a></center></td>
-                    </tr>
-                    <tr>
-                        <td><center>2</center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 1 }) }}">{{ cantEntregasCompletasEnPuerto [1] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 1 }) }}">{{ cantEntregasCompletasEnPlanta [1] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_complet_fpe', { 'week': 1 }) }}">{{ cantEntregasCompletablesFPE [1] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 1 }) }}">{{ cantCompletadeEntregasIncompletasFPE [1] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 1 }) }}">{{ cantIncompletadeEntregasIncompletasFPE [1] }}</a></center></td>
-                    </tr>
-                    <tr>
-                        <td><center>3</center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 2 }) }}">{{ cantEntregasCompletasEnPuerto [2] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 2 }) }}">{{ cantEntregasCompletasEnPlanta [2] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_complet_fpe', { 'week': 2 }) }}">{{ cantEntregasCompletablesFPE [2] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 2 }) }}">{{ cantCompletadeEntregasIncompletasFPE [2] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 2 }) }}">{{ cantIncompletadeEntregasIncompletasFPE [2] }}</a></center></td>
-                    </tr>
-                    <tr>
-                        <td><center>4</center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 3 }) }}">{{ cantEntregasCompletasEnPuerto [3] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 3 }) }}">{{ cantEntregasCompletasEnPlanta [3] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_complet_fpe', { 'week': 3 }) }}">{{ cantEntregasCompletablesFPE [3] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 3 }) }}">{{ cantCompletadeEntregasIncompletasFPE [3] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 3 }) }}">{{ cantIncompletadeEntregasIncompletasFPE [3] }}</a></center></td>
-                    </tr>
-                    <tr>
-                        <td><center>5</center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 4 }) }}">{{ cantEntregasCompletasEnPuerto [4] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 4 }) }}">{{ cantEntregasCompletasEnPlanta [4] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_complet_fpe', { 'week': 4 }) }}">{{ cantEntregasCompletablesFPE [4] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 4 }) }}">{{ cantCompletadeEntregasIncompletasFPE [4] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 4 }) }}">{{ cantIncompletadeEntregasIncompletasFPE [4] }}</a></center></td>
-                    </tr>
-                    <tr>
-                        <td><center>6</center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 5 }) }}">{{ cantEntregasCompletasEnPuerto [5] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 5 }) }}">{{ cantEntregasCompletasEnPlanta [5] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_complet_fpe', { 'week': 5 }) }}">{{ cantEntregasCompletablesFPE [5] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 5 }) }}">{{ cantCompletadeEntregasIncompletasFPE [5] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 5 }) }}">{{ cantIncompletadeEntregasIncompletasFPE [5] }}</a></center></td>
-                    </tr>
-                    <tr>
-                        <td><center>7</center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 6 }) }}">{{ cantEntregasCompletasEnPuerto [6] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 6 }) }}">{{ cantEntregasCompletasEnPlanta [6] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_complet_fpe', { 'week': 6 }) }}">{{ cantEntregasCompletablesFPE [6] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 6 }) }}">{{ cantCompletadeEntregasIncompletasFPE [6] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 6 }) }}">{{ cantIncompletadeEntregasIncompletasFPE [6] }}</a></center></td>
-                    </tr>
-                    <tr>
-                        <td><center>8</center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 7 }) }}">{{ cantEntregasCompletasEnPuerto [7] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 7 }) }}">{{ cantEntregasCompletasEnPlanta [7] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_complet_fpe', { 'week': 7 }) }}">{{ cantEntregasCompletablesFPE [7] }}</a></center></td>
-                        <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 7 }) }}">{{ cantCompletadeEntregasIncompletasFPE [7] }}</a></center></td>
-                         <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 7 }) }}">{{ cantIncompletadeEntregasIncompletasFPE [7] }}</a></center></td>
-                    </tr>
-                </tbody>
+                    <thead>
+                        <tr>
+                            <th><center>Semana</center></th>
+                            <th><center>Completos en Puerto</center></th>
+                            <th><center>Completos en Planta</center></th>
+                            <th><center>Completables</center></th>
+                            <th><center>Stock Incompleto</center></th>
+                            <th><center>Por Producir</center></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><center>1</center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 0 }) }}">{{ cantEntregasCompletasEnPuerto [0] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 0 }) }}">{{ cantEntregasCompletasEnPlanta [0] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_complet_fpe', { 'week': 0 }) }}">{{ cantEntregasCompletablesFPE [0] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 0 }) }}">{{ cantCompletadeEntregasIncompletasFPE [0] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 0 }) }}">{{ cantIncompletadeEntregasIncompletasFPE [0] }}</a></center></td>
+                        </tr>
+                        <tr>
+                            <td><center>2</center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 1 }) }}">{{ cantEntregasCompletasEnPuerto [1] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 1 }) }}">{{ cantEntregasCompletasEnPlanta [1] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_complet_fpe', { 'week': 1 }) }}">{{ cantEntregasCompletablesFPE [1] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 1 }) }}">{{ cantCompletadeEntregasIncompletasFPE [1] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 1 }) }}">{{ cantIncompletadeEntregasIncompletasFPE [1] }}</a></center></td>
+                        </tr>
+                        <tr>
+                            <td><center>3</center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 2 }) }}">{{ cantEntregasCompletasEnPuerto [2] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 2 }) }}">{{ cantEntregasCompletasEnPlanta [2] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_complet_fpe', { 'week': 2 }) }}">{{ cantEntregasCompletablesFPE [2] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 2 }) }}">{{ cantCompletadeEntregasIncompletasFPE [2] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 2 }) }}">{{ cantIncompletadeEntregasIncompletasFPE [2] }}</a></center></td>
+                        </tr>
+                        <tr>
+                            <td><center>4</center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 3 }) }}">{{ cantEntregasCompletasEnPuerto [3] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 3 }) }}">{{ cantEntregasCompletasEnPlanta [3] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_complet_fpe', { 'week': 3 }) }}">{{ cantEntregasCompletablesFPE [3] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 3 }) }}">{{ cantCompletadeEntregasIncompletasFPE [3] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 3 }) }}">{{ cantIncompletadeEntregasIncompletasFPE [3] }}</a></center></td>
+                        </tr>
+                        <tr>
+                            <td><center>5</center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 4 }) }}">{{ cantEntregasCompletasEnPuerto [4] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 4 }) }}">{{ cantEntregasCompletasEnPlanta [4] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_complet_fpe', { 'week': 4 }) }}">{{ cantEntregasCompletablesFPE [4] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 4 }) }}">{{ cantCompletadeEntregasIncompletasFPE [4] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 4 }) }}">{{ cantIncompletadeEntregasIncompletasFPE [4] }}</a></center></td>
+                        </tr>
+                        <tr>
+                            <td><center>6</center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 5 }) }}">{{ cantEntregasCompletasEnPuerto [5] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 5 }) }}">{{ cantEntregasCompletasEnPlanta [5] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_complet_fpe', { 'week': 5 }) }}">{{ cantEntregasCompletablesFPE [5] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 5 }) }}">{{ cantCompletadeEntregasIncompletasFPE [5] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 5 }) }}">{{ cantIncompletadeEntregasIncompletasFPE [5] }}</a></center></td>
+                        </tr>
+                        <tr>
+                            <td><center>7</center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 6 }) }}">{{ cantEntregasCompletasEnPuerto [6] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 6 }) }}">{{ cantEntregasCompletasEnPlanta [6] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_complet_fpe', { 'week': 6 }) }}">{{ cantEntregasCompletablesFPE [6] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 6 }) }}">{{ cantCompletadeEntregasIncompletasFPE [6] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 6 }) }}">{{ cantIncompletadeEntregasIncompletasFPE [6] }}</a></center></td>
+                        </tr>
+                        <tr>
+                            <td><center>8</center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpu', { 'week': 7 }) }}">{{ cantEntregasCompletasEnPuerto [7] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_com_cpl', { 'week': 7 }) }}">{{ cantEntregasCompletasEnPlanta [7] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_complet_fpe', { 'week': 7 }) }}">{{ cantEntregasCompletablesFPE [7] }}</a></center></td>
+                            <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 7 }) }}">{{ cantCompletadeEntregasIncompletasFPE [7] }}</a></center></td>
+                             <td><center><a href="{{ path('arauco_pedido_extend_inc_fpe', { 'week': 7 }) }}">{{ cantIncompletadeEntregasIncompletasFPE [7] }}</a></center></td>
+                        </tr>
+                    </tbody>
                 </table>
             </center>
             <br />
