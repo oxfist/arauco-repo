@@ -1,8 +1,8 @@
-DELETE FROM Stock;
+﻿DELETE FROM Stock;
 DELETE FROM Pedidos;
 
 LOAD DATA LOCAL INFILE
-	"/srv/http/arauco/StockTest.csv"
+	"/home/sh1ken/arauco/ZQUSTOCKHOY.txt"
 INTO TABLE
 	Stock
 CHARACTER SET latin1
@@ -60,7 +60,6 @@ SET
 	VolLot = REPLACE( @VolLot,',' , '.'),
 	VolLotTran = REPLACE( @VolLotTran,',' , '.');
 
-
 DELETE FROM Stock WHERE Almacen != 0100;
 
 UPDATE Stock SET M3 = VolLot + VolLotTran;
@@ -70,9 +69,9 @@ DELETE FROM Stock WHERE M3 = 0;
 DELETE FROM Stock where Centro NOT LIKE 'AA%' AND Centro NOT LIKE 'AD%' AND Centro NOT LIKE 'AR%' AND Centro NOT LIKE 'TA%' AND Centro NOT LIKE 'TD%' AND Centro != 'TMT1';
 
 LOAD DATA LOCAL INFILE
-    "/srv/http/arauco/PedidosTest.csv"
+"/home/sh1ken/arauco/ZQUPRGEMBVQ1.txt"
 INTO TABLE
-    Pedidos
+    Pedidos
 CHARACTER SET latin1
 COLUMNS TERMINATED BY '|'
 ESCAPED BY '"'
@@ -184,33 +183,410 @@ StatusMovimientodeMcia,
 @dummy,
 @dummy)
 SET
-    StatusComplete = NULL,
-    PED_COMPLETABLE_ETA = FALSE,
-    PED_COMPLETABLE_FPE = FALSE,
-    FPE = str_to_date(@FPE, '%d-%m-%Y'),
-    FPD = str_to_date(@FPD, '%d-%m-%Y'),
-    FPAN = str_to_date(@FPAN, '%d-%m-%Y'),
-    FecDis = str_to_date(@FecDis, '%d-%m-%Y'),
-    RoundVentas = str_to_date(@RoundVentas, '%Y-%m'),
-    PED_UNIDADES_ASIGNADAS = 0,
-    Eta = STR_TO_DATE(@Eta,'%Y%m%d');
+	StatusComplete = NULL,
+	PED_COMPLETABLE_ETA = FALSE,
+	PED_COMPLETABLE_FPE = FALSE,
+	FPE = str_to_date(@FPE, '%d-%m-%Y'),
+	FPD = str_to_date(@FPD, '%d-%m-%Y'),
+	FPAN = str_to_date(@FPAN, '%d-%m-%Y'),
+	FecDis = str_to_date(@FecDis, '%d-%m-%Y'),
+	RoundVentas = str_to_date(@RoundVentas, '%Y-%m'),
+	PED_UNIDADES_ASIGNADAS = 0,
+	Eta = STR_TO_DATE(@Eta,'%Y%m%d');
+
+LOAD DATA LOCAL INFILE
+"/home/sh1ken/arauco/ZQUPRGEMBVQ2.txt"
+INTO TABLE
+    Pedidos
+CHARACTER SET latin1
+COLUMNS TERMINATED BY '|'
+ESCAPED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(
+Nave,
+@Eta,
+@dummy,
+@dummy,
+@dummy,
+DocEntrega,
+@dummy,
+@dummy,
+EntComp,
+@dummy,
+CodCliente,
+NomCliente,
+Destino,
+@dummy,
+PaisDestino,
+@dummy,
+@dummy,
+@dummy,
+@FecDis,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+PosPedido,
+@dummy,
+@dummy,
+VolPedido,
+UMV,
+PED_UNIDADES_SOLICITADAS,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+Material,
+DescripcionMaterial,
+@dummy,
+@dummy,
+PosOrdenFac,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+ClaseMaterial,
+@dummy,
+@dummy,
+@FPD,
+@FPE,
+@FPAN,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+OrgVenta,
+@dummy,
+@RoundVentas,
+MT,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+StatusMovimientodeMcia,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy)
+SET
+	StatusComplete = NULL,
+	PED_COMPLETABLE_ETA = FALSE,
+	PED_COMPLETABLE_FPE = FALSE,
+	FPE = str_to_date(@FPE, '%d-%m-%Y'),
+	FPD = str_to_date(@FPD, '%d-%m-%Y'),
+	FPAN = str_to_date(@FPAN, '%d-%m-%Y'),
+	FecDis = str_to_date(@FecDis, '%d-%m-%Y'),
+	RoundVentas = str_to_date(@RoundVentas, '%Y-%m'),
+	PED_UNIDADES_ASIGNADAS = 0,
+	Eta = STR_TO_DATE(@Eta,'%Y%m%d');
+
+LOAD DATA LOCAL INFILE
+"/home/sh1ken/arauco/ZQUPRGEMBVQ3.txt"
+INTO TABLE
+    Pedidos
+CHARACTER SET latin1
+COLUMNS TERMINATED BY '|'
+ESCAPED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(
+Nave,
+@Eta,
+@dummy,
+@dummy,
+@dummy,
+DocEntrega,
+@dummy,
+@dummy,
+EntComp,
+@dummy,
+CodCliente,
+NomCliente,
+Destino,
+@dummy,
+PaisDestino,
+@dummy,
+@dummy,
+@dummy,
+@FecDis,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+PosPedido,
+@dummy,
+@dummy,
+VolPedido,
+UMV,
+PED_UNIDADES_SOLICITADAS,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+Material,
+DescripcionMaterial,
+@dummy,
+@dummy,
+PosOrdenFac,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+ClaseMaterial,
+@dummy,
+@dummy,
+@FPD,
+@FPE,
+@FPAN,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+OrgVenta,
+@dummy,
+@RoundVentas,
+MT,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+StatusMovimientodeMcia,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy)
+SET
+	StatusComplete = NULL,
+	PED_COMPLETABLE_ETA = FALSE,
+	PED_COMPLETABLE_FPE = FALSE,
+	FPE = str_to_date(@FPE, '%d-%m-%Y'),
+	FPD = str_to_date(@FPD, '%d-%m-%Y'),
+	FPAN = str_to_date(@FPAN, '%d-%m-%Y'),
+	FecDis = str_to_date(@FecDis, '%d-%m-%Y'),
+	RoundVentas = str_to_date(@RoundVentas, '%Y-%m'),
+	PED_UNIDADES_ASIGNADAS = 0,
+	Eta = STR_TO_DATE(@Eta,'%Y%m%d');
+
+LOAD DATA LOCAL INFILE
+"/home/sh1ken/arauco/ZQUPRGEMBVQ5.txt"
+INTO TABLE
+    Pedidos
+CHARACTER SET latin1
+COLUMNS TERMINATED BY '|'
+ESCAPED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(
+Nave,
+@Eta,
+@dummy,
+@dummy,
+@dummy,
+DocEntrega,
+@dummy,
+@dummy,
+EntComp,
+@dummy,
+CodCliente,
+NomCliente,
+Destino,
+@dummy,
+PaisDestino,
+@dummy,
+@dummy,
+@dummy,
+@FecDis,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+PosPedido,
+@dummy,
+@dummy,
+VolPedido,
+UMV,
+PED_UNIDADES_SOLICITADAS,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+Material,
+DescripcionMaterial,
+@dummy,
+@dummy,
+PosOrdenFac,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+ClaseMaterial,
+@dummy,
+@dummy,
+@FPD,
+@FPE,
+@FPAN,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+OrgVenta,
+@dummy,
+@RoundVentas,
+MT,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+StatusMovimientodeMcia,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy,
+@dummy)
+SET
+	StatusComplete = NULL,
+	PED_COMPLETABLE_ETA = FALSE,
+	PED_COMPLETABLE_FPE = FALSE,
+	FPE = str_to_date(@FPE, '%d-%m-%Y'),
+	FPD = str_to_date(@FPD, '%d-%m-%Y'),
+	FPAN = str_to_date(@FPAN, '%d-%m-%Y'),
+	FecDis = str_to_date(@FecDis, '%d-%m-%Y'),
+	RoundVentas = str_to_date(@RoundVentas, '%Y-%m'),
+	PED_UNIDADES_ASIGNADAS = 0,
+	Eta = STR_TO_DATE(@Eta,'%Y%m%d');
+
 
 DELETE FROM Pedidos WHERE VolPedido = 0;
-
 DELETE FROM Pedidos WHERE PED_UNIDADES_SOLICITADAS = 0;
-
 DELETE FROM Pedidos WHERE StatusMovimientodeMcia != 'A';
 
 UPDATE Pedidos SET Eta = adddate(curdate(), INTERVAL 2-DAYOFWEEK(curdate()) DAY) WHERE Eta = "0000-00-00" AND FPAN < curdate();
 UPDATE Pedidos Set Eta = FPAN where ETA = "0000-00-00";
 
 create view PedidoView as (select DocEntrega, PosPedido, PosOrdenFac, count(PosOrdenFac) CantPosOrdenFac from Pedidos group by DocEntrega, PosPedido Order by DocEntrega);
-
 CALL PRO_PED_VIEW();
+
 CALL PRO_ASI_COM_INC();
 CALL PRO_ASI_ETA();
 CALL PRO_ASI_FPE();
 CALL PRO_ASI_COMPLETABLE();
 
-DELETE FROM sysInfo;
-INSERT INTO sysInfo SET lastUpdate = now();
+DELETE FROM SysInfo;
+INSERT INTO SysInfo SET lastUpdate = now();
