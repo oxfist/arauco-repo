@@ -595,7 +595,7 @@ class PedidosController extends Controller
      * @Route("/pedido/comcpu/{week}", name="arauco_pedido_extend_com_cpu")
      * @Template("AraucoBaseBundle:Pedido:extendCPU.html.twig")
      */
-    0public function extendcomcpuAction ($week)
+    public function extendcomcpuAction ($week)
     {
         $cantOfWeeks = $week;
 
