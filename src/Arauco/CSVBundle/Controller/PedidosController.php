@@ -12,6 +12,30 @@ ini_set( 'memory_limit', '-1' );
 
 class PedidosController extends Controller
 {
+    private function dateconvert($cantOfWeeks) {
+
+        $day = date('d', strtotime("+". $cantOfWeeks." week"));
+        $month = date('m', strtotime("+". $cantOfWeeks." week"));
+        $year = date('Y', strtotime("+". $cantOfWeeks." week"));
+
+        $weekday = date('w', mktime(0,0,0,$month, $day, $year));
+        $sunday  = $day - $weekday;
+
+        $start_week = date('Ymd', mktime(0,0,0,$month, $sunday+1, $year));
+        $end_week   = date('Ymd', mktime(0,0,0,$month, $sunday+7, $year));
+
+        $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
+        $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year));
+
+        return array(
+            'start_week' => $start_week,
+            'end_week' => $end_week,
+            'sWeek' => $sWeek,
+            'eWeek' => $eWeek,
+            );
+
+    }
+
     /**
      * @Route("/pedido", name="arauco_pedido_index")
      * @Template("AraucoBaseBundle:Pedido:index.html.twig")
@@ -19,20 +43,13 @@ class PedidosController extends Controller
     public function importAction ()
     {
         for ($i = 0; $i < 8; $i++) {
-            $cantOfWeeks = $i;
 
-            $day = date('d', strtotime("+". $cantOfWeeks." week"));
-            $month = date('m', strtotime("+". $cantOfWeeks." week"));
-            $year = date('Y', strtotime("+". $cantOfWeeks." week"));
-
-            $weekday = date('w', mktime(0,0,0,$month, $day, $year));
-            $sunday  = $day - $weekday;
-
-            $start_week = date('Ymd', mktime(0,0,0,$month, $sunday+1, $year));
-            $end_week   = date('Ymd', mktime(0,0,0,$month, $sunday+7, $year));
+            $dateconvert = PedidosController::dateconvert($i);
+            $start_week = $dateconvert['start_week'];
+            $end_week   = $dateconvert['end_week'];
 
             $em = $this->getDoctrine()->getManager();
-//////////
+
             $query = $em->createQuery("
                 SELECT
                     SUM( P.VolPedido ) as M3
@@ -49,7 +66,7 @@ class PedidosController extends Controller
 
             if(!isset($cantEntregasCompletasEnPuerto[$i]))
                 $cantEntregasCompletasEnPuerto[$i] = 0;
-//////////
+
             $query2 = $em->createQuery("
                 SELECT
                     SUM( P.VolPedido ) as M3
@@ -66,7 +83,7 @@ class PedidosController extends Controller
 
             if(!isset($cantEntregasCompletasEnPlanta[$i]))
                 $cantEntregasCompletasEnPlanta[$i] = 0;
-//////////
+
             $query3 = $em->createQuery("
                 SELECT
                     SUM( P.VolPedido ) as M3
@@ -84,7 +101,7 @@ class PedidosController extends Controller
 
             if(!isset($cantEntregasCompletablesETA[$i]))
                 $cantEntregasCompletablesETA[$i] = 0;
-//////////
+
             $query31 = $em->createQuery("
                 SELECT
                     SUM( P.VolPedido ) as M3
@@ -102,7 +119,7 @@ class PedidosController extends Controller
 
             if(!isset($cantEntregasCompletablesFPE[$i]))
                 $cantEntregasCompletablesFPE[$i] = 0;
-//////////
+
             $query41 = $em->createQuery("
                 SELECT
                     SUM( S.M3 ) as M3
@@ -123,7 +140,7 @@ class PedidosController extends Controller
 
             if(!isset($cantCompletadeEntregasIncompletasETA[$i]))
                 $cantCompletadeEntregasIncompletasETA[$i] = 0;
-//////////
+
             $query42 = $em->createQuery("
                 SELECT
                     SUM( P.VolPedido ) as M3
@@ -143,7 +160,7 @@ class PedidosController extends Controller
                 $cantIncompletadeEntregasIncompletasETA[$i] = 0;
              else
                 $cantIncompletadeEntregasIncompletasETA[$i] = $cantIncompletadeEntregasIncompletasETA[$i] - $cantCompletadeEntregasIncompletasETA[$i];
-//////////
+
             $query51 = $em->createQuery("
                 SELECT
                     SUM( S.M3 ) as M3
@@ -163,7 +180,7 @@ class PedidosController extends Controller
 
             if(!isset($cantCompletadeEntregasIncompletasFPE[$i]))
                 $cantCompletadeEntregasIncompletasFPE[$i] = 0;
-//////////
+
             $query52 = $em->createQuery("
                 SELECT
                     SUM( P.VolPedido ) as M3
@@ -183,7 +200,6 @@ class PedidosController extends Controller
                 $cantIncompletadeEntregasIncompletasFPE[$i] = 0;
             else
                 $cantIncompletadeEntregasIncompletasFPE[$i] = $cantIncompletadeEntregasIncompletasFPE[$i] - $cantCompletadeEntregasIncompletasFPE[$i];
-//////////
         }
 
         return array(
@@ -204,20 +220,12 @@ class PedidosController extends Controller
     public function importpasaAction ()
     {
         for ($i = 0; $i < 8; $i++) {
-            $cantOfWeeks = $i;
-
-            $day = date('d', strtotime("+". $cantOfWeeks." week"));
-            $month = date('m', strtotime("+". $cantOfWeeks." week"));
-            $year = date('Y', strtotime("+". $cantOfWeeks." week"));
-
-            $weekday = date('w', mktime(0,0,0,$month, $day, $year));
-            $sunday  = $day - $weekday;
-
-            $start_week = date('Ymd', mktime(0,0,0,$month, $sunday+1, $year));
-            $end_week   = date('Ymd', mktime(0,0,0,$month, $sunday+7, $year));
+            $dateconvert = PedidosController::dateconvert($i);
+            $start_week = $dateconvert['start_week'];
+            $end_week   = $dateconvert['end_week'];
 
             $em = $this->getDoctrine()->getManager();
-//////////
+
             $query = $em->createQuery("
                 SELECT
                     SUM( P.VolPedido ) as M3
@@ -235,7 +243,7 @@ class PedidosController extends Controller
 
             if(!isset($cantEntregasCompletasEnPuerto[$i]))
                 $cantEntregasCompletasEnPuerto[$i] = 0;
-//////////
+
             $query2 = $em->createQuery("
                 SELECT
                     SUM( P.VolPedido ) as M3
@@ -253,7 +261,7 @@ class PedidosController extends Controller
 
             if(!isset($cantEntregasCompletasEnPlanta[$i]))
                 $cantEntregasCompletasEnPlanta[$i] = 0;
-//////////
+
             $query3 = $em->createQuery("
                 SELECT
                     SUM( P.VolPedido ) as M3
@@ -272,7 +280,7 @@ class PedidosController extends Controller
 
             if(!isset($cantEntregasCompletablesETA[$i]))
                 $cantEntregasCompletablesETA[$i] = 0;
-//////////
+
             $query31 = $em->createQuery("
                 SELECT
                     SUM( P.VolPedido ) as M3
@@ -291,7 +299,7 @@ class PedidosController extends Controller
 
             if(!isset($cantEntregasCompletablesFPE[$i]))
                 $cantEntregasCompletablesFPE[$i] = 0;
-//////////
+
             $query41 = $em->createQuery("
                 SELECT
                     SUM( S.M3 ) as M3
@@ -313,7 +321,7 @@ class PedidosController extends Controller
 
             if(!isset($cantCompletadeEntregasIncompletasETA[$i]))
                 $cantCompletadeEntregasIncompletasETA[$i] = 0;
-//////////
+
             $query42 = $em->createQuery("
                 SELECT
                     SUM( P.VolPedido ) as M3
@@ -334,7 +342,7 @@ class PedidosController extends Controller
                 $cantIncompletadeEntregasIncompletasETA[$i] = 0;
              else
                 $cantIncompletadeEntregasIncompletasETA[$i] = $cantIncompletadeEntregasIncompletasETA[$i] - $cantCompletadeEntregasIncompletasETA[$i];
-//////////
+
             $query51 = $em->createQuery("
                 SELECT
                     SUM( S.M3 ) as M3
@@ -356,7 +364,7 @@ class PedidosController extends Controller
 
             if(!isset($cantCompletadeEntregasIncompletasFPE[$i]))
                 $cantCompletadeEntregasIncompletasFPE[$i] = 0;
-//////////
+
             $query52 = $em->createQuery("
                 SELECT
                     SUM( P.VolPedido ) as M3
@@ -377,8 +385,6 @@ class PedidosController extends Controller
                 $cantIncompletadeEntregasIncompletasFPE[$i] = 0;
             else
                 $cantIncompletadeEntregasIncompletasFPE[$i] = $cantIncompletadeEntregasIncompletasFPE[$i] - $cantCompletadeEntregasIncompletasFPE[$i];
-//////////
-
         }
 
         return array(
@@ -401,20 +407,12 @@ class PedidosController extends Controller
     public function importaasaAction ()
     {
         for ($i = 0; $i < 8; $i++) {
-            $cantOfWeeks = $i;
-
-            $day = date('d', strtotime("+". $cantOfWeeks." week"));
-            $month = date('m', strtotime("+". $cantOfWeeks." week"));
-            $year = date('Y', strtotime("+". $cantOfWeeks." week"));
-
-            $weekday = date('w', mktime(0,0,0,$month, $day, $year));
-            $sunday  = $day - $weekday;
-
-            $start_week = date('Ymd', mktime(0,0,0,$month, $sunday+1, $year));
-            $end_week   = date('Ymd', mktime(0,0,0,$month, $sunday+7, $year));
+            $dateconvert = PedidosController::dateconvert($i);
+            $start_week = $dateconvert['start_week'];
+            $end_week   = $dateconvert['end_week'];
 
             $em = $this->getDoctrine()->getManager();
-//////////
+
             $query = $em->createQuery("
                 SELECT
                     SUM( P.VolPedido ) as M3
@@ -432,7 +430,7 @@ class PedidosController extends Controller
 
             if(!isset($cantEntregasCompletasEnPuerto[$i]))
                 $cantEntregasCompletasEnPuerto[$i] = 0;
-//////////
+
             $query2 = $em->createQuery("
                 SELECT
                     SUM( P.VolPedido ) as M3
@@ -450,7 +448,7 @@ class PedidosController extends Controller
 
             if(!isset($cantEntregasCompletasEnPlanta[$i]))
                 $cantEntregasCompletasEnPlanta[$i] = 0;
-//////////
+
             $query3 = $em->createQuery("
                 SELECT
                     SUM( P.VolPedido ) as M3
@@ -469,7 +467,7 @@ class PedidosController extends Controller
 
             if(!isset($cantEntregasCompletablesETA[$i]))
                 $cantEntregasCompletablesETA[$i] = 0;
-//////////
+
             $query31 = $em->createQuery("
                 SELECT
                     SUM( P.VolPedido ) as M3
@@ -488,7 +486,7 @@ class PedidosController extends Controller
 
             if(!isset($cantEntregasCompletablesFPE[$i]))
                 $cantEntregasCompletablesFPE[$i] = 0;
-//////////
+
             $query41 = $em->createQuery("
                 SELECT
                     SUM( S.M3 ) as M3
@@ -510,7 +508,7 @@ class PedidosController extends Controller
 
             if(!isset($cantCompletadeEntregasIncompletasETA[$i]))
                 $cantCompletadeEntregasIncompletasETA[$i] = 0;
-//////////
+
             $query42 = $em->createQuery("
                 SELECT
                     SUM( P.VolPedido ) as M3
@@ -531,7 +529,7 @@ class PedidosController extends Controller
                 $cantIncompletadeEntregasIncompletasETA[$i] = 0;
              else
                 $cantIncompletadeEntregasIncompletasETA[$i] = $cantIncompletadeEntregasIncompletasETA[$i] - $cantCompletadeEntregasIncompletasETA[$i];
-//////////
+
             $query51 = $em->createQuery("
                 SELECT
                     SUM( S.M3 ) as M3
@@ -548,12 +546,12 @@ class PedidosController extends Controller
                     AND P.OrgVenta = 1000
                     AND P.StatusMovimientodeMcia = 'A'
                     ");
-            
+
             $cantCompletadeEntregasIncompletasFPE[$i] = round($query51->getSingleScalarResult()/1000,3);
-                               
+
             if(!isset($cantCompletadeEntregasIncompletasFPE[$i]))
                 $cantCompletadeEntregasIncompletasFPE[$i] = 0;
-//////////
+
             $query52 = $em->createQuery("
                 SELECT
                     SUM( P.VolPedido ) as M3
@@ -569,13 +567,11 @@ class PedidosController extends Controller
                     ");
 
             $cantIncompletadeEntregasIncompletasFPE[$i] = round($query52->getSingleScalarResult()/1000,3);
-                               
+
             if(!isset($cantIncompletadeEntregasIncompletasFPE[$i]))
                 $cantIncompletadeEntregasIncompletasFPE[$i] = 0;
             else
                 $cantIncompletadeEntregasIncompletasFPE[$i] = $cantIncompletadeEntregasIncompletasFPE[$i] - $cantCompletadeEntregasIncompletasFPE[$i];
-//////////
-            
         }
 
         return array(
@@ -588,29 +584,19 @@ class PedidosController extends Controller
             'cantIncompletadeEntregasIncompletasETA' => $cantIncompletadeEntregasIncompletasETA,
             'cantIncompletadeEntregasIncompletasFPE' => $cantIncompletadeEntregasIncompletasFPE
             );
-          
     }
-    
+
     /**
      * @Route("/pedido/comcpu/{week}", name="arauco_pedido_extend_com_cpu")
      * @Template("AraucoBaseBundle:Pedido:extendCPU.html.twig")
      */
     public function extendcomcpuAction ($week)
     {
-        $cantOfWeeks = $week;
-
-        $day = date('d', strtotime("+". $cantOfWeeks." week"));
-        $month = date('m', strtotime("+". $cantOfWeeks." week"));
-        $year = date('Y', strtotime("+". $cantOfWeeks." week"));
-
-        $weekday = date('w', mktime(0,0,0,$month, $day, $year));
-        $sunday  = $day - $weekday;
-
-        $start_week = date('Y-m-d', mktime(0,0,0,$month, $sunday+1, $year));
-        $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year));
-
-        $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
-        $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year));
+        $dateconvert    = PedidosController::dateconvert($week);
+        $start_week     = $dateconvert['start_week'];
+        $end_week       = $dateconvert['end_week'];
+        $sWeek          = $dateconvert['sWeek'];
+        $eWeek          = $dateconvert['eWeek'];
 
         $status = "CPU";
         $em = $this->getDoctrine()->getManager();
@@ -684,20 +670,11 @@ class PedidosController extends Controller
      */
     public function extendcomcplAction ($week)
     {
-        $cantOfWeeks = $week;
-
-        $day = date('d', strtotime("+". $cantOfWeeks." week"));
-        $month = date('m', strtotime("+". $cantOfWeeks." week"));
-        $year = date('Y', strtotime("+". $cantOfWeeks." week"));
-
-        $weekday = date('w', mktime(0,0,0,$month, $day, $year));
-        $sunday  = $day - $weekday;
-
-        $start_week = date('Y-m-d', mktime(0,0,0,$month, $sunday+1, $year));
-        $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year));
-
-        $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
-        $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year));
+        $dateconvert    = PedidosController::dateconvert($week);
+        $start_week     = $dateconvert['start_week'];
+        $end_week       = $dateconvert['end_week'];
+        $sWeek          = $dateconvert['sWeek'];
+        $eWeek          = $dateconvert['eWeek'];
 
         $status = "CPL";
         $em = $this->getDoctrine()->getManager();
@@ -771,20 +748,11 @@ class PedidosController extends Controller
      */
     public function extendcompletaAction ($week)
     {
-        $cantOfWeeks = $week;
-
-        $day = date('d', strtotime("+". $cantOfWeeks." week"));
-        $month = date('m', strtotime("+". $cantOfWeeks." week"));
-        $year = date('Y', strtotime("+". $cantOfWeeks." week"));
-
-        $weekday = date('w', mktime(0,0,0,$month, $day, $year));
-        $sunday  = $day - $weekday;
-
-        $start_week = date('Y-m-d', mktime(0,0,0,$month, $sunday+1, $year));
-        $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year));
-
-        $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
-        $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year));
+        $dateconvert    = PedidosController::dateconvert($week);
+        $start_week     = $dateconvert['start_week'];
+        $end_week       = $dateconvert['end_week'];
+        $sWeek          = $dateconvert['sWeek'];
+        $eWeek          = $dateconvert['eWeek'];
 
         $status = "NO";
         $completable = TRUE;
@@ -800,7 +768,6 @@ class PedidosController extends Controller
         $entregasFinal = array();
 
         foreach ( $Entregas as $entrega ) {
-            
             $docEntrega = $entrega['DocEntrega'];
             $posPedido = $entrega['PosPedido'];
             $orgVenta = $entrega['OrgVenta'];
@@ -881,20 +848,11 @@ class PedidosController extends Controller
      */
     public function extendincetaAction ($week)
     {
-        $cantOfWeeks = $week;
-
-        $day = date('d', strtotime("+". $cantOfWeeks." week"));
-        $month = date('m', strtotime("+". $cantOfWeeks." week"));
-        $year = date('Y', strtotime("+". $cantOfWeeks." week"));
-
-        $weekday = date('w', mktime(0,0,0,$month, $day, $year));
-        $sunday  = $day - $weekday;
-
-        $start_week = date('Y-m-d', mktime(0,0,0,$month, $sunday+1, $year));
-        $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year));
-
-        $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
-        $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year));
+        $dateconvert    = PedidosController::dateconvert($week);
+        $start_week     = $dateconvert['start_week'];
+        $end_week       = $dateconvert['end_week'];
+        $sWeek          = $dateconvert['sWeek'];
+        $eWeek          = $dateconvert['eWeek'];
 
         $status = "NO";
         $completable = FALSE;
@@ -990,20 +948,11 @@ class PedidosController extends Controller
      */
     public function extendcomplfpeAction ($week)
     {
-        $cantOfWeeks = $week;
-
-        $day = date('d', strtotime("+". $cantOfWeeks." week"));
-        $month = date('m', strtotime("+". $cantOfWeeks." week"));
-        $year = date('Y', strtotime("+". $cantOfWeeks." week"));
-
-        $weekday = date('w', mktime(0,0,0,$month, $day, $year));
-        $sunday  = $day - $weekday;
-
-        $start_week = date('Y-m-d', mktime(0,0,0,$month, $sunday+1, $year));
-        $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year));
-
-        $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
-        $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year));
+        $dateconvert    = PedidosController::dateconvert($week);
+        $start_week     = $dateconvert['start_week'];
+        $end_week       = $dateconvert['end_week'];
+        $sWeek          = $dateconvert['sWeek'];
+        $eWeek          = $dateconvert['eWeek'];
 
         $status = "NO";
         $completable = TRUE;
@@ -1099,20 +1048,11 @@ class PedidosController extends Controller
      */
     public function extendincfpeAction ($week)
     {
-        $cantOfWeeks = $week;
-
-        $day = date('d', strtotime("+". $cantOfWeeks." week"));
-        $month = date('m', strtotime("+". $cantOfWeeks." week"));
-        $year = date('Y', strtotime("+". $cantOfWeeks." week"));
-
-        $weekday = date('w', mktime(0,0,0,$month, $day, $year));
-        $sunday  = $day - $weekday;
-
-        $start_week = date('Y-m-d', mktime(0,0,0,$month, $sunday+1, $year));
-        $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year));
-
-        $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
-        $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year));
+        $dateconvert    = PedidosController::dateconvert($week);
+        $start_week     = $dateconvert['start_week'];
+        $end_week       = $dateconvert['end_week'];
+        $sWeek          = $dateconvert['sWeek'];
+        $eWeek          = $dateconvert['eWeek'];
 
         $status = "NO";
         $completable = FALSE;
