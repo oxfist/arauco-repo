@@ -71,7 +71,7 @@ DELETE FROM Stock where Centro NOT LIKE 'AA%' AND Centro NOT LIKE 'AD%' AND Cent
 LOAD DATA LOCAL INFILE
 "/home/sh1ken/arauco/ZQUPRGEMBVQ1.txt"
 INTO TABLE
-    Pedidos
+	Pedidos
 CHARACTER SET latin1
 COLUMNS TERMINATED BY '|'
 ESCAPED BY '"'
