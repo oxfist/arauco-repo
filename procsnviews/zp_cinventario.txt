@@ -72,7 +72,7 @@ DELETE FROM Stock where Centro NOT LIKE 'AA%' AND Centro NOT LIKE 'AD%' AND Cent
 LOAD DATA LOCAL INFILE
     "/srv/http/arauco/PedidosTest.csv"
 INTO TABLE
-    Pedidos
+	Pedidos
 CHARACTER SET latin1
 COLUMNS TERMINATED BY '|'
 ESCAPED BY '"'
@@ -184,16 +184,16 @@ StatusMovimientodeMcia,
 @dummy,
 @dummy)
 SET
-    StatusComplete = NULL,
-    PED_COMPLETABLE_ETA = FALSE,
-    PED_COMPLETABLE_FPE = FALSE,
-    FPE = str_to_date(@FPE, '%d-%m-%Y'),
-    FPD = str_to_date(@FPD, '%d-%m-%Y'),
-    FPAN = str_to_date(@FPAN, '%d-%m-%Y'),
-    FecDis = str_to_date(@FecDis, '%d-%m-%Y'),
-    RoundVentas = str_to_date(@RoundVentas, '%Y-%m'),
-    PED_UNIDADES_ASIGNADAS = 0,
-    Eta = STR_TO_DATE(@Eta,'%Y%m%d');
+	StatusComplete = NULL,
+	PED_COMPLETABLE_ETA = FALSE,
+	PED_COMPLETABLE_FPE = FALSE,
+	FPE = str_to_date(@FPE, '%d-%m-%Y'),
+	FPD = str_to_date(@FPD, '%d-%m-%Y'),
+	FPAN = str_to_date(@FPAN, '%d-%m-%Y'),
+	FecDis = str_to_date(@FecDis, '%d-%m-%Y'),
+	RoundVentas = str_to_date(@RoundVentas, '%Y-%m'),
+	PED_UNIDADES_ASIGNADAS = 0,
+	Eta = STR_TO_DATE(@Eta,'%Y%m%d');
 
 DELETE FROM Pedidos WHERE VolPedido = 0;
 
