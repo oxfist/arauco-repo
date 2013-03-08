@@ -467,6 +467,35 @@ class PedidosRepository extends EntityRepository
                 P.DocEntrega,
                 P.PosPedido")->getResult();
     }
+    
+    public function findAllGeneralCSV($startWeek, $endWeek)
+    {
+        return $this->getEntityManager()->createQuery("
+            SELECT
+                P.DocEntrega,
+                P.PosPedido,
+                P.OrgVenta,
+                P.Eta,
+                P.FPE,
+                S.Material,
+                S.Desc_Mat,
+                P.VolPedido,
+                SUM( S.M3 ) as M3
+            FROM
+                AraucoCSVBundle:Pedidos P,
+                AraucoCSVBundle:Stock S
+            WHERE
+                P.DocEntrega = S.Nro_Entrega
+                AND P.PosPedido = S.Pos_Entrega
+                AND P.Eta >='".$startWeek."'
+                AND P.Eta <='".$endWeek."'
+            GROUP BY
+                P.DocEntrega,
+                P.PosPedido
+            ORDER BY
+                P.DocEntrega,
+                P.PosPedido")->getResult();
+    }
 }
 
 //Total volumen de pedidos por material

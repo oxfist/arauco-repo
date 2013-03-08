@@ -595,7 +595,7 @@ class PedidosController extends Controller
      * @Route("/pedido/comcpu/{week}", name="arauco_pedido_extend_com_cpu")
      * @Template("AraucoBaseBundle:Pedido:extendCPU.html.twig")
      */
-    public function extendcomcpuAction ($week)
+    0public function extendcomcpuAction ($week)
     {
         $cantOfWeeks = $week;
 
@@ -2033,7 +2033,17 @@ class PedidosController extends Controller
         
         $weekStart =  date( 'Ymd', strtotime('Monday this week') );
         $weekEndPlusEightWeeks = date( 'Ymd', strtotime("Sunday +7 weeks") );
-        $em = $this->getDoctrine()->getManager();
         
+        $em = $this->getDoctrine()->getManager();
+        $pedidosGeneral = $em->getRepository('AraucoCSVBundle:Pedidos')
+                ->findAllGeneralCSV($weekStart, $weekEndPlusEightWeeks);
+        
+        $filename = "ReporteGeneralPedidos_".date("Y-m-d_His")."__".$weekStart."_".$weekEndPlusEightWeeks.".csv";
+        
+        $response =$this->
+                render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig',
+                array('pedidos' => $pedidosGeneral ));
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
     }
 }
