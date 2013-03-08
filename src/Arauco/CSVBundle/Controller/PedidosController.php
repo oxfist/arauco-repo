@@ -678,10 +678,10 @@ class PedidosController extends Controller
 
         $status = "CPL";
         $em = $this->getDoctrine()->getManager();
+
         $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsig($start_week, $end_week, $status);
 
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETA($start_week, $end_week, $status);
-
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPE($start_week, $end_week, $status);
 
         $entregasFinal = array();
@@ -776,11 +776,11 @@ class PedidosController extends Controller
             $material = $entrega['Material'];
             $descripcion = $entrega['DescripcionMaterial'];
             $volPedido = $entrega['VolPedido'];
-            
+
             $sumaVolAsignado = 0;
             $sumaVolAsiETA = 0;
             $sumaVolAsiFPE = 0;
-            
+
             foreach ( $EntregasM3 as $item ) {
 
                 if ( $docEntrega == $item['DocEntrega']
@@ -789,7 +789,7 @@ class PedidosController extends Controller
                   //  unset( $EntregasETA[ $docEntrega ] );
                     break;
                 }
-                
+
                 if ($docEntrega < $item['DocEntrega'])
                     break;
 
@@ -803,7 +803,7 @@ class PedidosController extends Controller
                   //  unset( $EntregasETA[ $docEntrega ] );
                     break;
                 }
-                
+
                 if ($docEntrega < $item['DocEntrega'])
                     break;
 
@@ -831,8 +831,6 @@ class PedidosController extends Controller
                     round( $sumaVolAsiFPE, 3 )
                 )
             );
-
-     
         }
 
         return array(
@@ -857,11 +855,10 @@ class PedidosController extends Controller
         $status = "NO";
         $completable = FALSE;
         $em = $this->getDoctrine()->getManager();
-        
-        
+
         $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable);
         $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETASumM3($start_week, $end_week, $status, $completable);
-        
+
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncETA($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncETA($start_week, $end_week, $status, $completable);
 
@@ -880,7 +877,7 @@ class PedidosController extends Controller
             $sumaVolAsignado = 0;
             $sumaVolAsiETA = 0;
             $sumaVolAsiFPE = 0;
-            
+
             foreach ( $EntregasM3 as $item ) {
 
                 if ( $docEntrega == $item['DocEntrega']
@@ -889,12 +886,12 @@ class PedidosController extends Controller
                   //  unset( $EntregasETA[ $docEntrega ] );
                     break;
                 }
-                
+
                 if ($docEntrega < $item['DocEntrega'])
                     break;
 
             }
-           
+
             foreach ( $EntregasETA as $item ) {
 
                 if ( $docEntrega == $item['DocEntrega']
@@ -903,7 +900,7 @@ class PedidosController extends Controller
                     //unset( $EntregasETA[ $docEntrega ] );
                     break;
                 }
-                
+
                 if ($docEntrega < $item['DocEntrega'])
                     break;
 
@@ -917,7 +914,7 @@ class PedidosController extends Controller
                     //unset( $EntregasFPE[ $docEntrega ] );
                     break;
                 }
-                
+
                 if ($docEntrega < $item['DocEntrega'])
                     break;
 
@@ -934,7 +931,7 @@ class PedidosController extends Controller
             );
 
         }
-        
+
         return array(
             'Entregas' => $entregasFinal,
             'sWeek' => $sWeek,
@@ -957,13 +954,13 @@ class PedidosController extends Controller
         $status = "NO";
         $completable = TRUE;
         $em = $this->getDoctrine()->getManager();
-        
+
         $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPEList($start_week, $end_week, $status, $completable);
         $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPESumM3($start_week, $end_week, $status, $completable);
-        
+
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncFPE($start_week, $end_week, $status, $completable);
-        $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);        
-        
+        $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);
+
         $entregasFinal = array();
 
         foreach ( $Entregas as $entrega ) {
@@ -976,20 +973,19 @@ class PedidosController extends Controller
             $material = $entrega['Material'];
             $descripcion = $entrega['DescripcionMaterial'];
             $volPedido = $entrega['VolPedido'];
-            
+
             $sumaVolAsignado = 0;
             $sumaVolAsiETA = 0;
             $sumaVolAsiFPE = 0;
-            
+
             foreach ( $EntregasM3 as $item ) {
 
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsignado = $item['M3'];
-                  //  unset( $EntregasETA[ $docEntrega ] );
                     break;
                 }
-                
+
                 if ($docEntrega < $item['DocEntrega'])
                     break;
 
@@ -1000,10 +996,9 @@ class PedidosController extends Controller
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiETA = $item['M3'];
-                    //unset( $EntregasETA[ $docEntrega ] );
                     break;
                 }
-                
+
                 if ($docEntrega < $item['DocEntrega'])
                     break;
 
@@ -1014,10 +1009,9 @@ class PedidosController extends Controller
                 if ( $docEntrega == $item['DocEntrega']
                     && $posPedido == $item['PosPedido'] ) {
                     $sumaVolAsiFPE = $item['M3'];
-                    //unset( $EntregasFPE[ $docEntrega ] );
                     break;
                 }
-                
+
                 if ($docEntrega < $item['DocEntrega'])
                     break;
 
@@ -1034,7 +1028,7 @@ class PedidosController extends Controller
             );
 
         }
-        
+
         return array(
             'Entregas' => $entregasFinal,
             'sWeek' => $sWeek,
@@ -1361,81 +1355,15 @@ class PedidosController extends Controller
      */
     public function extendcsvcomcpuAction ($week)
     {
-        $cantOfWeeks = $week;
+        $dateconvert    = PedidosController::dateconvert($week);
+        $start_week     = $dateconvert['start_week'];
+        $end_week       = $dateconvert['end_week'];
 
-        $day = date('d', strtotime("+". $cantOfWeeks." week"));
-        $month = date('m', strtotime("+". $cantOfWeeks." week"));
-        $year = date('Y', strtotime("+". $cantOfWeeks." week"));
+        $filename = "PedidosCPU_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
 
-        $weekday = date('w', mktime(0,0,0,$month, $day, $year));
-        $sunday  = $day - $weekday;
-
-        $start_week = date('Y-m-d', mktime(0,0,0,$month, $sunday+1, $year));
-        $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year));
-
-        $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
-        $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year));
-
-        $status = "CPU";
-        $em = $this->getDoctrine()->getManager();
-        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsig($start_week, $end_week, $status);
-
-        $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETA($start_week, $end_week, $status);
-
-        $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPE($start_week, $end_week, $status);
-
-        $entregasFinal = array();
-
-        foreach ( $EntregasAsignadas as $entrega ) {
-
-            $docEntrega = $entrega['DocEntrega'];
-            $posPedido = $entrega['PosPedido'];
-            $orgVenta = $entrega['OrgVenta'];
-            $fpe = $entrega['FPE'];
-            $material = $entrega['Material'];
-            $descripcion = $entrega['Desc_Mat'];
-            $volPedido = $entrega['VolPedido'];
-            $sumaVolAsignado = $entrega['M3'];
-            $sumaVolAsiETA = 0;
-            $sumaVolAsiFPE = 0;
-
-            foreach ( $EntregasETA as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiETA = $item['M3'];
-                   // unset( $EntregasETA[ $docEntrega ] );
-                    break;
-                }
-
-            }
-
-            foreach ( $EntregasFPE as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiFPE = $item['M3'];
-                    //unset( $EntregasFPE[ $docEntrega ] );
-                    break;
-                }
-
-            }
-
-            array_push(
-                $entregasFinal, array(
-                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
-                    $volPedido, round( $sumaVolAsignado, 3 ),
-                    round( $sumaVolAsiETA, 3 ),
-                    round( $sumaVolAsiFPE, 3 )
-                )
-            );
-
-        }
-
-        $filename = "Pedidos_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
+        $entregasFinal = PedidosController::extendcomcpuAction($week)['Entregas'];
 
         $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $entregasFinal ));
-
         $response->headers->set('Content-Type', 'text/csv');
         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
 
@@ -1447,79 +1375,13 @@ class PedidosController extends Controller
      */
     public function extendcsvcomcplAction ($week)
     {
-        $cantOfWeeks = $week;
+        $dateconvert    = PedidosController::dateconvert($week);
+        $start_week     = $dateconvert['start_week'];
+        $end_week       = $dateconvert['end_week'];
 
-        $day = date('d', strtotime("+". $cantOfWeeks." week"));
-        $month = date('m', strtotime("+". $cantOfWeeks." week"));
-        $year = date('Y', strtotime("+". $cantOfWeeks." week"));
+        $filename = "PedidosCPL_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
 
-        $weekday = date('w', mktime(0,0,0,$month, $day, $year));
-        $sunday  = $day - $weekday;
-
-        $start_week = date('Y-m-d', mktime(0,0,0,$month, $sunday+1, $year));
-        $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year)); 
-
-        $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
-        $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year)); 
-
-        $status = "CPL";
-
-        $em = $this->getDoctrine()->getManager();
-        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsig($start_week, $end_week, $status);
-
-        $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETA($start_week, $end_week, $status);
-
-        $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPE($start_week, $end_week, $status);
-
-        $entregasFinal = array();
-
-        foreach ( $EntregasAsignadas as $entrega ) {
-
-            $docEntrega = $entrega['DocEntrega'];
-            $posPedido = $entrega['PosPedido'];
-            $orgVenta = $entrega['OrgVenta'];
-            $fpe = $entrega['FPE'];
-            $material = $entrega['Material'];
-            $descripcion = $entrega['Desc_Mat'];
-            $volPedido = $entrega['VolPedido'];
-            $sumaVolAsignado = $entrega['M3'];
-            $sumaVolAsiETA = 0;
-            $sumaVolAsiFPE = 0;
-
-            foreach ( $EntregasETA as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiETA = $item['M3'];
-                   // unset( $EntregasETA[ $docEntrega ] );
-                    break;
-                }
-
-            }
-
-            foreach ( $EntregasFPE as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiFPE = $item['M3'];
-                   // unset( $EntregasFPE[ $docEntrega ] );
-                    break;
-                }
-
-            }
-
-            array_push(
-                $entregasFinal, array(
-                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
-                    $volPedido, round( $sumaVolAsignado, 3 ),
-                    round( $sumaVolAsiETA, 3 ),
-                    round( $sumaVolAsiFPE, 3 )
-                )
-            );
-
-        }
-
-        $filename = "Pedidos_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
+        $entregasFinal = PedidosController::extendcomcplAction($week)['Entregas'];
 
         $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $entregasFinal ));
 
@@ -1528,107 +1390,19 @@ class PedidosController extends Controller
 
         return $response;
     }
-/////////////////////////////////////////////////////////////////////////
+
     /**
      * @Route("/pedido/complet/eta/{week}/csv", name="arauco_pedido_extend_complet_eta_csv")
      */
     public function extendcompletacsvAction ($week)
     {
-        $cantOfWeeks = $week;
+        $dateconvert    = PedidosController::dateconvert($week);
+        $start_week     = $dateconvert['start_week'];
+        $end_week       = $dateconvert['end_week'];
 
-        $day = date('d', strtotime("+". $cantOfWeeks." week"));
-        $month = date('m', strtotime("+". $cantOfWeeks." week"));
-        $year = date('Y', strtotime("+". $cantOfWeeks." week"));
+        $filename = "PedidosComplETA_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
 
-        $weekday = date('w', mktime(0,0,0,$month, $day, $year));
-        $sunday  = $day - $weekday;
-
-        $start_week = date('Y-m-d', mktime(0,0,0,$month, $sunday+1, $year));
-        $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year));
-
-        $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
-        $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year));
-
-        $status = "NO";
-        $completable = TRUE;
-        
-        $em = $this->getDoctrine()->getManager();
-        
-        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable);
-        $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETASumM3($start_week, $end_week, $status, $completable);
-        
-        $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncETA($start_week, $end_week, $status, $completable);
-        $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncETA($start_week, $end_week, $status, $completable);
-
-        $entregasFinal = array();
-
-        foreach ( $Entregas as $entrega ) {
-            
-            $docEntrega = $entrega['DocEntrega'];
-            $posPedido = $entrega['PosPedido'];
-            $orgVenta = $entrega['OrgVenta'];
-            $fpe = $entrega['FPE'];
-            $material = $entrega['Material'];
-            $descripcion = $entrega['DescripcionMaterial'];
-            $volPedido = $entrega['VolPedido'];
-            
-            $sumaVolAsignado = 0;
-            $sumaVolAsiETA = 0;
-            $sumaVolAsiFPE = 0;
-            
-            foreach ( $EntregasM3 as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsignado = $item['M3'];
-                  //  unset( $EntregasETA[ $docEntrega ] );
-                    break;
-                }
-                
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-
-            foreach ( $EntregasETA as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiETA = $item['M3'];
-                  //  unset( $EntregasETA[ $docEntrega ] );
-                    break;
-                }
-                
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-
-            foreach ( $EntregasFPE as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiFPE = $item['M3'];
-                 //   unset( $EntregasFPE[ $docEntrega ] );
-                    break;
-                }
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-
-            array_push(
-                $entregasFinal, array(
-                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
-                    $volPedido, round( $sumaVolAsignado, 3 ),
-                    round( $sumaVolAsiETA, 3 ),
-                    round( $sumaVolAsiFPE, 3 )
-                )
-            );
-
-        }
-
-        $filename = "Pedidos_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
+        $entregasFinal = PedidosController::extendcompletaAction($week)['Entregas'];
 
         $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $entregasFinal ));
 
@@ -1643,102 +1417,13 @@ class PedidosController extends Controller
      */
     public function extendincetacsvAction ($week)
     {
-        
-        $cantOfWeeks = $week;
+        $dateconvert    = PedidosController::dateconvert($week);
+        $start_week     = $dateconvert['start_week'];
+        $end_week       = $dateconvert['end_week'];
 
-        $day = date('d', strtotime("+". $cantOfWeeks." week"));
-        $month = date('m', strtotime("+". $cantOfWeeks." week"));
-        $year = date('Y', strtotime("+". $cantOfWeeks." week"));
+        $filename = "PedidosIncETA_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
 
-        $weekday = date('w', mktime(0,0,0,$month, $day, $year));
-        $sunday  = $day - $weekday;
-
-        $start_week = date('Y-m-d', mktime(0,0,0,$month, $sunday+1, $year));
-        $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year));
-
-        $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
-        $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year));
-
-        $status = "NO";
-        $completable = FALSE;
-        $em = $this->getDoctrine()->getManager();
-        
-        
-        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable);
-        $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETASumM3($start_week, $end_week, $status, $completable);
-        
-        $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncETA($start_week, $end_week, $status, $completable);
-        $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncETA($start_week, $end_week, $status, $completable);
-
-        $entregasFinal = array();
-
-        foreach ( $Entregas as $entrega ) {
-
-            $docEntrega = $entrega['DocEntrega'];
-            $posPedido = $entrega['PosPedido'];
-            $orgVenta = $entrega['OrgVenta'];
-            $fpe = $entrega['FPE'];
-            $material = $entrega['Material'];
-            $descripcion = $entrega['DescripcionMaterial'];
-            $volPedido = $entrega['VolPedido'];
-            $sumaVolAsignado = 0;
-            $sumaVolAsiETA = 0;
-            $sumaVolAsiFPE = 0;
-            
-            foreach ( $EntregasM3 as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsignado = $item['M3'];
-                  //  unset( $EntregasETA[ $docEntrega ] );
-                    break;
-                }
-                
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-           
-            foreach ( $EntregasETA as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiETA = $item['M3'];
-                    //unset( $EntregasETA[ $docEntrega ] );
-                    break;
-                }
-                
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-
-            foreach ( $EntregasFPE as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiFPE = $item['M3'];
-                    //unset( $EntregasFPE[ $docEntrega ] );
-                    break;
-                }
-                
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-
-            array_push(
-                $entregasFinal, array(
-                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
-                    $volPedido, round( $sumaVolAsignado, 3 ),
-                    round( $sumaVolAsiETA, 3 ),
-                    round( $sumaVolAsiFPE, 3 )
-                )
-            );
-
-        }       
-
-        $filename = "Pedidos_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
+        $entregasFinal = PedidosController::extendincetaAction($week)['Entregas'];
 
         $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $entregasFinal ));
 
@@ -1753,101 +1438,13 @@ class PedidosController extends Controller
      */
     public function extendcomplfpecsvAction ($week)
     {
-        $cantOfWeeks = $week;
+        $dateconvert    = PedidosController::dateconvert($week);
+        $start_week     = $dateconvert['start_week'];
+        $end_week       = $dateconvert['end_week'];
 
-        $day = date('d', strtotime("+". $cantOfWeeks." week"));
-        $month = date('m', strtotime("+". $cantOfWeeks." week"));
-        $year = date('Y', strtotime("+". $cantOfWeeks." week"));
+        $filename = "PedidosComplFPE_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
 
-        $weekday = date('w', mktime(0,0,0,$month, $day, $year));
-        $sunday  = $day - $weekday;
-
-        $start_week = date('Y-m-d', mktime(0,0,0,$month, $sunday+1, $year));
-        $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year));
-
-        $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
-        $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year));
-
-        $status = "NO";
-        $completable = TRUE;
-        $em = $this->getDoctrine()->getManager();
-        
-        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPEList($start_week, $end_week, $status, $completable);
-        $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPESumM3($start_week, $end_week, $status, $completable);
-        
-        $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncFPE($start_week, $end_week, $status, $completable);
-        $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);        
-        
-        $entregasFinal = array();
-
-        foreach ( $Entregas as $entrega ) {
-
-            $docEntrega = $entrega['DocEntrega'];
-            $posPedido = $entrega['PosPedido'];
-            $orgVenta = $entrega['OrgVenta'];
-            $fpe = $entrega['FPE'];
-            $material = $entrega['Material'];
-            $descripcion = $entrega['DescripcionMaterial'];
-            $volPedido = $entrega['VolPedido'];
-            
-            $sumaVolAsignado = 0;
-            $sumaVolAsiETA = 0;
-            $sumaVolAsiFPE = 0;
-            
-            foreach ( $EntregasM3 as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsignado = $item['M3'];
-                  //  unset( $EntregasETA[ $docEntrega ] );
-                    break;
-                }
-                
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-
-            foreach ( $EntregasETA as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiETA = $item['M3'];
-                    //unset( $EntregasETA[ $docEntrega ] );
-                    break;
-                }
-                
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-
-            foreach ( $EntregasFPE as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiFPE = $item['M3'];
-                    //unset( $EntregasFPE[ $docEntrega ] );
-                    break;
-                }
-                
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-
-            array_push(
-                $entregasFinal, array(
-                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
-                    $volPedido, round( $sumaVolAsignado, 3 ),
-                    round( $sumaVolAsiETA, 3 ),
-                    round( $sumaVolAsiFPE, 3 )
-                )
-            );
-
-        }
-
-        $filename = "Pedidos_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
+        $entregasFinal = PedidosController::extendcomplfpeAction($week)['Entregas'];
 
         $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $entregasFinal ));
 
@@ -1862,101 +1459,13 @@ class PedidosController extends Controller
      */
     public function extendincfpecsvAction ($week)
     {
-        $cantOfWeeks = $week;
+        $dateconvert    = PedidosController::dateconvert($week);
+        $start_week     = $dateconvert['start_week'];
+        $end_week       = $dateconvert['end_week'];
 
-        $day = date('d', strtotime("+". $cantOfWeeks." week"));
-        $month = date('m', strtotime("+". $cantOfWeeks." week"));
-        $year = date('Y', strtotime("+". $cantOfWeeks." week"));
+        $filename = "PedidosIncFPE_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
 
-        $weekday = date('w', mktime(0,0,0,$month, $day, $year));
-        $sunday  = $day - $weekday;
-
-        $start_week = date('Y-m-d', mktime(0,0,0,$month, $sunday+1, $year));
-        $end_week   = date('Y-m-d', mktime(0,0,0,$month, $sunday+7, $year));
-
-        $sWeek = date('d/m/Y', mktime(0,0,0,$month, $sunday+1, $year));
-        $eWeek   = date('d/m/Y', mktime(0,0,0,$month, $sunday+7, $year));
-
-        $status = "NO";
-        $completable = FALSE;
-        $em = $this->getDoctrine()->getManager();
-
-        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable);
-        $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETASumM3($start_week, $end_week, $status, $completable);
-
-        $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncFPE($start_week, $end_week, $status, $completable);
-        $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);
-
-        $entregasFinal = array();
-
-        foreach ( $Entregas as $entrega ) {
-
-            $docEntrega = $entrega['DocEntrega'];
-            $posPedido = $entrega['PosPedido'];
-            $orgVenta = $entrega['OrgVenta'];
-            $fpe = $entrega['FPE'];
-            $material = $entrega['Material'];
-            $descripcion = $entrega['DescripcionMaterial'];
-            $volPedido = $entrega['VolPedido'];
-            
-            $sumaVolAsignado = 0;
-            $sumaVolAsiETA = 0;
-            $sumaVolAsiFPE = 0;
-
-            foreach ( $EntregasM3 as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsignado = $item['M3'];
-                  //  unset( $EntregasETA[ $docEntrega ] );
-                    break;
-                }
-                
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-            
-            foreach ( $EntregasETA as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiETA = $item['M3'];
-                   // unset( $EntregasETA[ $docEntrega ] );
-                    break;
-                }
-                
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-
-            foreach ( $EntregasFPE as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiFPE = $item['M3'];
-                   // unset( $EntregasFPE[ $docEntrega ] );
-                    break;
-                }
-                
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-
-            array_push(
-                $entregasFinal, array(
-                    $docEntrega, $posPedido, $orgVenta, $fpe->format('d-m-Y'), $material, $descripcion,
-                    $volPedido, round( $sumaVolAsignado, 3 ),
-                    round( $sumaVolAsiETA, 3 ),
-                    round( $sumaVolAsiFPE, 3 )
-                )
-            );
-
-        }
-
-        $filename = "Pedidos_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
+        $entregasFinal = PedidosController::extendincfpeAction($week)['Entregas'];
 
         $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $entregasFinal ));
 
@@ -1965,21 +1474,21 @@ class PedidosController extends Controller
 
         return $response;
     }
-    
+
     /**
      * @Route("/pedidos/csv/etageneral", name="arauco_pedido_csv_general_eta")
      */
     public function generalCsvEtaAction(){
-        
+
         $weekStart =  date( 'Ymd', strtotime('Monday this week') );
         $weekEndPlusEightWeeks = date( 'Ymd', strtotime("Sunday +7 weeks") );
-        
+
         $em = $this->getDoctrine()->getManager();
         $pedidosGeneral = $em->getRepository('AraucoCSVBundle:Pedidos')
                 ->findAllGeneralCSV($weekStart, $weekEndPlusEightWeeks);
-        
+
         $filename = "ReporteGeneralPedidos_".date("Y-m-d_His")."__".$weekStart."_".$weekEndPlusEightWeeks.".csv";
-        
+
         $response =$this->
                 render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig',
                 array('pedidos' => $pedidosGeneral ));
