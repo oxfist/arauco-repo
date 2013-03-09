@@ -36,6 +36,190 @@ class PedidosController extends Controller
 
     }
 
+    private function sortComplete($EntregasAsignadas, $EntregasETA, $EntregasFPE) {
+
+        $entregasFinal = array();
+
+        foreach ( $EntregasAsignadas as $item ) {
+
+            $docEntrega = $item['DocEntrega'];
+            $posPedido = $item['PosPedido'];
+            $orgVenta = $item['OrgVenta'];
+            $codCliente = $item['CodCliente'];
+            $nomCliente = $item['NomCliente'];
+            $material = $item['Material'];
+            $descripcion = $item['Desc_Mat'];
+            $volPedido = $item['VolPedido'];
+            $PaisDestino = $item['PaisDestino'];
+            $Destino = $item['Destino'];
+            $eta = $item['Eta'];
+            $fpe = $item['FPE'];
+            $fpan = $item['FPAN'];
+            $fpd = $item['FPD'];
+            $FecDis = $item['FecDis'];
+            $RoundVentas = $item['RoundVentas'];
+            $MT = $item['MT'];
+            $EntComp = $item['EntComp'];
+            $Nave = $item['Nave'];
+            $ClaseMaterial = $item['ClaseMaterial'];
+            $sumaVolAsignado = $item['M3'];
+            $sumaVolAsiETA = 0;
+            $sumaVolAsiFPE = 0;
+
+            foreach ( $EntregasETA as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsiETA = $item['M3'];
+                    break;
+                }
+
+            }
+
+            foreach ( $EntregasFPE as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsiFPE = $item['M3'];
+                    break;
+                }
+
+            }
+
+            array_push(
+                $entregasFinal, array(
+                    $docEntrega, // 0
+                    $posPedido, // 1
+                    $orgVenta, // 2
+                    $eta->format('d-m-Y'), // 3
+                    $fpe->format('d-m-Y'), // 4
+                    $material, // 5
+                    $descripcion, // 6
+                    $volPedido, // 7
+                    round( $sumaVolAsignado, 3 ), // 8
+                    round( $sumaVolAsiETA, 3 ), // 9
+                    round( $sumaVolAsiFPE, 3 ), // 10
+                    $FecDis->format('d-m-Y'), // 11
+                    $codCliente, // 12
+                    $nomCliente, // 13
+                    $EntComp, // 14
+                    $Destino, // 15
+                    $PaisDestino, // 16
+                    $fpan->format('d-m-Y'), // 17
+                    $fpd->format('d-m-Y'), // 18
+                    $RoundVentas->format('Y-m'), // 19
+                    $MT, // 20
+                    $Nave, // 21
+                    $ClaseMaterial //22
+                )
+            );
+
+        }
+
+
+        return $entregasFinal;
+
+    }
+
+    private function sortIncomplete($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE) {
+
+        $entregasFinal = array();
+
+        foreach ( $Entregas as $entrega ) {
+            $docEntrega = $entrega['DocEntrega'];
+            $posPedido = $entrega['PosPedido'];
+            $orgVenta = $entrega['OrgVenta'];
+            $codCliente = $entrega['CodCliente'];
+            $nomCliente = $entrega['NomCliente'];
+            $material = $entrega['Material'];
+            $descripcion = $entrega['DescripcionMaterial'];
+            $volPedido = $entrega['VolPedido'];
+            $PaisDestino = $entrega['PaisDestino'];
+            $Destino = $entrega['Destino'];
+            $eta = $entrega['Eta'];
+            $fpe = $entrega['FPE'];
+            $fpan = $entrega['FPAN'];
+            $fpd = $entrega['FPD'];
+            $FecDis = $entrega['FecDis'];
+            $RoundVentas = $entrega['RoundVentas'];
+            $MT = $entrega['MT'];
+            $EntComp = $entrega['EntComp'];
+            $Nave = $entrega['Nave'];
+            $ClaseMaterial = $entrega['ClaseMaterial'];
+
+            $sumaVolAsignado = 0;
+            $sumaVolAsiETA = 0;
+            $sumaVolAsiFPE = 0;
+
+            foreach ( $EntregasM3 as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsignado = $item['M3'];
+                    break;
+                }
+
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
+
+            }
+
+            foreach ( $EntregasETA as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsiETA = $item['M3'];
+                    break;
+                }
+
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
+
+            }
+
+            foreach ( $EntregasFPE as $item ) {
+
+                if ( $docEntrega == $item['DocEntrega']
+                    && $posPedido == $item['PosPedido'] ) {
+                    $sumaVolAsiFPE = $item['M3'];
+                    break;
+                }
+                if ($docEntrega < $item['DocEntrega'])
+                    break;
+
+            }
+
+            array_push(
+                $entregasFinal, array(
+                    $docEntrega,
+                    $posPedido,
+                    $orgVenta,
+                    $eta->format('d-m-Y'),
+                    $fpe->format('d-m-Y'),
+                    $material,
+                    $descripcion,
+                    $volPedido,
+                    round( $sumaVolAsignado, 3 ),
+                    round( $sumaVolAsiETA, 3 ),
+                    round( $sumaVolAsiFPE, 3 ),
+                    $FecDis->format('d-m-Y'),
+                    $codCliente,
+                    $nomCliente,
+                    $EntComp,
+                    $Destino,
+                    $PaisDestino,
+                    $fpan->format('d-m-Y'),
+                    $fpd->format('d-m-Y'),
+                    $RoundVentas->format('Y-m'),
+                    $MT,
+                    $Nave,
+                    $ClaseMaterial
+                )
+            );
+        }
+        return $entregasFinal;
+    }
+
     /**
      * @Route("/pedido", name="arauco_pedido_index")
      * @Template("AraucoBaseBundle:Pedido:index.html.twig")
@@ -600,61 +784,12 @@ class PedidosController extends Controller
 
         $status = "CPU";
         $em = $this->getDoctrine()->getManager();
+
         $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsig($start_week, $end_week, $status);
-
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETA($start_week, $end_week, $status);
-
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPE($start_week, $end_week, $status);
 
-        $entregasFinal = array();
-
-        foreach ( $EntregasAsignadas as $item ) {
-
-            $docEntrega = $item['DocEntrega'];
-            $posPedido = $item['PosPedido'];
-            $orgVenta = $item['OrgVenta'];
-            $eta = $item['Eta'];
-            $fpe = $item['FPE'];
-            $material = $item['Material'];
-            $descripcion = $item['Desc_Mat'];
-            $volPedido = $item['VolPedido'];
-            $sumaVolAsignado = $item['M3'];
-            $sumaVolAsiETA = 0;
-            $sumaVolAsiFPE = 0;
-
-            foreach ( $EntregasETA as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiETA = $item['M3'];
-                  //  unset( $EntregasETA[ $docEntrega ] );
-                    break;
-                }
-
-            }
-
-            foreach ( $EntregasFPE as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiFPE = $item['M3'];
-                   // unset( $EntregasFPE[ $docEntrega ] );
-                    break;
-                }
-
-            }
-
-            array_push(
-                $entregasFinal, array(
-                    $docEntrega, $posPedido, $orgVenta, $eta->format('d-m-Y'),
-                    $fpe->format('d-m-Y'), $material, $descripcion,
-                    $volPedido, round( $sumaVolAsignado, 3 ),
-                    round( $sumaVolAsiETA, 3 ),
-                    round( $sumaVolAsiFPE, 3 )
-                )
-            );
-
-        }
+        $entregasFinal = PedidosController::sortComplete ($EntregasAsignadas, $EntregasETA, $EntregasFPE);
 
         return array(
             'Entregas' => $entregasFinal,
@@ -680,59 +815,10 @@ class PedidosController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsig($start_week, $end_week, $status);
-
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETA($start_week, $end_week, $status);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPE($start_week, $end_week, $status);
 
-        $entregasFinal = array();
-
-        foreach ( $EntregasAsignadas as $item ) {
-
-            $docEntrega = $item['DocEntrega'];
-            $posPedido = $item['PosPedido'];
-            $orgVenta = $item['OrgVenta'];
-            $eta = $item['Eta'];
-            $fpe = $item['FPE'];
-            $material = $item['Material'];
-            $descripcion = $item['Desc_Mat'];
-            $volPedido = $item['VolPedido'];
-            $sumaVolAsignado = $item['M3'];
-            $sumaVolAsiETA = 0;
-            $sumaVolAsiFPE = 0;
-
-            foreach ( $EntregasETA as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiETA = $item['M3'];
-                 //   unset( $EntregasETA[ $docEntrega ] );
-                    break;
-                }
-
-            }
-
-            foreach ( $EntregasFPE as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiFPE = $item['M3'];
-                //    unset( $EntregasFPE[ $docEntrega ] );
-                    break;
-                }
-
-            }
-
-            array_push(
-                $entregasFinal, array(
-                    $docEntrega, $posPedido, $orgVenta,$eta->format('d-m-Y'),
-                    $fpe->format('d-m-Y'), $material, $descripcion,
-                    $volPedido, round( $sumaVolAsignado, 3 ),
-                    round( $sumaVolAsiETA, 3 ),
-                    round( $sumaVolAsiFPE, 3 )
-                )
-            );
-
-        }
+        $entregasFinal = PedidosController::sortComplete ($EntregasAsignadas, $EntregasETA, $EntregasFPE);
 
         return array(
             'Entregas' => $entregasFinal,
@@ -761,77 +847,10 @@ class PedidosController extends Controller
 
         $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable);
         $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETASumM3($start_week, $end_week, $status, $completable);
-
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncETA($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncETA($start_week, $end_week, $status, $completable);
 
-        $entregasFinal = array();
-
-        foreach ( $Entregas as $entrega ) {
-            $docEntrega = $entrega['DocEntrega'];
-            $posPedido = $entrega['PosPedido'];
-            $orgVenta = $entrega['OrgVenta'];
-            $eta = $entrega['Eta'];
-            $fpe = $entrega['FPE'];
-            $material = $entrega['Material'];
-            $descripcion = $entrega['DescripcionMaterial'];
-            $volPedido = $entrega['VolPedido'];
-
-            $sumaVolAsignado = 0;
-            $sumaVolAsiETA = 0;
-            $sumaVolAsiFPE = 0;
-
-            foreach ( $EntregasM3 as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsignado = $item['M3'];
-                  //  unset( $EntregasETA[ $docEntrega ] );
-                    break;
-                }
-
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-
-            foreach ( $EntregasETA as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiETA = $item['M3'];
-                  //  unset( $EntregasETA[ $docEntrega ] );
-                    break;
-                }
-
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-
-            foreach ( $EntregasFPE as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiFPE = $item['M3'];
-                 //   unset( $EntregasFPE[ $docEntrega ] );
-                    break;
-                }
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-
-            array_push(
-                $entregasFinal, array(
-                    $docEntrega, $posPedido, $orgVenta, $eta->format('d-m-Y'),
-                    $fpe->format('d-m-Y'), $material, $descripcion,
-                    $volPedido, round( $sumaVolAsignado, 3 ),
-                    round( $sumaVolAsiETA, 3 ),
-                    round( $sumaVolAsiFPE, 3 )
-                )
-            );
-        }
+        $entregasFinal = PedidosController::sortIncomplete ($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE);
 
         return array(
             'Entregas' => $entregasFinal,
@@ -858,79 +877,10 @@ class PedidosController extends Controller
 
         $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable);
         $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETASumM3($start_week, $end_week, $status, $completable);
-
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncETA($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncETA($start_week, $end_week, $status, $completable);
 
-        $entregasFinal = array();
-
-        foreach ( $Entregas as $entrega ) {
-
-            $docEntrega = $entrega['DocEntrega'];
-            $posPedido = $entrega['PosPedido'];
-            $orgVenta = $entrega['OrgVenta'];
-            $eta = $entrega['Eta'];
-            $fpe = $entrega['FPE'];
-            $material = $entrega['Material'];
-            $descripcion = $entrega['DescripcionMaterial'];
-            $volPedido = $entrega['VolPedido'];
-            $sumaVolAsignado = 0;
-            $sumaVolAsiETA = 0;
-            $sumaVolAsiFPE = 0;
-
-            foreach ( $EntregasM3 as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsignado = $item['M3'];
-                  //  unset( $EntregasETA[ $docEntrega ] );
-                    break;
-                }
-
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-
-            foreach ( $EntregasETA as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiETA = $item['M3'];
-                    //unset( $EntregasETA[ $docEntrega ] );
-                    break;
-                }
-
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-
-            foreach ( $EntregasFPE as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiFPE = $item['M3'];
-                    //unset( $EntregasFPE[ $docEntrega ] );
-                    break;
-                }
-
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-
-            array_push(
-                $entregasFinal, array(
-                    $docEntrega, $posPedido, $orgVenta, $eta->format('d-m-Y'),
-                    $fpe->format('d-m-Y'), $material, $descripcion,
-                    $volPedido, round( $sumaVolAsignado, 3 ),
-                    round( $sumaVolAsiETA, 3 ),
-                    round( $sumaVolAsiFPE, 3 )
-                )
-            );
-
-        }
+        $entregasFinal = PedidosController::sortIncomplete ($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE);
 
         return array(
             'Entregas' => $entregasFinal,
@@ -957,77 +907,10 @@ class PedidosController extends Controller
 
         $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPEList($start_week, $end_week, $status, $completable);
         $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPESumM3($start_week, $end_week, $status, $completable);
-
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncFPE($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);
 
-        $entregasFinal = array();
-
-        foreach ( $Entregas as $entrega ) {
-
-            $docEntrega = $entrega['DocEntrega'];
-            $posPedido = $entrega['PosPedido'];
-            $orgVenta = $entrega['OrgVenta'];
-            $eta = $entrega['Eta'];
-            $fpe = $entrega['FPE'];
-            $material = $entrega['Material'];
-            $descripcion = $entrega['DescripcionMaterial'];
-            $volPedido = $entrega['VolPedido'];
-
-            $sumaVolAsignado = 0;
-            $sumaVolAsiETA = 0;
-            $sumaVolAsiFPE = 0;
-
-            foreach ( $EntregasM3 as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsignado = $item['M3'];
-                    break;
-                }
-
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-
-            foreach ( $EntregasETA as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiETA = $item['M3'];
-                    break;
-                }
-
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-
-            foreach ( $EntregasFPE as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiFPE = $item['M3'];
-                    break;
-                }
-
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-
-            array_push(
-                $entregasFinal, array(
-                    $docEntrega, $posPedido, $orgVenta, $eta->format('d-m-Y'),
-                    $fpe->format('d-m-Y'), $material, $descripcion,
-                    $volPedido, round( $sumaVolAsignado, 3 ),
-                    round( $sumaVolAsiETA, 3 ),
-                    round( $sumaVolAsiFPE, 3 )
-                )
-            );
-
-        }
+        $entregasFinal = PedidosController::sortIncomplete ($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE);
 
         return array(
             'Entregas' => $entregasFinal,
@@ -1054,80 +937,10 @@ class PedidosController extends Controller
 
         $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPEList($start_week, $end_week, $status, $completable);
         $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPESumM3($start_week, $end_week, $status, $completable);
-
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncFPE($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);
 
-        $entregasFinal = array();
-
-        foreach ( $Entregas as $entrega ) {
-
-            $docEntrega = $entrega['DocEntrega'];
-            $posPedido = $entrega['PosPedido'];
-            $orgVenta = $entrega['OrgVenta'];
-            $eta = $entrega['Eta'];
-            $fpe = $entrega['FPE'];
-            $material = $entrega['Material'];
-            $descripcion = $entrega['DescripcionMaterial'];
-            $volPedido = $entrega['VolPedido'];
-
-            $sumaVolAsignado = 0;
-            $sumaVolAsiETA = 0;
-            $sumaVolAsiFPE = 0;
-
-            foreach ( $EntregasM3 as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsignado = $item['M3'];
-                  //  unset( $EntregasETA[ $docEntrega ] );
-                    break;
-                }
-
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-
-            foreach ( $EntregasETA as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiETA = $item['M3'];
-                   // unset( $EntregasETA[ $docEntrega ] );
-                    break;
-                }
-
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-
-            foreach ( $EntregasFPE as $item ) {
-
-                if ( $docEntrega == $item['DocEntrega']
-                    && $posPedido == $item['PosPedido'] ) {
-                    $sumaVolAsiFPE = $item['M3'];
-                   // unset( $EntregasFPE[ $docEntrega ] );
-                    break;
-                }
-
-                if ($docEntrega < $item['DocEntrega'])
-                    break;
-
-            }
-
-            array_push(
-                $entregasFinal, array(
-                    $docEntrega, $posPedido, $orgVenta, $eta->format('d-m-Y'),
-                    $fpe->format('d-m-Y'), $material, $descripcion,
-                    $volPedido, round( $sumaVolAsignado, 3 ),
-                    round( $sumaVolAsiETA, 3 ),
-                    round( $sumaVolAsiFPE, 3 )
-                )
-            );
-
-        }
+        $entregasFinal = PedidosController::sortIncomplete ($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE);
 
         return array(
             'Entregas' => $entregasFinal,
@@ -1302,28 +1115,28 @@ class PedidosController extends Controller
 
             array_push(
                 $arrayDocEntrega, array(
-                    $posPedido, //0
-                    $FPE->format('d-m-Y'), //1
-                    $Eta->format('d-m-Y'), //2
-                    $FecDis->format('d-m-Y'), //3
-                    $Material, //4
-                    $DescripcionMaterial, //5
-                    $VolPedido, //6
-                    round( $sumaVolAsignado, 3 ), //7
-                    round( $sumaVolAsiETA, 3 ), //8
-                    round( $sumaVolAsiFPE, 3 ), //9
-                    $codCliente, //10
-                    $nomCliente, //11
-                    $EntComp, //12
-                    $Destino, //13
-                    $PaisDestino, //14
-                    $FPAN->format('d-m-Y'), //15
-                    $FPD->format('d-m-Y'), //16
-                    $RoundVentas->format('Y-m'), //17
-                    $MT, //18
-                    $Nave, //19
-                    $ClaseMaterial, //20
-                    $docEntrega //21
+                    $posPedido,
+                    $FPE->format('d-m-Y'),
+                    $Eta->format('d-m-Y'),
+                    $FecDis->format('d-m-Y'),
+                    $Material,
+                    $DescripcionMaterial,
+                    $VolPedido,
+                    round( $sumaVolAsignado, 3 ),
+                    round( $sumaVolAsiETA, 3 ),
+                    round( $sumaVolAsiFPE, 3 ),
+                    $codCliente,
+                    $nomCliente,
+                    $EntComp,
+                    $Destino,
+                    $PaisDestino,
+                    $FPAN->format('d-m-Y'),
+                    $FPD->format('d-m-Y'),
+                    $RoundVentas->format('Y-m'),
+                    $MT,
+                    $Nave,
+                    $ClaseMaterial,
+                    $docEntrega
                 )
             );
 

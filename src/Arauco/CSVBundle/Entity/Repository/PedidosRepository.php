@@ -34,7 +34,19 @@ class PedidosRepository extends EntityRepository
                 S.Material,
                 S.Desc_Mat,
                 P.VolPedido,
-                SUM( S.M3 ) as M3
+                SUM( S.M3 ) as M3,
+                P.CodCliente,
+                P.NomCliente,
+                P.EntComp,
+                P.PaisDestino,
+                P.Destino,
+                P.FPAN,
+                P.FPD,
+                P.FecDis,
+                P.RoundVentas,
+                P.MT,
+                P.Nave,
+                P.ClaseMaterial
             FROM
                 AraucoCSVBundle:Pedidos P,
                 AraucoCSVBundle:Stock S
@@ -112,7 +124,7 @@ class PedidosRepository extends EntityRepository
                 P.DocEntrega,
                 P.PosPedido")->getResult();
     }
-    
+
     public function findPedidosAsigIncETAList($startWeek, $endWeek, $status, $completable)
     {
         return $this->getEntityManager()->createQuery("
@@ -124,7 +136,19 @@ class PedidosRepository extends EntityRepository
                 P.FPE,
                 P.Material,
                 P.DescripcionMaterial,
-                P.VolPedido
+                P.VolPedido,
+                P.CodCliente,
+                P.NomCliente,
+                P.EntComp,
+                P.PaisDestino,
+                P.Destino,
+                P.FPAN,
+                P.FPD,
+                P.FecDis,
+                P.RoundVentas,
+                P.MT,
+                P.Nave,
+                P.ClaseMaterial
             FROM
                 AraucoCSVBundle:Pedidos P
             WHERE
@@ -233,7 +257,7 @@ class PedidosRepository extends EntityRepository
                 P.DocEntrega,
                 P.PosPedido")->getResult();
     }
-    
+
     public function findPedidosAsigIncFPEList($startWeek, $endWeek, $status, $completable)
     {
         return $this->getEntityManager()->createQuery("
@@ -245,7 +269,19 @@ class PedidosRepository extends EntityRepository
                 P.FPE,
                 P.Material,
                 P.DescripcionMaterial,
-                P.VolPedido
+                P.VolPedido,
+                P.CodCliente,
+                P.NomCliente,
+                P.EntComp,
+                P.PaisDestino,
+                P.Destino,
+                P.FPAN,
+                P.FPD,
+                P.FecDis,
+                P.RoundVentas,
+                P.MT,
+                P.Nave,
+                P.ClaseMaterial
             FROM
                 AraucoCSVBundle:Pedidos P
             WHERE
@@ -355,119 +391,7 @@ class PedidosRepository extends EntityRepository
                 P.DocEntrega,
                 P.PosPedido")->getResult();
     }
-    
-    public function findPedidosTotallyIncETA($startWeek, $endWeek)
-    {
-        return $this->getEntityManager()->createQuery("
-            SELECT
-                P.DocEntrega,
-                P.PosPedido,
-                P.OrgVenta,
-                P.FPE,
-                P.Material,
-                P.DescripcionMaterial,
-                P.VolPedido
-            FROM
-                AraucoCSVBundle:Pedidos P
-            WHERE
-                P.Eta >='".$startWeek."'
-                AND P.Eta <='".$endWeek."'
-                AND P.StatusComplete = 'NO'
-                AND P.unidadesAsignadas = 0
-                AND P.PED_COMPLETABLE_ETA = FALSE
-                AND P.StatusMovimientodeMcia = 'A'
-            GROUP BY
-                P.DocEntrega,
-                P.PosPedido
-            ORDER BY
-                P.DocEntrega,
-                P.PosPedido")->getResult();
-    }
-    
-        public function findPedidosTotallyIncComETA($startWeek, $endWeek)
-    {
-        return $this->getEntityManager()->createQuery("
-            SELECT
-                P.DocEntrega,
-                P.PosPedido,
-                P.OrgVenta,
-                P.FPE,
-                P.Material,
-                P.DescripcionMaterial,
-                P.VolPedido
-            FROM
-                AraucoCSVBundle:Pedidos P
-            WHERE
-                P.Eta >='".$startWeek."'
-                AND P.Eta <='".$endWeek."'
-                AND P.StatusComplete = 'NO'
-                AND P.unidadesAsignadas = 0
-                AND P.PED_COMPLETABLE_ETA = TRUE
-                AND P.StatusMovimientodeMcia = 'A'
-            GROUP BY
-                P.DocEntrega,
-                P.PosPedido
-            ORDER BY
-                P.DocEntrega,
-                P.PosPedido")->getResult();
-    }
-    
-    public function findPedidosTotallyIncComFPE($startWeek, $endWeek)
-    {
-        return $this->getEntityManager()->createQuery("
-            SELECT
-                P.DocEntrega,
-                P.PosPedido,
-                P.OrgVenta,
-                P.FPE,
-                P.Material,
-                P.DescripcionMaterial,
-                P.VolPedido
-            FROM
-                AraucoCSVBundle:Pedidos P
-            WHERE
-                P.Eta >='".$startWeek."'
-                AND P.Eta <='".$endWeek."'
-                AND P.StatusComplete = 'NO'
-                AND P.unidadesAsignadas = 0
-                AND P.PED_COMPLETABLE_FPE = TRUE
-                AND P.StatusMovimientodeMcia = 'A'
-            GROUP BY
-                P.DocEntrega,
-                P.PosPedido
-            ORDER BY
-                P.DocEntrega,
-                P.PosPedido")->getResult();
-    }
-    
-    public function findPedidosTotallyIncFPE($startWeek, $endWeek)
-    {
-        return $this->getEntityManager()->createQuery("
-            SELECT
-                P.DocEntrega,
-                P.PosPedido,
-                P.OrgVenta,
-                P.FPE,
-                P.Material,
-                P.DescripcionMaterial,
-                P.VolPedido
-            FROM
-                AraucoCSVBundle:Pedidos P
-            WHERE
-                P.Eta >='".$startWeek."'
-                AND P.Eta <='".$endWeek."'
-                AND P.StatusComplete = 'NO'
-                AND P.unidadesAsignadas = 0
-                AND P.PED_COMPLETABLE_FPE = FALSE
-                AND P.StatusMovimientodeMcia = 'A'
-            GROUP BY
-                P.DocEntrega,
-                P.PosPedido
-            ORDER BY
-                P.DocEntrega,
-                P.PosPedido")->getResult();
-    }
-    
+
     public function findAllGeneralCSV($startWeek, $endWeek)
     {
         return $this->getEntityManager()->createQuery("
@@ -497,9 +421,3 @@ class PedidosRepository extends EntityRepository
                 P.PosPedido")->getResult();
     }
 }
-
-//Total volumen de pedidos por material
-//SELECT Material, DescripcionMaterial, sum(VolPedido), StatusMovimientodeMcia
-//FROM Pedidos
-//WHERE StatusMovimientodeMcia IN ('A', 'C')
-//GROUP BY Material, StatusMovimientodeMcia;
