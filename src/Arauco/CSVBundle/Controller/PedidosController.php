@@ -288,6 +288,12 @@ class PedidosController extends Controller
             $sessionFilter = $session->get('filtro');
             if (!is_null($sessionFilter)) {
                 $form->bind( $sessionFilter );
+                $formData = $form->getData();
+                foreach ($formData as $key => $data) {
+                    foreach ($data as $value) {
+                        $listaClaseMaterial[] = $this->claseMaterial[$value];
+                    }
+                }
             }
         }
         
