@@ -309,7 +309,7 @@ class PedidosController extends Controller
         
         for ($i = 0; $i < 8; $i++) {
 
-            $dateconvert = PedidosController::dateconvert($i);
+            $dateconvert = $this->dateconvert($i);
             $start_week = $dateconvert['start_week'];
             $end_week   = $dateconvert['end_week'];
 
@@ -506,7 +506,7 @@ class PedidosController extends Controller
     public function importpasaAction ()
     {
         for ($i = 0; $i < 8; $i++) {
-            $dateconvert = PedidosController::dateconvert($i);
+            $dateconvert = $this->dateconvert($i);
             $start_week = $dateconvert['start_week'];
             $end_week   = $dateconvert['end_week'];
 
@@ -693,7 +693,7 @@ class PedidosController extends Controller
     public function importaasaAction ()
     {
         for ($i = 0; $i < 8; $i++) {
-            $dateconvert = PedidosController::dateconvert($i);
+            $dateconvert = $this->dateconvert($i);
             $start_week = $dateconvert['start_week'];
             $end_week   = $dateconvert['end_week'];
 
@@ -878,7 +878,7 @@ class PedidosController extends Controller
      */
     public function extendcomcpuAction ($week)
     {
-        $dateconvert    = PedidosController::dateconvert($week);
+        $dateconvert    = $this->dateconvert($week);
         $start_week     = $dateconvert['start_week'];
         $end_week       = $dateconvert['end_week'];
         $sWeek          = $dateconvert['sWeek'];
@@ -891,7 +891,7 @@ class PedidosController extends Controller
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETA($start_week, $end_week, $status);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPE($start_week, $end_week, $status);
 
-        $entregasFinal = PedidosController::sortComplete ($EntregasAsignadas, $EntregasETA, $EntregasFPE, "CPU");
+        $entregasFinal = $this->sortComplete ($EntregasAsignadas, $EntregasETA, $EntregasFPE, "CPU");
 
         return array(
             'Entregas' => $entregasFinal,
@@ -907,7 +907,7 @@ class PedidosController extends Controller
      */
     public function extendcomcplAction ($week)
     {
-        $dateconvert    = PedidosController::dateconvert($week);
+        $dateconvert    = $this->dateconvert($week);
         $start_week     = $dateconvert['start_week'];
         $end_week       = $dateconvert['end_week'];
         $sWeek          = $dateconvert['sWeek'];
@@ -920,7 +920,7 @@ class PedidosController extends Controller
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETA($start_week, $end_week, $status);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPE($start_week, $end_week, $status);
 
-        $entregasFinal = PedidosController::sortComplete ($EntregasAsignadas, $EntregasETA, $EntregasFPE, "CPL");
+        $entregasFinal = $this->sortComplete ($EntregasAsignadas, $EntregasETA, $EntregasFPE, "CPL");
 
         return array(
             'Entregas' => $entregasFinal,
@@ -936,7 +936,7 @@ class PedidosController extends Controller
      */
     public function extendcompletaAction ($week)
     {
-        $dateconvert    = PedidosController::dateconvert($week);
+        $dateconvert    = $this->dateconvert($week);
         $start_week     = $dateconvert['start_week'];
         $end_week       = $dateconvert['end_week'];
         $sWeek          = $dateconvert['sWeek'];
@@ -952,7 +952,7 @@ class PedidosController extends Controller
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncETA($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncETA($start_week, $end_week, $status, $completable);
 
-        $entregasFinal = PedidosController::sortIncomplete ($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE, "ComETA");
+        $entregasFinal = $this->sortIncomplete ($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE, "ComETA");
 
         return array(
             'Entregas' => $entregasFinal,
@@ -967,7 +967,7 @@ class PedidosController extends Controller
      */
     public function extendincetaAction ($week)
     {
-        $dateconvert    = PedidosController::dateconvert($week);
+        $dateconvert    = $this->dateconvert($week);
         $start_week     = $dateconvert['start_week'];
         $end_week       = $dateconvert['end_week'];
         $sWeek          = $dateconvert['sWeek'];
@@ -982,7 +982,7 @@ class PedidosController extends Controller
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncETA($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncETA($start_week, $end_week, $status, $completable);
 
-        $entregasFinal = PedidosController::sortIncomplete ($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE, "IncETA");
+        $entregasFinal = $this->sortIncomplete ($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE, "IncETA");
 
         return array(
             'Entregas' => $entregasFinal,
@@ -997,7 +997,7 @@ class PedidosController extends Controller
      */
     public function extendcomplfpeAction ($week)
     {
-        $dateconvert    = PedidosController::dateconvert($week);
+        $dateconvert    = $this->dateconvert($week);
         $start_week     = $dateconvert['start_week'];
         $end_week       = $dateconvert['end_week'];
         $sWeek          = $dateconvert['sWeek'];
@@ -1012,7 +1012,7 @@ class PedidosController extends Controller
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncFPE($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);
 
-        $entregasFinal = PedidosController::sortIncomplete ($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE, "ComFPE");
+        $entregasFinal = $this->sortIncomplete ($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE, "ComFPE");
 
         return array(
             'Entregas' => $entregasFinal,
@@ -1027,7 +1027,7 @@ class PedidosController extends Controller
      */
     public function extendincfpeAction ($week)
     {
-        $dateconvert    = PedidosController::dateconvert($week);
+        $dateconvert    = $this->dateconvert($week);
         $start_week     = $dateconvert['start_week'];
         $end_week       = $dateconvert['end_week'];
         $sWeek          = $dateconvert['sWeek'];
@@ -1042,7 +1042,7 @@ class PedidosController extends Controller
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncFPE($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);
 
-        $entregasFinal = PedidosController::sortIncomplete ($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE, "IncFPE");
+        $entregasFinal = $this->sortIncomplete ($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE, "IncFPE");
 
         return array(
             'Entregas' => $entregasFinal,
@@ -1055,7 +1055,7 @@ class PedidosController extends Controller
      * @Route("/pedido/docentrega/{id}", name="arauco_pedido_docentrega")
      * @Template("AraucoBaseBundle:Pedido:extendDocEntrega.html.twig")
      */
-    public function docentregainfoAction ($id)
+    public function docentregainfoAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -1255,7 +1255,7 @@ class PedidosController extends Controller
     {
         $filename = "DocEntrega-".$id." ".date("Y_m_d_His").".csv";
 
-        $arrayDocEntrega = PedidosController::docentregainfoAction($id)['arrayDocEntrega'];
+        $arrayDocEntrega = $this->docentregainfoAction($id)['arrayDocEntrega'];
 
         $response = $this->render('AraucoBaseBundle:Pedido:docentregaCsv.html.twig', array('data' => $arrayDocEntrega ));
 
@@ -1270,13 +1270,13 @@ class PedidosController extends Controller
      */
     public function extendcsvcomcpuAction ($week)
     {
-        $dateconvert    = PedidosController::dateconvert($week);
+        $dateconvert    = $this->dateconvert($week);
         $start_week     = $dateconvert['start_week'];
         $end_week       = $dateconvert['end_week'];
 
         $filename = "PedidosCPU_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
 
-        $entregasFinal = PedidosController::extendcomcpuAction($week)['Entregas'];
+        $entregasFinal = $this->extendcomcpuAction($week)['Entregas'];
 
         $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $entregasFinal ));
         $response->headers->set('Content-Type', 'text/csv');
@@ -1290,13 +1290,13 @@ class PedidosController extends Controller
      */
     public function extendcsvcomcplAction ($week)
     {
-        $dateconvert    = PedidosController::dateconvert($week);
+        $dateconvert    = $this->dateconvert($week);
         $start_week     = $dateconvert['start_week'];
         $end_week       = $dateconvert['end_week'];
 
         $filename = "PedidosCPL_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
 
-        $entregasFinal = PedidosController::extendcomcplAction($week)['Entregas'];
+        $entregasFinal = $this->extendcomcplAction($week)['Entregas'];
 
         $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $entregasFinal ));
 
@@ -1311,13 +1311,13 @@ class PedidosController extends Controller
      */
     public function extendcompletacsvAction ($week)
     {
-        $dateconvert    = PedidosController::dateconvert($week);
+        $dateconvert    = $this->dateconvert($week);
         $start_week     = $dateconvert['start_week'];
         $end_week       = $dateconvert['end_week'];
 
         $filename = "PedidosComplETA_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
 
-        $entregasFinal = PedidosController::extendcompletaAction($week)['Entregas'];
+        $entregasFinal = $this->extendcompletaAction($week)['Entregas'];
 
         $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $entregasFinal ));
 
@@ -1332,13 +1332,13 @@ class PedidosController extends Controller
      */
     public function extendincetacsvAction ($week)
     {
-        $dateconvert    = PedidosController::dateconvert($week);
+        $dateconvert    = $this->dateconvert($week);
         $start_week     = $dateconvert['start_week'];
         $end_week       = $dateconvert['end_week'];
 
         $filename = "PedidosIncETA_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
 
-        $entregasFinal = PedidosController::extendincetaAction($week)['Entregas'];
+        $entregasFinal = $this->extendincetaAction($week)['Entregas'];
 
         $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $entregasFinal ));
 
@@ -1353,13 +1353,13 @@ class PedidosController extends Controller
      */
     public function extendcomplfpecsvAction ($week)
     {
-        $dateconvert    = PedidosController::dateconvert($week);
+        $dateconvert    = $this->dateconvert($week);
         $start_week     = $dateconvert['start_week'];
         $end_week       = $dateconvert['end_week'];
 
         $filename = "PedidosComplFPE_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
 
-        $entregasFinal = PedidosController::extendcomplfpeAction($week)['Entregas'];
+        $entregasFinal = $this->extendcomplfpeAction($week)['Entregas'];
 
         $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $entregasFinal ));
 
@@ -1374,13 +1374,13 @@ class PedidosController extends Controller
      */
     public function extendincfpecsvAction ($week)
     {
-        $dateconvert    = PedidosController::dateconvert($week);
+        $dateconvert    = $this->dateconvert($week);
         $start_week     = $dateconvert['start_week'];
         $end_week       = $dateconvert['end_week'];
 
         $filename = "PedidosIncFPE_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
 
-        $entregasFinal = PedidosController::extendincfpeAction($week)['Entregas'];
+        $entregasFinal = $this->extendincfpeAction($week)['Entregas'];
 
         $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $entregasFinal ));
 
@@ -1400,19 +1400,19 @@ class PedidosController extends Controller
         $pedidosGeneral = array();
 
         for ($week = 0; $week < 8; $week++) {
-            $dateconvert = PedidosController::dateconvert($week);
+            $dateconvert = $this->dateconvert($week);
 
-            $CPU = PedidosController::extendcomcpuAction($week)['Entregas'];
-            $pedidosGeneral = array_merge($pedidosGeneral,$CPU);
+            $CPU = $this->extendcomcpuAction($week)['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral, $CPU);
 
-            $CPL = PedidosController::extendcomcplAction($week)['Entregas'];
-            $pedidosGeneral = array_merge($pedidosGeneral,$CPL);
+            $CPL = $this->extendcomcplAction($week)['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral, $CPL);
 
-            $ComETA = PedidosController::extendcompletaAction($week)['Entregas'];
-            $pedidosGeneral = array_merge($pedidosGeneral,$ComETA);
+            $ComETA = $this->extendcompletaAction($week)['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral, $ComETA);
 
-            $IncETA = PedidosController::extendincetaAction($week)['Entregas'];
-            $pedidosGeneral = array_merge($pedidosGeneral,$IncETA);
+            $IncETA = $this->extendincetaAction($week)['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral, $IncETA);
         }
 
         $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $pedidosGeneral ));
@@ -1433,19 +1433,19 @@ class PedidosController extends Controller
         $pedidosGeneral = array();
 
         for ($week = 0; $week < 8; $week++) {
-            $dateconvert = PedidosController::dateconvert($week);
+            $dateconvert = $this->dateconvert($week);
 
-            $CPU = PedidosController::extendcomcpuAction($week)['Entregas'];
-            $pedidosGeneral = array_merge($pedidosGeneral,$CPU);
+            $CPU = $this->extendcomcpuAction($week)['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral, $CPU);
 
-            $CPL = PedidosController::extendcomcplAction($week)['Entregas'];
-            $pedidosGeneral = array_merge($pedidosGeneral,$CPL);
+            $CPL = $this->extendcomcplAction($week)['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral, $CPL);
 
-            $ComFPE = PedidosController::extendcomplfpeAction($week)['Entregas'];
-            $pedidosGeneral = array_merge($pedidosGeneral,$ComFPE);
+            $ComFPE = $this->extendcomplfpeAction($week)['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral, $ComFPE);
 
-            $IncFPE = PedidosController::extendincfpeAction($week)['Entregas'];
-            $pedidosGeneral = array_merge($pedidosGeneral,$IncFPE);
+            $IncFPE = $this->extendincfpeAction($week)['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral, $IncFPE);
         }
 
         $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $pedidosGeneral ));
