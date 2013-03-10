@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Arauco\CSVBundle\Entity\Stock;
 use Arauco\CSVBundle\Entity\Pedidos;
+use Symfony\Component\HttpFoundation\Request;
 
 ini_set( 'memory_limit', '-1' );
 
@@ -220,12 +221,84 @@ class PedidosController extends Controller
         return $entregasFinal;
     }
 
+    private $claseMaterial = array(
+        "AA_APARIENCIA",
+        "AA_BASAS",
+        "AA_BOARD",
+        "AA_EMB_SUB",
+        "AA_FACTORY",
+        "AA_PALLET",
+        "AA_SELECCION",
+        "AA_TERMINACION",
+        "RE_BLANK",
+        "RE_BLOCK",
+        "RE_EGB",
+        "RE_EGP",
+        "RE_FJM",
+        "RE_JAMBS_FLAT",
+        "RE_JAMBS_RABBETED",
+        "RE_JAMBS_SPLIT",
+        "RE_LAMINADOS",
+        "RE_SM",
+        "TA_AGLOMERADO",
+        "TA_MELAMINA",
+        "TA_PLYWOOD",
+        "TR_HDF_DESNUDO",
+        "TR_MDF_DESNUDO",
+        "TR_MOLDURA",
+        "TR_PERFORADO",
+        "TR_RANURADO",
+        "TR_RECUBIERTO"
+        );
+    
     /**
      * @Route("/pedido", name="arauco_pedido_index")
      * @Template("AraucoBaseBundle:Pedido:index.html.twig")
      */
-    public function importAction ()
+    public function importAction (Request $request)
     {
+        $listaClaseMaterial = array();
+        $formBuilder = $this->createFormBuilder();
+        $session = $this->getRequest()->getSession();
+        
+        $formBuilder->add('filtro', 'choice', array(
+            'choices' => $this->claseMaterial,
+            'multiple' => true,
+            'expanded' => true
+        ));
+        
+        $form = $formBuilder->getForm();
+        
+        if ($request->getMethod() == 'POST') {
+            $form->bind( $request );
+            $formData = $form->getData();
+            $sessionData = array();
+            
+            if (count($formData) > 0) {
+                foreach ($formData as $key => $data) {
+                    foreach ($data as $value) {
+                        $sessionData[$key][$value] = $value;
+                        $listaClaseMaterial[] = $this->claseMaterial[$value];
+                    }
+                }
+                $session->set('filtro', $sessionData);
+            }
+        } else {
+            # Se llena el formulario con la sesión, en caso de que exista.
+            $sessionFilter = $session->get('filtro');
+            if (!is_null($sessionFilter)) {
+                $form->bind( $sessionFilter );
+            }
+        }
+        
+        # Esto se hace para agregar el 'IN' a la consulta SQL
+        # SÓLO si se ha seleccionado alguno de los checkboxes.
+        if (count($listaClaseMaterial) == 0){
+            $condicionConsultaClaseMaterial = "";
+        } else {
+            $condicionConsultaClaseMaterial = "AND P.ClaseMaterial IN ('".implode("', '",$listaClaseMaterial)."')";
+        }
+        
         for ($i = 0; $i < 8; $i++) {
 
             $dateconvert = PedidosController::dateconvert($i);
@@ -244,7 +317,8 @@ class PedidosController extends Controller
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'CPU'
                     AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    ".$condicionConsultaClaseMaterial
+                    );
 
             $cantEntregasCompletasEnPuerto[$i] = round($query->getSingleScalarResult()/1000, 3);
 
@@ -261,7 +335,8 @@ class PedidosController extends Controller
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'CPL'
                     AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    ".$condicionConsultaClaseMaterial
+                    );
 
             $cantEntregasCompletasEnPlanta[$i] = round($query2->getSingleScalarResult()/1000,3);
 
@@ -279,7 +354,8 @@ class PedidosController extends Controller
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_ETA = TRUE
                     AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    ".$condicionConsultaClaseMaterial
+                    );
 
             $cantEntregasCompletablesETA[$i] = round($query3->getSingleScalarResult()/1000,3);
 
@@ -297,7 +373,8 @@ class PedidosController extends Controller
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_FPE = TRUE
                     AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    ".$condicionConsultaClaseMaterial
+                    );
 
             $cantEntregasCompletablesFPE[$i] = round($query31->getSingleScalarResult()/1000,3);
 
@@ -318,7 +395,8 @@ class PedidosController extends Controller
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_ETA = FALSE
                     AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    ".$condicionConsultaClaseMaterial
+                    );
 
             $cantCompletadeEntregasIncompletasETA[$i] = round($query41->getSingleScalarResult()/1000,3);
 
@@ -336,7 +414,8 @@ class PedidosController extends Controller
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_ETA = FALSE
                     AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    ".$condicionConsultaClaseMaterial
+                    );
 
             $cantIncompletadeEntregasIncompletasETA[$i] = round($query42->getSingleScalarResult()/1000,3);
 
@@ -359,7 +438,8 @@ class PedidosController extends Controller
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_FPE = FALSE
                     AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    ".$condicionConsultaClaseMaterial
+                    );
             $cantCompletadeEntregasIncompletasFPE[$i] = round($query51->getSingleScalarResult()/1000,3);
 
             if(!isset($cantCompletadeEntregasIncompletasFPE[$i]))
@@ -376,17 +456,31 @@ class PedidosController extends Controller
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_FPE = FALSE
                     AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    ".$condicionConsultaClaseMaterial
+                    );
 
             $cantIncompletadeEntregasIncompletasFPE[$i] = round($query52->getSingleScalarResult()/1000,3);
 
-            if(!isset($cantIncompletadeEntregasIncompletasFPE[$i]))
+            if (!isset($cantIncompletadeEntregasIncompletasFPE[$i])) {
                 $cantIncompletadeEntregasIncompletasFPE[$i] = 0;
-            else
+            } else {
                 $cantIncompletadeEntregasIncompletasFPE[$i] = $cantIncompletadeEntregasIncompletasFPE[$i] - $cantCompletadeEntregasIncompletasFPE[$i];
+            }
+                
         }
-
+        
+        /*foreach ($this->claseMaterial as $claseMaterial) {
+            $isChecked = array();
+            #$isChecked = array('checked' => 'checked');
+            $formBuilder->add('filtro', 'choices', array(
+                'chocies' => $claseMaterial,
+                'required' => false,
+                'attr' => $isChecked
+            ));
+        }*/
+        
         return array(
+            'form' => $form->createView(),
             'cantEntregasCompletasEnPuerto' => $cantEntregasCompletasEnPuerto,
             'cantEntregasCompletasEnPlanta' => $cantEntregasCompletasEnPlanta,
             'cantEntregasCompletablesETA' => $cantEntregasCompletablesETA,
