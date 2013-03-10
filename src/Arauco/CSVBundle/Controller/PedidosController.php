@@ -36,7 +36,7 @@ class PedidosController extends Controller
 
     }
 
-    private function sortComplete($EntregasAsignadas, $EntregasETA, $EntregasFPE) {
+    private function sortComplete($EntregasAsignadas, $EntregasETA, $EntregasFPE, $comstatus) {
 
         $entregasFinal = array();
 
@@ -110,7 +110,8 @@ class PedidosController extends Controller
                     $RoundVentas->format('Y-m'), // 19
                     $MT, // 20
                     $Nave, // 21
-                    $ClaseMaterial //22
+                    $ClaseMaterial, //22
+                    $comstatus
                 )
             );
 
@@ -121,7 +122,7 @@ class PedidosController extends Controller
 
     }
 
-    private function sortIncomplete($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE) {
+    private function sortIncomplete($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE, $comstatus) {
 
         $entregasFinal = array();
 
@@ -213,7 +214,8 @@ class PedidosController extends Controller
                     $RoundVentas->format('Y-m'),
                     $MT,
                     $Nave,
-                    $ClaseMaterial
+                    $ClaseMaterial,
+                    $comstatus
                 )
             );
         }
@@ -789,7 +791,7 @@ class PedidosController extends Controller
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETA($start_week, $end_week, $status);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPE($start_week, $end_week, $status);
 
-        $entregasFinal = PedidosController::sortComplete ($EntregasAsignadas, $EntregasETA, $EntregasFPE);
+        $entregasFinal = PedidosController::sortComplete ($EntregasAsignadas, $EntregasETA, $EntregasFPE, "CPU");
 
         return array(
             'Entregas' => $entregasFinal,
@@ -818,7 +820,7 @@ class PedidosController extends Controller
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETA($start_week, $end_week, $status);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPE($start_week, $end_week, $status);
 
-        $entregasFinal = PedidosController::sortComplete ($EntregasAsignadas, $EntregasETA, $EntregasFPE);
+        $entregasFinal = PedidosController::sortComplete ($EntregasAsignadas, $EntregasETA, $EntregasFPE, "CPL");
 
         return array(
             'Entregas' => $entregasFinal,
@@ -850,7 +852,7 @@ class PedidosController extends Controller
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncETA($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncETA($start_week, $end_week, $status, $completable);
 
-        $entregasFinal = PedidosController::sortIncomplete ($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE);
+        $entregasFinal = PedidosController::sortIncomplete ($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE, "ComETA");
 
         return array(
             'Entregas' => $entregasFinal,
@@ -880,7 +882,7 @@ class PedidosController extends Controller
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncETA($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncETA($start_week, $end_week, $status, $completable);
 
-        $entregasFinal = PedidosController::sortIncomplete ($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE);
+        $entregasFinal = PedidosController::sortIncomplete ($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE, "IncETA");
 
         return array(
             'Entregas' => $entregasFinal,
@@ -910,7 +912,7 @@ class PedidosController extends Controller
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncFPE($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);
 
-        $entregasFinal = PedidosController::sortIncomplete ($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE);
+        $entregasFinal = PedidosController::sortIncomplete ($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE, "ComFPE");
 
         return array(
             'Entregas' => $entregasFinal,
@@ -940,7 +942,7 @@ class PedidosController extends Controller
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncFPE($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);
 
-        $entregasFinal = PedidosController::sortIncomplete ($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE);
+        $entregasFinal = PedidosController::sortIncomplete ($Entregas, $EntregasM3, $EntregasETA, $EntregasFPE, "IncFPE");
 
         return array(
             'Entregas' => $entregasFinal,
@@ -1293,19 +1295,64 @@ class PedidosController extends Controller
      */
     public function generalCsvEtaAction(){
 
-        $weekStart =  date( 'Ymd', strtotime('Monday this week') );
-        $weekEndPlusEightWeeks = date( 'Ymd', strtotime("Sunday +7 weeks") );
+        $filename = "ReporteGeneralPedidosETA_".date("Y-m-d_His").".csv";
 
-        $em = $this->getDoctrine()->getManager();
-        $pedidosGeneral = $em->getRepository('AraucoCSVBundle:Pedidos')
-                ->findAllGeneralCSV($weekStart, $weekEndPlusEightWeeks);
+        $pedidosGeneral = array();
 
-        $filename = "ReporteGeneralPedidos_".date("Y-m-d_His")."__".$weekStart."_".$weekEndPlusEightWeeks.".csv";
+        for ($week = 0; $week < 8; $week++) {
+            $dateconvert = PedidosController::dateconvert($week);
 
-        $response =$this->
-                render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig',
-                array('pedidos' => $pedidosGeneral ));
+            $CPU = PedidosController::extendcomcpuAction($week)['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral,$CPU);
+
+            $CPL = PedidosController::extendcomcplAction($week)['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral,$CPL);
+
+            $ComETA = PedidosController::extendcompletaAction($week)['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral,$ComETA);
+
+            $IncETA = PedidosController::extendincetaAction($week)['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral,$IncETA);
+        }
+
+        $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $pedidosGeneral ));
+
         $response->headers->set('Content-Type', 'text/csv');
         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
+
+        return $response;
+    }
+
+    /**
+     * @Route("/pedidos/csv/fpegeneral", name="arauco_pedido_csv_general_fpe")
+     */
+    public function generalCsvFPEAction(){
+
+        $filename = "ReporteGeneralPedidosFPE_".date("Y-m-d_His").".csv";
+
+        $pedidosGeneral = array();
+
+        for ($week = 0; $week < 8; $week++) {
+            $dateconvert = PedidosController::dateconvert($week);
+
+            $CPU = PedidosController::extendcomcpuAction($week)['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral,$CPU);
+
+            $CPL = PedidosController::extendcomcplAction($week)['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral,$CPL);
+
+            $ComFPE = PedidosController::extendcomplfpeAction($week)['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral,$ComFPE);
+
+            $IncFPE = PedidosController::extendincfpeAction($week)['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral,$IncFPE);
+        }
+
+        $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $pedidosGeneral ));
+
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
+
+        return $response;
     }
 }
