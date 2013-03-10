@@ -169,6 +169,10 @@
 <center><h3><a href="{{ path('arauco_pedido_index_aasa') }}" class="btn btn-success btn-large">AASA</a> <a href="{{ path('arauco_pedido_index_pasa') }}" class="btn btn-success btn-large">PASA</a></h3></center>
             {% block AASAPASA %}
             {% endblock %}
+            <form action="{{ path('arauco_pedido_index') }}" method="post" {{ form_enctype(form) }}>
+              {{ form_rest(form) }}
+              <input type="submit" />
+            </form>
             <h3>Simulación ETA</h3>
             <center>
                 <div id="chart3" style="width:800px; height:300px;"></div>
