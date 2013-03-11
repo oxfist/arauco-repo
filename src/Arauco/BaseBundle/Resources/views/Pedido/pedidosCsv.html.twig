@@ -1,5 +1,5 @@
 {% set point = '.' %}
 Status; DocEntrega; PosPedido; Nave; CodCliente; NomCliente; Compartida; Destino; PaisDestino; FPAN; FPD; FPE; Eta; FecDis; Material; DescMat; ClaseMaterial; RoundVentas; MT; VolPedido; TA; TA ETA; TA FPE
 {% for entrega in data %}
-{{ entrega[23] }};{{ entrega[0] }};{{ entrega[1] }};{{ entrega[21] }};{{ entrega[12] }};{{ entrega[13] }};{{ entrega[14] }};{{ entrega[15] }};{{ entrega[16] }};{{ entrega[17] }};{{ entrega[18] }};{{ entrega[4] }};{{ entrega[3] }};{{ entrega[11] }};{{ entrega[5] }};"{{ entrega[6] }}";{{ entrega[22] }};{{ entrega[19] }};{{ entrega[20] }};{{ entrega[7]|replace({ (point) : ','})|trim }};{{ entrega[8]|replace({ (point) : ','})|trim }};{{ entrega[9]|replace({ (point) : ','})|trim }};{{ entrega[10]|replace({ (point) : ','})|trim }}
+{{ entrega[23] }};{{ entrega[0] }};{{ entrega[1] }};{{ entrega[21] }};{{ entrega[12] }};{{ entrega[13] | raw }};{{ entrega[14] }};{{ entrega[15] }};{{ entrega[16] }};{{ entrega[17] }};{{ entrega[18] }};{{ entrega[4] }};{{ entrega[3] }};{{ entrega[11] }};{{ entrega[5] }};"{{ entrega[6] }}";{{ entrega[22] }};{{ entrega[19] }};{{ entrega[20] }};{{ entrega[7]|replace({ (point) : ','})|trim }};{{ entrega[8]|replace({ (point) : ','})|trim }};{{ entrega[9]|replace({ (point) : ','})|trim }};{{ entrega[10]|replace({ (point) : ','})|trim }}
 {% endfor %}

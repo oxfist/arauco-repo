@@ -169,10 +169,31 @@
 <center><h3><a href="{{ path('arauco_pedido_index_aasa') }}" class="btn btn-success btn-large">AASA</a> <a href="{{ path('arauco_pedido_index_pasa') }}" class="btn btn-success btn-large">PASA</a></h3></center>
             {% block AASAPASA %}
             {% endblock %}
+            <div class="container" id="filtro">
             <form action="{{ path('arauco_pedido_index') }}" method="post" {{ form_enctype(form) }}>
-              {{ form_rest(form) }}
-              <input type="submit" />
+                <h4>Filtrar por Clase_Material</h4>
+                <div class="control-group" style="padding-bottom: 230px;">
+                    {% set count = 1 %}
+                    {% for field in form %}
+                        {% for element in field %}
+                        {% if count == 1 or count == 10 or count == 19 %}
+                        <div class="controls span2">
+                        {% endif %}
+                            {{ form_row(element) }}
+                        {% if count%9 == 0 %}
+                        </div>
+                        {% endif %}
+                        {% set count = count + 1 %}
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+                {{ form_rest(form) }}
+                <div class="controls span2">
+                    <input class="btn btn-success controls" type="submit" value="Filtrar" />
+                </div>
             </form>
+            </div>
+            <br />
             <h3>Simulación ETA</h3>
             <center>
                 <div id="chart3" style="width:800px; height:300px;"></div>

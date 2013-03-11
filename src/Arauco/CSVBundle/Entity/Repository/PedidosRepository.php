@@ -22,7 +22,7 @@ class PedidosRepository extends EntityRepository
             ")->getResult();
     }
 
-    public function findPedidosAsig($startWeek, $endWeek, $status)
+    public function findPedidosAsig($startWeek, $endWeek, $status, $claseMaterial)
     {
         return $this->getEntityManager()->createQuery("
             SELECT
@@ -56,7 +56,8 @@ class PedidosRepository extends EntityRepository
                 AND P.Eta >='".$startWeek."'
                 AND P.Eta <='".$endWeek."'
                 AND P.StatusComplete = '".$status."'
-                AND P.StatusMovimientodeMcia = 'A'
+                AND P.StatusMovimientodeMcia = 'A'".
+                $claseMaterial."
             GROUP BY
                 P.DocEntrega,
                 P.PosPedido
@@ -125,7 +126,7 @@ class PedidosRepository extends EntityRepository
                 P.PosPedido")->getResult();
     }
 
-    public function findPedidosAsigIncETAList($startWeek, $endWeek, $status, $completable)
+    public function findPedidosAsigIncETAList($startWeek, $endWeek, $status, $completable, $claseMaterial)
     {
         return $this->getEntityManager()->createQuery("
             SELECT
@@ -156,7 +157,8 @@ class PedidosRepository extends EntityRepository
                 AND P.Eta <='".$endWeek."'
                 AND P.StatusComplete = '".$status."'
                 AND P.PED_COMPLETABLE_ETA ='".$completable."'
-                AND P.StatusMovimientodeMcia = 'A'
+                AND P.StatusMovimientodeMcia = 'A'".
+                $claseMaterial."
             GROUP BY
                 P.DocEntrega,
                 P.PosPedido
@@ -258,7 +260,7 @@ class PedidosRepository extends EntityRepository
                 P.PosPedido")->getResult();
     }
 
-    public function findPedidosAsigIncFPEList($startWeek, $endWeek, $status, $completable)
+    public function findPedidosAsigIncFPEList($startWeek, $endWeek, $status, $completable, $claseMaterial)
     {
         return $this->getEntityManager()->createQuery("
             SELECT
@@ -289,7 +291,8 @@ class PedidosRepository extends EntityRepository
                 AND P.Eta <='".$endWeek."'
                 AND P.StatusComplete = '".$status."'
                 AND P.PED_COMPLETABLE_FPE ='".$completable."'
-                AND P.StatusMovimientodeMcia = 'A'
+                AND P.StatusMovimientodeMcia = 'A'".
+                $claseMaterial."
             GROUP BY
                 P.DocEntrega,
                 P.PosPedido

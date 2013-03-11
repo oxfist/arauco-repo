@@ -263,7 +263,7 @@ class PedidosController extends Controller
         $formBuilder = $this->createFormBuilder();
         $session = $this->getRequest()->getSession();
         
-        $formBuilder->add('filtro', 'choice', array(
+        $formBuilder->add('filtroForm', 'choice', array(
             'choices' => $this->claseMaterial,
             'multiple' => true,
             'expanded' => true
@@ -276,15 +276,15 @@ class PedidosController extends Controller
             $formData = $form->getData();
             $sessionData = array();
             
-            if (count($formData) > 0) {
-                foreach ($formData as $key => $data) {
-                    foreach ($data as $value) {
-                        $sessionData[$key][$value] = $value;
-                        $listaClaseMaterial[] = $this->claseMaterial[$value];
+                if (count($formData) > 0) {
+                    foreach ($formData as $key => $data) {
+                        foreach ($data as $value) {
+                            $sessionData[$key][$value] = $value;
+                            $listaClaseMaterial[] = $this->claseMaterial[$value];
+                        }
                     }
+                    $session->set('filtro', $sessionData);
                 }
-                $session->set('filtro', $sessionData);
-            }
         } else {
             # Se llena el formulario con la sesión, en caso de que exista.
             $sessionFilter = $session->get('filtro');
@@ -301,8 +301,9 @@ class PedidosController extends Controller
         
         # Esto se hace para agregar el 'IN' a la consulta SQL
         # SÓLO si se ha seleccionado alguno de los checkboxes.
-        if (count($listaClaseMaterial) == 0){
+        if (count($listaClaseMaterial) == 0 || count($listaClaseMaterial) == 27){
             $condicionConsultaClaseMaterial = "";
+            $session->remove('filtro');
         } else {
             $condicionConsultaClaseMaterial = "AND P.ClaseMaterial IN ('".implode("', '",$listaClaseMaterial)."')";
         }
@@ -476,16 +477,6 @@ class PedidosController extends Controller
             }
                 
         }
-        
-        /*foreach ($this->claseMaterial as $claseMaterial) {
-            $isChecked = array();
-            #$isChecked = array('checked' => 'checked');
-            $formBuilder->add('filtro', 'choices', array(
-                'chocies' => $claseMaterial,
-                'required' => false,
-                'attr' => $isChecked
-            ));
-        }*/
         
         return array(
             'form' => $form->createView(),
@@ -885,9 +876,10 @@ class PedidosController extends Controller
         $eWeek          = $dateconvert['eWeek'];
 
         $status = "CPU";
+        
         $em = $this->getDoctrine()->getManager();
 
-        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsig($start_week, $end_week, $status);
+        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsig($start_week, $end_week, $status, $this->getFilter());
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETA($start_week, $end_week, $status);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPE($start_week, $end_week, $status);
 
@@ -916,7 +908,7 @@ class PedidosController extends Controller
         $status = "CPL";
         $em = $this->getDoctrine()->getManager();
 
-        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsig($start_week, $end_week, $status);
+        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsig($start_week, $end_week, $status, $this->getFilter());
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETA($start_week, $end_week, $status);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPE($start_week, $end_week, $status);
 
@@ -947,7 +939,7 @@ class PedidosController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable);
+        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable, $this->getFilter());
         $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETASumM3($start_week, $end_week, $status, $completable);
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncETA($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncETA($start_week, $end_week, $status, $completable);
@@ -977,7 +969,7 @@ class PedidosController extends Controller
         $completable = FALSE;
         $em = $this->getDoctrine()->getManager();
 
-        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable);
+        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable, $this->getFilter());
         $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETASumM3($start_week, $end_week, $status, $completable);
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncETA($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncETA($start_week, $end_week, $status, $completable);
@@ -1007,7 +999,7 @@ class PedidosController extends Controller
         $completable = TRUE;
         $em = $this->getDoctrine()->getManager();
 
-        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPEList($start_week, $end_week, $status, $completable);
+        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPEList($start_week, $end_week, $status, $completable, $this->getFilter());
         $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPESumM3($start_week, $end_week, $status, $completable);
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncFPE($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);
@@ -1037,7 +1029,7 @@ class PedidosController extends Controller
         $completable = FALSE;
         $em = $this->getDoctrine()->getManager();
 
-        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPEList($start_week, $end_week, $status, $completable);
+        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPEList($start_week, $end_week, $status, $completable, $this->getFilter());
         $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPESumM3($start_week, $end_week, $status, $completable);
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncFPE($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);
@@ -1393,7 +1385,7 @@ class PedidosController extends Controller
     /**
      * @Route("/pedidos/csv/etageneral", name="arauco_pedido_csv_general_eta")
      */
-    public function generalCsvEtaAction(){
+    public function generalCsvEtaAction() {
 
         $filename = "ReporteGeneralPedidosETA_".date("Y-m-d_His").".csv";
 
@@ -1426,7 +1418,7 @@ class PedidosController extends Controller
     /**
      * @Route("/pedidos/csv/fpegeneral", name="arauco_pedido_csv_general_fpe")
      */
-    public function generalCsvFPEAction(){
+    public function generalCsvFPEAction() {
 
         $filename = "ReporteGeneralPedidosFPE_".date("Y-m-d_His").".csv";
 
@@ -1454,5 +1446,28 @@ class PedidosController extends Controller
         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
 
         return $response;
+    }
+    
+    private function getFilter() {
+        
+        $listaClaseMaterial = array();
+        $session = $this->getRequest()->getSession();
+        $sessionFilter = $session->get('filtro');
+        if (!is_null($sessionFilter)) {
+            foreach ($sessionFilter as $key => $data) {
+                foreach ($data as $value) {
+                    $listaClaseMaterial[] = $this->claseMaterial[$value];
+                }
+            }
+        }
+
+        if (count($listaClaseMaterial) == 0 || count($listaClaseMaterial) == 27){
+            $claseMaterial = "";
+            $session->remove('filtro');
+        } else {
+            $claseMaterial = "AND P.ClaseMaterial IN ('".implode("', '",$listaClaseMaterial)."')";
+        }
+        
+        return $claseMaterial;
     }
 }
