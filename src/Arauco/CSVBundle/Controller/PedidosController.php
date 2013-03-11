@@ -272,20 +272,20 @@ class PedidosController extends Controller
         $listaClaseMaterial = array();
         $formBuilder = $this->createFormBuilder();
         $session = $this->getRequest()->getSession();
-        
+
         $formBuilder->add('filtro', 'choice', array(
             'choices' => $this->claseMaterial,
             'multiple' => true,
             'expanded' => true
         ));
-        
+
         $form = $formBuilder->getForm();
-        
+
         if ($request->getMethod() == 'POST') {
             $form->bind( $request );
             $formData = $form->getData();
             $sessionData = array();
-            
+
             if (count($formData) > 0) {
                 foreach ($formData as $key => $data) {
                     foreach ($data as $value) {
@@ -308,7 +308,7 @@ class PedidosController extends Controller
                 }
             }
         }
-        
+
         # Esto se hace para agregar el 'IN' a la consulta SQL
         # SÓLO si se ha seleccionado alguno de los checkboxes.
         if (count($listaClaseMaterial) == 0){
@@ -316,7 +316,7 @@ class PedidosController extends Controller
         } else {
             $condicionConsultaClaseMaterial = "AND P.ClaseMaterial IN ('".implode("', '",$listaClaseMaterial)."')";
         }
-        
+
         for ($i = 0; $i < 8; $i++) {
 
             $dateconvert = $this->dateconvert($i);
@@ -484,9 +484,8 @@ class PedidosController extends Controller
             } else {
                 $cantIncompletadeEntregasIncompletasFPE[$i] = $cantIncompletadeEntregasIncompletasFPE[$i] - $cantCompletadeEntregasIncompletasFPE[$i];
             }
-                
         }
-        
+
         /*foreach ($this->claseMaterial as $claseMaterial) {
             $isChecked = array();
             #$isChecked = array('checked' => 'checked');
@@ -496,7 +495,7 @@ class PedidosController extends Controller
                 'attr' => $isChecked
             ));
         }*/
-        
+
         return array(
             'form' => $form->createView(),
             'cantEntregasCompletasEnPuerto' => $cantEntregasCompletasEnPuerto,
@@ -1258,8 +1257,68 @@ class PedidosController extends Controller
     }
 
     /**
+     * @Route("/pedido/adelantables", name="arauco_pedido_adelantables")
+     * @Template("AraucoBaseBundle:Pedido:adelantables.html.twig")
+     */
+    public function pedidosadelantablesAction ()
+    {
+        $TodayPlus14 = date('Y-m-d', strtotime("+14 days"));
+
+        $em = $this->getDoctrine()->getManager();
+
+        // Se obtienen todos los Pedidos que tengan ETA Hoy + 14
+        $PosiblesAdelantables = $em->getRepository('AraucoCSVBundle:Pedidos')->findCompleteToday14($TodayPlus14);
+
+        $Adelantables = array();
+
+        $SumAdelantables = 0;
+        $SumTotal = 0;
+
+        foreach ($PosiblesAdelantables as $pedido) {
+            $ClaseMaterial = $pedido['ClaseMaterial'];
+            $Eta = $pedido['Eta'];
+            $DocEntrega = $pedido['DocEntrega'];
+            $FPE = $pedido['FPE'];
+            $VolPedido = $pedido['VolPedido'];
+
+            $Eta = $Eta->format('Y-m-d');
+            $FPE = $FPE->format('Y-m-d');
+
+            $FPEminus10 = date('Y-m-d', strtotime($FPE. '- 10 days'));
+
+            // Si la Eta es mayor a la FPE - 10, es adelantable.
+            if ( $Eta > $FPEminus10 ) {
+
+                $SumAdelantables += $VolPedido;
+
+                $NFPAN = max( date('Y-m-d', strtotime($FPE. ' - 12 days')), $TodayPlus14 );
+                $NFPD = date('d-m-Y', strtotime($NFPAN. '- 10 days'));
+
+                $NFPAN = date('d-m-Y', strtotime($NFPAN));
+
+                array_push(
+                    $Adelantables, array(
+                        $ClaseMaterial,
+                        $pedido['Eta']->format('d-m-Y'),
+                        $DocEntrega,
+                        $pedido['FPE']->format('d-m-Y'),
+                        $NFPAN,
+                        $NFPD,
+                        $VolPedido
+                    )
+                );
+            }
+
+            $SumTotal += $VolPedido;
+        }
+
+        $Porcentaje = round(($SumAdelantables / $SumTotal) * 100,3);
+
+        return array('Adelantables' => $Adelantables, 'Porcentaje' => $Porcentaje);
+    }
+
+    /**
      * @Route("/pedido/docentrega/{id}/csv", name="arauco_pedido_docentrega_csv")
-     * @Template("AraucoBaseBundle:Pedido:extendDocEntrega.html.twig")
      */
     public function docentregainfocsvAction ($id)
     {
@@ -1269,6 +1328,22 @@ class PedidosController extends Controller
 
         $response = $this->render('AraucoBaseBundle:Pedido:docentregaCsv.html.twig', array('data' => $arrayDocEntrega ));
 
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
+
+        return $response;
+    }
+
+    /**
+     * @Route("/pedido/adelantables/csv", name="arauco_pedido_adelantables_csv")
+     */
+    public function pedidosadelantablescsvAction ()
+    {
+        $filename = "ReporteAdelantables".date("Y_m_d_His").".csv";
+
+        $entregasFinal = $this->pedidosadelantablesAction()['Adelantables'];
+
+        $response = $this->render('AraucoBaseBundle:Pedido:adelantablesCsv.html.twig', array('data' => $entregasFinal ));
         $response->headers->set('Content-Type', 'text/csv');
         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
 

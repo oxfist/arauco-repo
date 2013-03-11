@@ -420,4 +420,23 @@ class PedidosRepository extends EntityRepository
                 P.DocEntrega,
                 P.PosPedido")->getResult();
     }
+
+    public function findCompleteToday14($TodayPlus14)
+    {
+        return $this->getEntityManager()->createQuery("
+            SELECT
+                P.ClaseMaterial,
+                P.Eta,
+                P.DocEntrega,
+                P.FPE,
+                P.VolPedido
+            FROM
+                AraucoCSVBundle:Pedidos P
+            WHERE
+                P.Eta > '".$TodayPlus14."'
+                AND (P.StatusComplete = 'CPU'
+                OR P.StatusComplete = 'CPL'
+                OR P.PED_COMPLETABLE_ETA = TRUE)")->getResult();
+    }
+
 }
