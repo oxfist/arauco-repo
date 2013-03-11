@@ -87,6 +87,11 @@ class PedidosController extends Controller
 
             }
 
+            if ($RoundVentas)
+                $RoundVentas = $RoundVentas->format('Y-m');
+            else
+                $RoundVentas = "";
+
             array_push(
                 $entregasFinal, array(
                     $docEntrega, // 0
@@ -108,7 +113,7 @@ class PedidosController extends Controller
                     $PaisDestino, // 16
                     $fpan->format('d-m-Y'), // 17
                     $fpd->format('d-m-Y'), // 18
-                    $RoundVentas->format('Y-m'), // 19
+                    $RoundVentas, // 19
                     $MT, // 20
                     $Nave, // 21
                     $ClaseMaterial, //22
@@ -191,6 +196,11 @@ class PedidosController extends Controller
 
             }
 
+            if ($RoundVentas)
+                $RoundVentas = $RoundVentas->format('Y-m');
+            else
+                $RoundVentas = "";
+
             array_push(
                 $entregasFinal, array(
                     $docEntrega,
@@ -212,7 +222,7 @@ class PedidosController extends Controller
                     $PaisDestino,
                     $fpan->format('d-m-Y'),
                     $fpd->format('d-m-Y'),
-                    $RoundVentas->format('Y-m'),
+                    $RoundVentas,
                     $MT,
                     $Nave,
                     $ClaseMaterial,
@@ -252,7 +262,7 @@ class PedidosController extends Controller
         "TR_RANURADO",
         "TR_RECUBIERTO"
         );
-    
+
     /**
      * @Route("/pedido", name="arauco_pedido_index")
      * @Template("AraucoBaseBundle:Pedido:index.html.twig")
