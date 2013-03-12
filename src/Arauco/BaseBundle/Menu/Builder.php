@@ -16,6 +16,10 @@ class Builder extends ContainerAware
         $menu->addChild('Pedidos', array('route' => 'arauco_pedido_index'));
         $menu->addChild('Balance', array('route' => 'arauco_balance_index'));
         
+        /*$pedidos->addChild('Todos', array('route' => 'arauco_pedido_index'));
+        $pedidos->addChild('AASA', array('route' => 'arauco_pedido_index_aasa'));
+        $pedidos->addChild('PASA', array('route' => 'arauco_pedido_index_pasa'));*/
+        
         return $menu;
     }
 }

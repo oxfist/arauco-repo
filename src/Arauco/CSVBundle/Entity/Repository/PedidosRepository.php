@@ -424,7 +424,7 @@ class PedidosRepository extends EntityRepository
                 P.PosPedido")->getResult();
     }
 
-    public function findCompleteToday14($TodayPlus14)
+    public function findCompleteToday14($TodayPlus14, $claseMaterial)
     {
         return $this->getEntityManager()->createQuery("
             SELECT
@@ -439,7 +439,9 @@ class PedidosRepository extends EntityRepository
                 P.Eta > '".$TodayPlus14."'
                 AND (P.StatusComplete = 'CPU'
                 OR P.StatusComplete = 'CPL'
-                OR P.PED_COMPLETABLE_ETA = TRUE)")->getResult();
+                OR P.PED_COMPLETABLE_ETA = TRUE)".
+                $claseMaterial
+                )->getResult();
     }
 
 }

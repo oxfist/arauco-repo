@@ -267,7 +267,7 @@ class PedidosController extends Controller
      * @Route("/pedido", name="arauco_pedido_index")
      * @Template("AraucoBaseBundle:Pedido:index.html.twig")
      */
-    public function importAction (Request $request)
+    public function importAction(Request $request)
     {
         $listaClaseMaterial = array();
         $formBuilder = $this->createFormBuilder();
@@ -504,8 +504,58 @@ class PedidosController extends Controller
      * @Route("/pedido/pasa", name="arauco_pedido_index_pasa")
      * @Template("AraucoBaseBundle:Pedido:pasa.html.twig")
      */
-    public function importpasaAction ()
+    public function importpasaAction(Request $request)
     {
+        $listaClaseMaterial = array();
+        $formBuilder = $this->createFormBuilder();
+        $session = $this->getRequest()->getSession();
+
+        
+        $formBuilder->add('filtroForm', 'choice', array(
+            'choices' => $this->claseMaterial,
+            'multiple' => true,
+            'expanded' => true
+        ));
+
+        $form = $formBuilder->getForm();
+
+        if ($request->getMethod() == 'POST') {
+            $form->bind( $request );
+            $formData = $form->getData();
+            $sessionData = array();
+
+            if (count($formData) > 0) {
+                foreach ($formData as $key => $data) {
+                    foreach ($data as $value) {
+                        $sessionData[$key][$value] = $value;
+                        $listaClaseMaterial[] = $this->claseMaterial[$value];
+                    }
+                    $session->set('filtro', $sessionData);
+                }
+            }
+        } else {
+            # Se llena el formulario con la sesión, en caso de que exista.
+            $sessionFilter = $session->get('filtro');
+            if (!is_null($sessionFilter)) {
+                $form->bind( $sessionFilter );
+                $formData = $form->getData();
+                foreach ($formData as $key => $data) {
+                    foreach ($data as $value) {
+                        $listaClaseMaterial[] = $this->claseMaterial[$value];
+                    }
+                }
+            }
+        }
+
+        # Esto se hace para agregar el 'IN' a la consulta SQL
+        # SÓLO si se ha seleccionado alguno de los checkboxes.
+        if (count($listaClaseMaterial) == 0 || count($listaClaseMaterial) == 27){
+            $condicionConsultaClaseMaterial = "";
+            $session->remove('filtro');
+        } else {
+            $condicionConsultaClaseMaterial = "AND P.ClaseMaterial IN ('".implode("', '",$listaClaseMaterial)."')";
+        }
+        
         for ($i = 0; $i < 8; $i++) {
             $dateconvert = $this->dateconvert($i);
             $start_week = $dateconvert['start_week'];
@@ -523,8 +573,9 @@ class PedidosController extends Controller
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'CPU'
                     AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
-                    AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    AND P.StatusMovimientodeMcia = 'A'".
+                    $condicionConsultaClaseMaterial
+                    );
 
             $cantEntregasCompletasEnPuerto[$i] = round($query->getSingleScalarResult()/1000,3);
 
@@ -541,8 +592,9 @@ class PedidosController extends Controller
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'CPL'
                     AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
-                    AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    AND P.StatusMovimientodeMcia = 'A'".
+                    $condicionConsultaClaseMaterial
+                    );
 
             $cantEntregasCompletasEnPlanta[$i] = round($query2->getSingleScalarResult()/1000,3);
 
@@ -560,8 +612,9 @@ class PedidosController extends Controller
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_ETA = TRUE
                     AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
-                    AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    AND P.StatusMovimientodeMcia = 'A'".
+                    $condicionConsultaClaseMaterial
+                    );
 
             $cantEntregasCompletablesETA[$i] = round($query3->getSingleScalarResult()/1000,3);
 
@@ -579,8 +632,9 @@ class PedidosController extends Controller
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_FPE = TRUE
                     AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
-                    AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    AND P.StatusMovimientodeMcia = 'A'".
+                    $condicionConsultaClaseMaterial
+                    );
 
             $cantEntregasCompletablesFPE[$i] = round($query31->getSingleScalarResult()/1000,3);
 
@@ -601,8 +655,9 @@ class PedidosController extends Controller
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_ETA = FALSE
                     AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
-                    AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    AND P.StatusMovimientodeMcia = 'A'".
+                    $condicionConsultaClaseMaterial
+                    );
 
             $cantCompletadeEntregasIncompletasETA[$i] = round($query41->getSingleScalarResult()/1000,3);
 
@@ -620,8 +675,9 @@ class PedidosController extends Controller
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_ETA = FALSE
                     AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
-                    AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    AND P.StatusMovimientodeMcia = 'A'".
+                    $condicionConsultaClaseMaterial
+                    );
 
             $cantIncompletadeEntregasIncompletasETA[$i] = round($query42->getSingleScalarResult()/1000,3);
 
@@ -644,8 +700,9 @@ class PedidosController extends Controller
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_FPE = FALSE
                     AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
-                    AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    AND P.StatusMovimientodeMcia = 'A'".
+                    $condicionConsultaClaseMaterial
+                    );
 
             $cantCompletadeEntregasIncompletasFPE[$i] = round($query51->getSingleScalarResult()/1000,3);
 
@@ -663,8 +720,9 @@ class PedidosController extends Controller
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_FPE = FALSE
                     AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
-                    AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    AND P.StatusMovimientodeMcia = 'A'".
+                    $condicionConsultaClaseMaterial
+                    );
 
             $cantIncompletadeEntregasIncompletasFPE[$i] = round($query52->getSingleScalarResult()/1000,3);
 
@@ -675,6 +733,7 @@ class PedidosController extends Controller
         }
 
         return array(
+            'form' => $form->createView(),
             'cantEntregasCompletasEnPuerto' => $cantEntregasCompletasEnPuerto,
             'cantEntregasCompletasEnPlanta' => $cantEntregasCompletasEnPlanta,
             'cantEntregasCompletablesETA' => $cantEntregasCompletablesETA,
@@ -691,8 +750,58 @@ class PedidosController extends Controller
      * @Route("/pedido/aasa", name="arauco_pedido_index_aasa")
      * @Template("AraucoBaseBundle:Pedido:aasa.html.twig")
      */
-    public function importaasaAction ()
+    public function importaasaAction(Request $request)
     {
+        $listaClaseMaterial = array();
+        $formBuilder = $this->createFormBuilder();
+        $session = $this->getRequest()->getSession();
+
+        
+        $formBuilder->add('filtroForm', 'choice', array(
+            'choices' => $this->claseMaterial,
+            'multiple' => true,
+            'expanded' => true
+        ));
+
+        $form = $formBuilder->getForm();
+
+        if ($request->getMethod() == 'POST') {
+            $form->bind( $request );
+            $formData = $form->getData();
+            $sessionData = array();
+
+            if (count($formData) > 0) {
+                foreach ($formData as $key => $data) {
+                    foreach ($data as $value) {
+                        $sessionData[$key][$value] = $value;
+                        $listaClaseMaterial[] = $this->claseMaterial[$value];
+                    }
+                    $session->set('filtro', $sessionData);
+                }
+            }
+        } else {
+            # Se llena el formulario con la sesión, en caso de que exista.
+            $sessionFilter = $session->get('filtro');
+            if (!is_null($sessionFilter)) {
+                $form->bind( $sessionFilter );
+                $formData = $form->getData();
+                foreach ($formData as $key => $data) {
+                    foreach ($data as $value) {
+                        $listaClaseMaterial[] = $this->claseMaterial[$value];
+                    }
+                }
+            }
+        }
+
+        # Esto se hace para agregar el 'IN' a la consulta SQL
+        # SÓLO si se ha seleccionado alguno de los checkboxes.
+        if (count($listaClaseMaterial) == 0 || count($listaClaseMaterial) == 27){
+            $condicionConsultaClaseMaterial = "";
+            $session->remove('filtro');
+        } else {
+            $condicionConsultaClaseMaterial = "AND P.ClaseMaterial IN ('".implode("', '",$listaClaseMaterial)."')";
+        }
+        
         for ($i = 0; $i < 8; $i++) {
             $dateconvert = $this->dateconvert($i);
             $start_week = $dateconvert['start_week'];
@@ -710,8 +819,9 @@ class PedidosController extends Controller
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'CPU'
                     AND P.OrgVenta = 1000
-                    AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    AND P.StatusMovimientodeMcia = 'A'".
+                    $condicionConsultaClaseMaterial
+                    );
 
             $cantEntregasCompletasEnPuerto[$i] = round($query->getSingleScalarResult()/1000,3);
 
@@ -728,8 +838,9 @@ class PedidosController extends Controller
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'CPL'
                     AND P.OrgVenta = 1000
-                    AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    AND P.StatusMovimientodeMcia = 'A'".
+                    $condicionConsultaClaseMaterial
+                    );
 
             $cantEntregasCompletasEnPlanta[$i] = round($query2->getSingleScalarResult()/1000,3);
 
@@ -747,8 +858,9 @@ class PedidosController extends Controller
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_ETA = TRUE
                     AND P.OrgVenta = 1000
-                    AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    AND P.StatusMovimientodeMcia = 'A'".
+                    $condicionConsultaClaseMaterial
+                    );
 
             $cantEntregasCompletablesETA[$i] = round($query3->getSingleScalarResult()/1000,3);
 
@@ -766,8 +878,9 @@ class PedidosController extends Controller
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_FPE = TRUE
                     AND P.OrgVenta = 1000
-                    AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    AND P.StatusMovimientodeMcia = 'A'".
+                    $condicionConsultaClaseMaterial
+                    );
 
             $cantEntregasCompletablesFPE[$i] = round($query31->getSingleScalarResult()/1000,3);
 
@@ -788,8 +901,9 @@ class PedidosController extends Controller
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_ETA = FALSE
                     AND P.OrgVenta = 1000
-                    AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    AND P.StatusMovimientodeMcia = 'A'".
+                    $condicionConsultaClaseMaterial
+                    );
 
             $cantCompletadeEntregasIncompletasETA[$i] = round($query41->getSingleScalarResult()/1000,3);
 
@@ -807,8 +921,9 @@ class PedidosController extends Controller
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_ETA = FALSE
                     AND P.OrgVenta = 1000
-                    AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    AND P.StatusMovimientodeMcia = 'A'".
+                    $condicionConsultaClaseMaterial
+                    );
 
             $cantIncompletadeEntregasIncompletasETA[$i] = round($query42->getSingleScalarResult()/1000,3);
 
@@ -831,8 +946,9 @@ class PedidosController extends Controller
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_FPE = FALSE
                     AND P.OrgVenta = 1000
-                    AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    AND P.StatusMovimientodeMcia = 'A'".
+                    $condicionConsultaClaseMaterial
+                    );
 
             $cantCompletadeEntregasIncompletasFPE[$i] = round($query51->getSingleScalarResult()/1000,3);
 
@@ -850,8 +966,9 @@ class PedidosController extends Controller
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_FPE = FALSE
                     AND P.OrgVenta = 1000
-                    AND P.StatusMovimientodeMcia = 'A'
-                    ");
+                    AND P.StatusMovimientodeMcia = 'A'".
+                    $condicionConsultaClaseMaterial
+                    );
 
             $cantIncompletadeEntregasIncompletasFPE[$i] = round($query52->getSingleScalarResult()/1000,3);
 
@@ -862,6 +979,7 @@ class PedidosController extends Controller
         }
 
         return array(
+            'form' => $form->createView(),
             'cantEntregasCompletasEnPuerto' => $cantEntregasCompletasEnPuerto,
             'cantEntregasCompletasEnPlanta' => $cantEntregasCompletasEnPlanta,
             'cantEntregasCompletablesETA' => $cantEntregasCompletablesETA,
@@ -889,7 +1007,7 @@ class PedidosController extends Controller
         
         $em = $this->getDoctrine()->getManager();
 
-        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsig($start_week, $end_week, $status, $this->getFilter());
+        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsig($start_week, $end_week, $status, $this->getSessionFilter());
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETA($start_week, $end_week, $status);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPE($start_week, $end_week, $status);
 
@@ -918,7 +1036,7 @@ class PedidosController extends Controller
         $status = "CPL";
         $em = $this->getDoctrine()->getManager();
 
-        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsig($start_week, $end_week, $status, $this->getFilter());
+        $EntregasAsignadas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsig($start_week, $end_week, $status, $this->getSessionFilter());
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETA($start_week, $end_week, $status);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPE($start_week, $end_week, $status);
 
@@ -949,7 +1067,7 @@ class PedidosController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable, $this->getFilter());
+        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable, $this->getSessionFilter());
         $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETASumM3($start_week, $end_week, $status, $completable);
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncETA($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncETA($start_week, $end_week, $status, $completable);
@@ -979,7 +1097,7 @@ class PedidosController extends Controller
         $completable = FALSE;
         $em = $this->getDoctrine()->getManager();
 
-        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable, $this->getFilter());
+        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETAList($start_week, $end_week, $status, $completable, $this->getSessionFilter());
         $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncETASumM3($start_week, $end_week, $status, $completable);
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncETA($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncETA($start_week, $end_week, $status, $completable);
@@ -1009,7 +1127,7 @@ class PedidosController extends Controller
         $completable = TRUE;
         $em = $this->getDoctrine()->getManager();
 
-        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPEList($start_week, $end_week, $status, $completable, $this->getFilter());
+        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPEList($start_week, $end_week, $status, $completable, $this->getSessionFilter());
         $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPESumM3($start_week, $end_week, $status, $completable);
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncFPE($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);
@@ -1039,7 +1157,7 @@ class PedidosController extends Controller
         $completable = FALSE;
         $em = $this->getDoctrine()->getManager();
 
-        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPEList($start_week, $end_week, $status, $completable, $this->getFilter());
+        $Entregas = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPEList($start_week, $end_week, $status, $completable, $this->getSessionFilter());
         $EntregasM3 = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosAsigIncFPESumM3($start_week, $end_week, $status, $completable);
         $EntregasETA = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosETAIncFPE($start_week, $end_week, $status, $completable);
         $EntregasFPE = $em->getRepository('AraucoCSVBundle:Pedidos')->findPedidosFPEIncFPE($start_week, $end_week, $status, $completable);
@@ -1260,7 +1378,8 @@ class PedidosController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         // Se obtienen todos los Pedidos que tengan ETA Hoy + 14
-        $PosiblesAdelantables = $em->getRepository('AraucoCSVBundle:Pedidos')->findCompleteToday14($TodayPlus14);
+        $PosiblesAdelantables = $em->getRepository('AraucoCSVBundle:Pedidos')
+                ->findCompleteToday14($TodayPlus14, $this->getSessionFilter());
 
         $Adelantables = array();
 
@@ -1534,7 +1653,7 @@ class PedidosController extends Controller
         return $response;
     }
     
-    private function getFilter() {
+    private function getSessionFilter() {
         
         $listaClaseMaterial = array();
         $session = $this->getRequest()->getSession();
