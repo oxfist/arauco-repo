@@ -1,0 +1,62 @@
+{% extends '::base.html.twig' %}
+
+{% block styleGrafico %}
+	{{ parent() }}
+	{% stylesheets
+            '@AraucoBaseBundle/Resources/public/css/jquery.jqplot.min.css'
+            filter='yui_css'%}
+    <link rel="stylesheet" type="text/css"
+          media="screen" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block title %} Pedidos -{% endblock %}
+
+{% block content %}
+<div class="tab-content">
+  {% block body %}
+  <div class="tab-pane active" id="inicio">
+    <div class="hero-unit">
+      <legend>Reporte Adelantables</legend>
+
+      {% block csv %}
+        <h2>Pedidos Adelantables por ETA [ {{ Porcentaje }}% ]</h2>
+<a class="text-info" href="{{ path ('arauco_pedido_adelantables_csv') }}">Exportar a .csv <i class="icon-download-alt"></i></a>
+      {% endblock %}
+      <br />
+      <br />
+      <table class="table" id="myTable">
+        <thead>
+          <tr>
+            <th>Clase_Material</th>
+            <th>Eta</th>
+            <th>DocEntrega</th>
+            <th>FPE</th>
+            <th>N. FPAN</th>
+            <th>N. FPD</th>
+            <th>VolPedido</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for entrega in Adelantables %}
+          <tr>
+            <th>{{ entrega[0] }}</th>
+            <th>{{ entrega[1] }}</th>
+            <th><a href="{{ path('arauco_pedido_docentrega', {'id': entrega[2] }) }}">{{ entrega[2] }}</a></th>
+            <th>{{ entrega[3] }}</th>
+            <th>{{ entrega[4] }}</th>
+            <th>{{ entrega[5] }}</th>
+            <th>{{ entrega[6] }}</th>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <br />
+      <div class="alert alert-info">
+        <strong>NOTA</strong>: Todas las cantidades mostradas en la tabla están en m&sup3;.
+      </div>
+    </div> <!-- hero-unit -->
+  </div> <!-- tab-pane active -->
+  {% endblock %}
+</div> <!-- tab-content -->
+{% endblock %}
