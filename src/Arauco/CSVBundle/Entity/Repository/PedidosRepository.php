@@ -432,7 +432,9 @@ class PedidosRepository extends EntityRepository
                 P.Eta,
                 P.DocEntrega,
                 P.FPE,
-                P.VolPedido
+                P.VolPedido,
+                P.PED_COMPLETABLE_ETA,
+                P.StatusComplete
             FROM
                 AraucoCSVBundle:Pedidos P
             WHERE

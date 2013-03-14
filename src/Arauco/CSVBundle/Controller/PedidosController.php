@@ -1356,6 +1356,7 @@ class PedidosController extends Controller
             $DocEntrega = $pedido['DocEntrega'];
             $FPE = $pedido['FPE'];
             $VolPedido = $pedido['VolPedido'];
+            $ComETA = $pedido['PED_COMPLETABLE_ETA'];
 
             $Eta = $Eta->format('Y-m-d');
             $FPE = $FPE->format('Y-m-d');
@@ -1372,6 +1373,11 @@ class PedidosController extends Controller
 
                 $NFPAN = date('d-m-Y', strtotime($NFPAN));
 
+                if ($ComETA)
+                    $Status = "ComETA";
+                else
+                    $Status = $pedido['StatusComplete'];
+
                 array_push(
                     $Adelantables, array(
                         $ClaseMaterial,
@@ -1380,7 +1386,8 @@ class PedidosController extends Controller
                         $pedido['FPE']->format('d-m-Y'),
                         $NFPD,
                         $NFPAN,
-                        $VolPedido
+                        $VolPedido,
+                        $Status
                     )
                 );
             }

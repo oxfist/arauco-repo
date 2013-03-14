@@ -29,6 +29,7 @@
       <table class="table" id="myTable">
         <thead>
           <tr>
+            <th>Status</th>
             <th>Clase_Material</th>
             <th>Eta</th>
             <th>DocEntrega</th>
@@ -41,6 +42,7 @@
         <tbody>
           {% for entrega in Adelantables %}
           <tr>
+            <th>{{ entrega[7] }}</th>
             <th>{{ entrega[0] }}</th>
             <th>{{ entrega[1] }}</th>
             <th><a href="{{ path('arauco_pedido_docentrega', {'id': entrega[2] }) }}">{{ entrega[2] }}</a></th>
