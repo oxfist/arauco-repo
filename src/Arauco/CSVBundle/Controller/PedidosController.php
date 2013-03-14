@@ -1400,7 +1400,8 @@ class PedidosController extends Controller
     {
         $filename = "DocEntrega-".$id." ".date("Y_m_d_His").".csv";
 
-        $arrayDocEntrega = $this->docentregainfoAction($id)['arrayDocEntrega'];
+        $aux = $this->docentregainfoAction($id);
+        $arrayDocEntrega = $aux['arrayDocEntrega'];
 
         $response = $this->render('AraucoBaseBundle:Pedido:docentregaCsv.html.twig', array('data' => $arrayDocEntrega ));
 
@@ -1417,7 +1418,8 @@ class PedidosController extends Controller
     {
         $filename = "ReporteAdelantables".date("Y_m_d_His").".csv";
 
-        $entregasFinal = $this->pedidosadelantablesAction()['Adelantables'];
+        $aux = $this->pedidosadelantablesAction();
+        $entregasFinal = $aux['Adelantables'];
 
         $response = $this->render('AraucoBaseBundle:Pedido:adelantablesCsv.html.twig', array('data' => $entregasFinal ));
         $response->headers->set('Content-Type', 'text/csv');
@@ -1437,7 +1439,8 @@ class PedidosController extends Controller
 
         $filename = "PedidosCPU_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
 
-        $entregasFinal = $this->extendcomcpuAction($week)['Entregas'];
+        $aux = $this->extendcomcpuAction($week);
+        $entregasFinal = $aux['Entregas'];
 
         $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $entregasFinal ));
         $response->headers->set('Content-Type', 'text/csv');
@@ -1457,7 +1460,8 @@ class PedidosController extends Controller
 
         $filename = "PedidosCPL_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
 
-        $entregasFinal = $this->extendcomcplAction($week)['Entregas'];
+        $aux = $this->extendcomcplAction($week);
+        $entregasFinal = $aux['Entregas'];
 
         $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $entregasFinal ));
 
@@ -1478,7 +1482,8 @@ class PedidosController extends Controller
 
         $filename = "PedidosComplETA_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
 
-        $entregasFinal = $this->extendcompletaAction($week)['Entregas'];
+        $aux = $this->extendcompletaAction($week);
+        $entregasFinal = $aux['Entregas'];
 
         $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $entregasFinal ));
 
@@ -1499,7 +1504,8 @@ class PedidosController extends Controller
 
         $filename = "PedidosIncETA_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
 
-        $entregasFinal = $this->extendincetaAction($week)['Entregas'];
+        $aux = $this->extendincetaAction($week);
+        $entregasFinal = $aux['Entregas'];
 
         $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $entregasFinal ));
 
@@ -1520,7 +1526,8 @@ class PedidosController extends Controller
 
         $filename = "PedidosComplFPE_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
 
-        $entregasFinal = $this->extendcomplfpeAction($week)['Entregas'];
+        $aux = $this->extendcomplfpeAction($week);
+        $entregasFinal = $aux['Entregas'];
 
         $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $entregasFinal ));
 
@@ -1541,7 +1548,8 @@ class PedidosController extends Controller
 
         $filename = "PedidosIncFPE_".$start_week."_".$end_week."_".date("Y_m_d_His").".csv";
 
-        $entregasFinal = $this->extendincfpeAction($week)['Entregas'];
+        $aux = $this->extendincfpeAction($week);
+        $entregasFinal = $aux['Entregas'];
 
         $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $entregasFinal ));
 
@@ -1563,17 +1571,21 @@ class PedidosController extends Controller
         for ($week = 0; $week < 8; $week++) {
             $dateconvert = $this->dateconvert($week);
 
-            $CPU = $this->extendcomcpuAction($week)['Entregas'];
-            $pedidosGeneral = array_merge($pedidosGeneral, $CPU);
+            $aux = $this->extendcomcpuAction($week);
+            $CPU = $aux['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral,$CPU);
 
-            $CPL = $this->extendcomcplAction($week)['Entregas'];
-            $pedidosGeneral = array_merge($pedidosGeneral, $CPL);
+            $aux = $this->extendcomcplAction($week);
+            $CPL = $aux['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral,$CPL);
 
-            $ComETA = $this->extendcompletaAction($week)['Entregas'];
-            $pedidosGeneral = array_merge($pedidosGeneral, $ComETA);
+            $aux = $this->extendcompletaAction($week);
+            $ComETA = $aux['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral,$ComETA);
 
-            $IncETA = $this->extendincetaAction($week)['Entregas'];
-            $pedidosGeneral = array_merge($pedidosGeneral, $IncETA);
+            $aux = $this->extendincetaAction($week);
+            $IncETA = $aux['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral,$IncETA);
         }
 
         $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $pedidosGeneral ));
@@ -1596,17 +1608,21 @@ class PedidosController extends Controller
         for ($week = 0; $week < 8; $week++) {
             $dateconvert = $this->dateconvert($week);
 
-            $CPU = $this->extendcomcpuAction($week)['Entregas'];
-            $pedidosGeneral = array_merge($pedidosGeneral, $CPU);
+            $aux = $this->extendcomcpuAction($week);
+            $CPU = $aux['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral,$CPU);
 
-            $CPL = $this->extendcomcplAction($week)['Entregas'];
-            $pedidosGeneral = array_merge($pedidosGeneral, $CPL);
+            $aux = $this->extendcomcplAction($week);
+            $CPL = $aux['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral,$CPL);
 
-            $ComFPE = $this->extendcomplfpeAction($week)['Entregas'];
-            $pedidosGeneral = array_merge($pedidosGeneral, $ComFPE);
+            $aux = $this->extendcomplfpeAction($week);
+            $ComFPE = $aux['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral,$ComFPE);
 
-            $IncFPE = $this->extendincfpeAction($week)['Entregas'];
-            $pedidosGeneral = array_merge($pedidosGeneral, $IncFPE);
+            $aux = $this->extendincfpeAction($week);
+            $IncFPE = $aux['Entregas'];
+            $pedidosGeneral = array_merge($pedidosGeneral,$IncFPE);
         }
 
         $response = $this->render('AraucoBaseBundle:Pedido:pedidosCsv.html.twig', array('data' => $pedidosGeneral ));
@@ -1616,9 +1632,9 @@ class PedidosController extends Controller
 
         return $response;
     }
-    
+
     private function getSessionFilter() {
-        
+
         $listaClaseMaterial = array();
         $session = $this->getRequest()->getSession();
         $sessionFilter = $session->get('filtro');
@@ -1638,9 +1654,9 @@ class PedidosController extends Controller
         } else {
             $claseMaterial = "AND P.ClaseMaterial IN ('".implode("', '",$listaClaseMaterial)."')";
         }
-        
+
         $filter = $claseMaterial;
-        
+
         if (!is_null($orgVentaSession)) {
             switch ($orgVentaSession) {
                 case 'aasa':
@@ -1650,7 +1666,6 @@ class PedidosController extends Controller
                     $filter = $filter . " AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)";
             }
         }
-        
         return $filter;
     }
 }
