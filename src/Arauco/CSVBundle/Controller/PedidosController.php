@@ -57,7 +57,7 @@ class PedidosController extends Controller
             $fpe = $item['FPE'];
             $fpan = $item['FPAN'];
             $fpd = $item['FPD'];
-            $FecDis = $item['FecDis'];
+            $FecEnt = $item['FecEnt'];
             $RoundVentas = $item['RoundVentas'];
             $MT = $item['MT'];
             $EntComp = $item['EntComp'];
@@ -105,7 +105,7 @@ class PedidosController extends Controller
                     round( $sumaVolAsignado, 3 ), // 8
                     round( $sumaVolAsiETA, 3 ), // 9
                     round( $sumaVolAsiFPE, 3 ), // 10
-                    $FecDis->format('d-m-Y'), // 11
+                    $FecEnt->format('d-m-Y'), // 11
                     $codCliente, // 12
                     $nomCliente, // 13
                     $EntComp, // 14
@@ -147,7 +147,7 @@ class PedidosController extends Controller
             $fpe = $entrega['FPE'];
             $fpan = $entrega['FPAN'];
             $fpd = $entrega['FPD'];
-            $FecDis = $entrega['FecDis'];
+            $FecEnt = $entrega['FecEnt'];
             $RoundVentas = $entrega['RoundVentas'];
             $MT = $entrega['MT'];
             $EntComp = $entrega['EntComp'];
@@ -214,7 +214,7 @@ class PedidosController extends Controller
                     round( $sumaVolAsignado, 3 ),
                     round( $sumaVolAsiETA, 3 ),
                     round( $sumaVolAsiFPE, 3 ),
-                    $FecDis->format('d-m-Y'),
+                    $FecEnt->format('d-m-Y'),
                     $codCliente,
                     $nomCliente,
                     $EntComp,
@@ -1159,7 +1159,7 @@ class PedidosController extends Controller
                 P.FPE,
                 P.FPAN,
                 P.FPD,
-                P.FecDis,
+                P.FecEnt,
                 P.RoundVentas,
                 P.MT,
                 P.Nave,
@@ -1249,7 +1249,7 @@ class PedidosController extends Controller
             $FPE = $Posicion['FPE'];
             $FPAN = $Posicion['FPAN'];
             $FPD = $Posicion['FPD'];
-            $FecDis = $Posicion['FecDis'];
+            $FecEnt = $Posicion['FecEnt'];
             $RoundVentas = $Posicion['RoundVentas'];
             $MT = $Posicion['MT'];
             $EntComp = $Posicion['EntComp'];
@@ -1304,7 +1304,7 @@ class PedidosController extends Controller
                     $posPedido,
                     $FPE->format('d-m-Y'),
                     $Eta->format('d-m-Y'),
-                    $FecDis->format('d-m-Y'),
+                    $FecEnt->format('d-m-Y'),
                     $Material,
                     $DescripcionMaterial,
                     $VolPedido,

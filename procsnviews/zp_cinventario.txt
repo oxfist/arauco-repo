@@ -97,8 +97,8 @@ PaisDestino,
 @dummy,
 @dummy,
 @dummy,
-@FecDis,
 @dummy,
+@FecEnt,
 @dummy,
 @dummy,
 @dummy,
@@ -190,7 +190,7 @@ SET
 	FPE = str_to_date(@FPE, '%d-%m-%Y'),
 	FPD = str_to_date(@FPD, '%d-%m-%Y'),
 	FPAN = str_to_date(@FPAN, '%d-%m-%Y'),
-	FecDis = str_to_date(@FecDis, '%d-%m-%Y'),
+	FecEnt = str_to_date(@FecEnt, '%d-%m-%Y'),
 	RoundVentas = str_to_date(@RoundVentas, '%Y-%m'),
 	PED_UNIDADES_ASIGNADAS = 0,
 	Eta = STR_TO_DATE(@Eta,'%Y%m%d');
@@ -223,8 +223,8 @@ PaisDestino,
 @dummy,
 @dummy,
 @dummy,
-@FecDis,
 @dummy,
+@FecEnt,
 @dummy,
 @dummy,
 @dummy,
@@ -316,7 +316,7 @@ SET
 	FPE = str_to_date(@FPE, '%d-%m-%Y'),
 	FPD = str_to_date(@FPD, '%d-%m-%Y'),
 	FPAN = str_to_date(@FPAN, '%d-%m-%Y'),
-	FecDis = str_to_date(@FecDis, '%d-%m-%Y'),
+	FecEnt = str_to_date(@FecEnt, '%d-%m-%Y'),
 	RoundVentas = str_to_date(@RoundVentas, '%Y-%m'),
 	PED_UNIDADES_ASIGNADAS = 0,
 	Eta = STR_TO_DATE(@Eta,'%Y%m%d');
@@ -349,8 +349,8 @@ PaisDestino,
 @dummy,
 @dummy,
 @dummy,
-@FecDis,
 @dummy,
+@FecEnt,
 @dummy,
 @dummy,
 @dummy,
@@ -442,7 +442,7 @@ SET
 	FPE = str_to_date(@FPE, '%d-%m-%Y'),
 	FPD = str_to_date(@FPD, '%d-%m-%Y'),
 	FPAN = str_to_date(@FPAN, '%d-%m-%Y'),
-	FecDis = str_to_date(@FecDis, '%d-%m-%Y'),
+	FecEnt = str_to_date(@FecEnt, '%d-%m-%Y'),
 	RoundVentas = str_to_date(@RoundVentas, '%Y-%m'),
 	PED_UNIDADES_ASIGNADAS = 0,
 	Eta = STR_TO_DATE(@Eta,'%Y%m%d');
@@ -475,8 +475,8 @@ PaisDestino,
 @dummy,
 @dummy,
 @dummy,
-@FecDis,
 @dummy,
+@FecEnt,
 @dummy,
 @dummy,
 @dummy,
@@ -568,7 +568,7 @@ SET
 	FPE = str_to_date(@FPE, '%d-%m-%Y'),
 	FPD = str_to_date(@FPD, '%d-%m-%Y'),
 	FPAN = str_to_date(@FPAN, '%d-%m-%Y'),
-	FecDis = str_to_date(@FecDis, '%d-%m-%Y'),
+	FecEnt = str_to_date(@FecEnt, '%d-%m-%Y'),
 	RoundVentas = str_to_date(@RoundVentas, '%Y-%m'),
 	PED_UNIDADES_ASIGNADAS = 0,
 	Eta = STR_TO_DATE(@Eta,'%Y%m%d');
@@ -581,8 +581,6 @@ DELETE FROM Pedidos WHERE StatusMovimientodeMcia != 'A';
 
 UPDATE Pedidos SET Eta = adddate(curdate(), INTERVAL 2-DAYOFWEEK(curdate()) DAY) WHERE Eta = "0000-00-00" AND FPAN < curdate();
 UPDATE Pedidos Set Eta = FPAN where ETA = "0000-00-00";
-
-create view PedidoView as (select DocEntrega, PosPedido, PosOrdenFac, count(PosOrdenFac) CantPosOrdenFac from Pedidos group by DocEntrega, PosPedido Order by DocEntrega);
 
 CALL PRO_PED_VIEW();
 CALL PRO_ASI_COM_INC();
