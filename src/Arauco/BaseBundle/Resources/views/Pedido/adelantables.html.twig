@@ -22,6 +22,7 @@
       {% block csv %}
         <h2>Pedidos Adelantables por ETA [ {{ Porcentaje }}% ]</h2>
 <a class="text-info" href="{{ path ('arauco_pedido_adelantables_csv') }}">Exportar a .csv <i class="icon-download-alt"></i></a>
+<a class="text-info" href="{{ path ('arauco_pedido_adelantables_txt') }}">Exportar a .txt <i class="icon-download-alt"></i></a>
       {% endblock %}
       <br />
       <br />
@@ -32,8 +33,8 @@
             <th>Eta</th>
             <th>DocEntrega</th>
             <th>FPE</th>
-            <th>N. FPAN</th>
             <th>N. FPD</th>
+            <th>N. FPAN</th>
             <th>VolPedido</th>
           </tr>
         </thead>

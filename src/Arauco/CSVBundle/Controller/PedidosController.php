@@ -1378,8 +1378,8 @@ class PedidosController extends Controller
                         $pedido['Eta']->format('d-m-Y'),
                         $DocEntrega,
                         $pedido['FPE']->format('d-m-Y'),
-                        $NFPAN,
                         $NFPD,
+                        $NFPAN,
                         $VolPedido
                     )
                 );
@@ -1423,6 +1423,23 @@ class PedidosController extends Controller
 
         $response = $this->render('AraucoBaseBundle:Pedido:adelantablesCsv.html.twig', array('data' => $entregasFinal ));
         $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
+
+        return $response;
+    }
+
+    /**
+     * @Route("/pedido/adelantables/txt", name="arauco_pedido_adelantables_txt")
+     */
+    public function pedidosadelantablestxtAction ()
+    {
+        $filename = "TXTAdelantables".date("Y_m_d_His").".txt";
+
+        $aux = $this->pedidosadelantablesAction();
+        $entregasFinal = $aux['Adelantables'];
+
+        $response = $this->render('AraucoBaseBundle:Pedido:adelantablesTxt.html.twig', array('data' => $entregasFinal ));
+        $response->headers->set('Content-Type', 'text/plain');
         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
 
         return $response;

@@ -193,9 +193,9 @@ class Pedidos
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="FecDis", type="date" , nullable=true)
+     * @ORM\Column(name="FecEnt", type="date" , nullable=true)
      */
-    private $FecDis;
+    private $FecEnt;
 
     /**
      * @var \DateTime
@@ -788,26 +788,26 @@ class Pedidos
     }
 
     /**
-     * Set FecDis
+     * Set FecEnt
      *
      * @param \DateTime $fecDis
      * @return Pedidos
      */
-    public function setFecDis($fecDis)
+    public function setFecEnt($fecDis)
     {
-        $this->FecDis = $fecDis;
+        $this->FecEnt = $fecDis;
     
         return $this;
     }
 
     /**
-     * Get FecDis
+     * Get FecEnt
      *
      * @return \DateTime 
      */
-    public function getFecDis()
+    public function getFecEnt()
     {
-        return $this->FecDis;
+        return $this->FecEnt;
     }
 
     /**

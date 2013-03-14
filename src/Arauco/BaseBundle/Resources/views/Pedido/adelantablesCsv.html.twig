@@ -1,5 +1,5 @@
 {% set point = '.' %}
-ClaseMaterial; Eta; DocEntrega; FPE; NFPAN; NFPD; VolPedido
+ClaseMaterial; Eta; DocEntrega; FPE; NFPD; NFPAN; VolPedido
 {% for entrega in data %}
 {{ entrega[0] }};{{ entrega[1] }};{{ entrega[2] }};{{ entrega[3] }};{{ entrega[4] }};{{ entrega[5] }};{{ entrega[6]|replace({ (point) : ','})|trim }}
 {% endfor %}
