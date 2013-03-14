@@ -170,7 +170,7 @@
             {% block AASAPASA %}
             {% endblock %}
             <div class="container" id="filtro">
-            <form action="{{ path('arauco_pedido_index') }}" method="post" {{ form_enctype(form) }}>
+            <form action="{{ path(formPath) }}" method="post" {{ form_enctype(form) }}>
                 <h4>Filtrar por Clase_Material</h4>
                 <div class="control-group" style="padding-bottom: 230px;">
                     {% set count = 1 %}

@@ -269,11 +269,15 @@ class PedidosController extends Controller
      */
     public function importAction(Request $request)
     {
-        $listaClaseMaterial = array();
         $formBuilder = $this->createFormBuilder();
         $session = $this->getRequest()->getSession();
-
         
+        if (!is_null($session->get('org_venta'))){
+            $session->remove('org_venta');
+        }
+
+        # Se agregan los checkboxes al formulario
+        # sacando las opciones de $this->ClaseMaterial.
         $formBuilder->add('filtroForm', 'choice', array(
             'choices' => $this->claseMaterial,
             'multiple' => true,
@@ -282,6 +286,8 @@ class PedidosController extends Controller
 
         $form = $formBuilder->getForm();
 
+        # Se guarda en la sesión el contenido del formulario
+        # enviado por método POST.
         if ($request->getMethod() == 'POST') {
             $form->bind( $request );
             $formData = $form->getData();
@@ -291,34 +297,27 @@ class PedidosController extends Controller
                 foreach ($formData as $key => $data) {
                     foreach ($data as $value) {
                         $sessionData[$key][$value] = $value;
-                        $listaClaseMaterial[] = $this->claseMaterial[$value];
                     }
                     $session->set('filtro', $sessionData);
                 }
             }
         } else {
-            # Se llena el formulario con la sesión, en caso de que exista.
+            # En caso de no haber enviado el formulario
+            # se llena el formulario con el contenido
+            # de la sesión, en caso de que ésta exista.
             $sessionFilter = $session->get('filtro');
             if (!is_null($sessionFilter)) {
                 $form->bind( $sessionFilter );
-                $formData = $form->getData();
-                foreach ($formData as $key => $data) {
-                    foreach ($data as $value) {
-                        $listaClaseMaterial[] = $this->claseMaterial[$value];
-                    }
-                }
             }
         }
 
-        # Esto se hace para agregar el 'IN' a la consulta SQL
-        # SÓLO si se ha seleccionado alguno de los checkboxes.
-        if (count($listaClaseMaterial) == 0 || count($listaClaseMaterial) == 27){
-            $condicionConsultaClaseMaterial = "";
-            $session->remove('filtro');
-        } else {
-            $condicionConsultaClaseMaterial = "AND P.ClaseMaterial IN ('".implode("', '",$listaClaseMaterial)."')";
-        }
-
+        # En el contexto de este action, getSessionFilter sólo retornará
+        # la lista de checkboxes seleccionados o string vacío para el caso
+        # de Clase_Material; para OrgVenta retornará siempre string vació,
+        # pues se elimina 'org_venta' de la sesión al comienzo, por eso
+        # la variable recibe este nombre.
+        $condicionConsultaClaseMaterial = $this->getSessionFilter();
+        
         for ($i = 0; $i < 8; $i++) {
 
             $dateconvert = $this->dateconvert($i);
@@ -489,6 +488,7 @@ class PedidosController extends Controller
         }
         
         return array(
+            'formPath' => $request->get('_route'),
             'form' => $form->createView(),
             'cantEntregasCompletasEnPuerto' => $cantEntregasCompletasEnPuerto,
             'cantEntregasCompletasEnPlanta' => $cantEntregasCompletasEnPlanta,
@@ -506,10 +506,10 @@ class PedidosController extends Controller
      */
     public function importpasaAction(Request $request)
     {
-        $listaClaseMaterial = array();
         $formBuilder = $this->createFormBuilder();
         $session = $this->getRequest()->getSession();
 
+        $session->set('org_venta', 'pasa');
         
         $formBuilder->add('filtroForm', 'choice', array(
             'choices' => $this->claseMaterial,
@@ -528,7 +528,6 @@ class PedidosController extends Controller
                 foreach ($formData as $key => $data) {
                     foreach ($data as $value) {
                         $sessionData[$key][$value] = $value;
-                        $listaClaseMaterial[] = $this->claseMaterial[$value];
                     }
                     $session->set('filtro', $sessionData);
                 }
@@ -538,23 +537,13 @@ class PedidosController extends Controller
             $sessionFilter = $session->get('filtro');
             if (!is_null($sessionFilter)) {
                 $form->bind( $sessionFilter );
-                $formData = $form->getData();
-                foreach ($formData as $key => $data) {
-                    foreach ($data as $value) {
-                        $listaClaseMaterial[] = $this->claseMaterial[$value];
-                    }
-                }
             }
         }
 
-        # Esto se hace para agregar el 'IN' a la consulta SQL
-        # SÓLO si se ha seleccionado alguno de los checkboxes.
-        if (count($listaClaseMaterial) == 0 || count($listaClaseMaterial) == 27){
-            $condicionConsultaClaseMaterial = "";
-            $session->remove('filtro');
-        } else {
-            $condicionConsultaClaseMaterial = "AND P.ClaseMaterial IN ('".implode("', '",$listaClaseMaterial)."')";
-        }
+        # En el contexto de este action, getSessionFilter()
+        # obtiene de la sesión tanto el filtro por Clase_Material
+        # como por OrgVenta.
+        $sessionFilter = $this->getSessionFilter();
         
         for ($i = 0; $i < 8; $i++) {
             $dateconvert = $this->dateconvert($i);
@@ -572,9 +561,8 @@ class PedidosController extends Controller
                     P.Eta >='".$start_week."'
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'CPU'
-                    AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
                     AND P.StatusMovimientodeMcia = 'A'".
-                    $condicionConsultaClaseMaterial
+                    $sessionFilter
                     );
 
             $cantEntregasCompletasEnPuerto[$i] = round($query->getSingleScalarResult()/1000,3);
@@ -591,9 +579,8 @@ class PedidosController extends Controller
                     P.Eta >='".$start_week."'
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'CPL'
-                    AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
                     AND P.StatusMovimientodeMcia = 'A'".
-                    $condicionConsultaClaseMaterial
+                    $sessionFilter
                     );
 
             $cantEntregasCompletasEnPlanta[$i] = round($query2->getSingleScalarResult()/1000,3);
@@ -611,9 +598,8 @@ class PedidosController extends Controller
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_ETA = TRUE
-                    AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
                     AND P.StatusMovimientodeMcia = 'A'".
-                    $condicionConsultaClaseMaterial
+                    $sessionFilter
                     );
 
             $cantEntregasCompletablesETA[$i] = round($query3->getSingleScalarResult()/1000,3);
@@ -631,9 +617,8 @@ class PedidosController extends Controller
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_FPE = TRUE
-                    AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
                     AND P.StatusMovimientodeMcia = 'A'".
-                    $condicionConsultaClaseMaterial
+                    $sessionFilter
                     );
 
             $cantEntregasCompletablesFPE[$i] = round($query31->getSingleScalarResult()/1000,3);
@@ -654,9 +639,8 @@ class PedidosController extends Controller
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_ETA = FALSE
-                    AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
                     AND P.StatusMovimientodeMcia = 'A'".
-                    $condicionConsultaClaseMaterial
+                    $sessionFilter
                     );
 
             $cantCompletadeEntregasIncompletasETA[$i] = round($query41->getSingleScalarResult()/1000,3);
@@ -674,9 +658,8 @@ class PedidosController extends Controller
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_ETA = FALSE
-                    AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
                     AND P.StatusMovimientodeMcia = 'A'".
-                    $condicionConsultaClaseMaterial
+                    $sessionFilter
                     );
 
             $cantIncompletadeEntregasIncompletasETA[$i] = round($query42->getSingleScalarResult()/1000,3);
@@ -699,9 +682,8 @@ class PedidosController extends Controller
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_FPE = FALSE
-                    AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
                     AND P.StatusMovimientodeMcia = 'A'".
-                    $condicionConsultaClaseMaterial
+                    $sessionFilter
                     );
 
             $cantCompletadeEntregasIncompletasFPE[$i] = round($query51->getSingleScalarResult()/1000,3);
@@ -719,9 +701,8 @@ class PedidosController extends Controller
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_FPE = FALSE
-                    AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)
                     AND P.StatusMovimientodeMcia = 'A'".
-                    $condicionConsultaClaseMaterial
+                    $sessionFilter
                     );
 
             $cantIncompletadeEntregasIncompletasFPE[$i] = round($query52->getSingleScalarResult()/1000,3);
@@ -733,6 +714,7 @@ class PedidosController extends Controller
         }
 
         return array(
+            'formPath' => $request->get('_route'),
             'form' => $form->createView(),
             'cantEntregasCompletasEnPuerto' => $cantEntregasCompletasEnPuerto,
             'cantEntregasCompletasEnPlanta' => $cantEntregasCompletasEnPlanta,
@@ -752,11 +734,11 @@ class PedidosController extends Controller
      */
     public function importaasaAction(Request $request)
     {
-        $listaClaseMaterial = array();
         $formBuilder = $this->createFormBuilder();
         $session = $this->getRequest()->getSession();
-
         
+        $session->set('org_venta', 'aasa');
+
         $formBuilder->add('filtroForm', 'choice', array(
             'choices' => $this->claseMaterial,
             'multiple' => true,
@@ -774,7 +756,6 @@ class PedidosController extends Controller
                 foreach ($formData as $key => $data) {
                     foreach ($data as $value) {
                         $sessionData[$key][$value] = $value;
-                        $listaClaseMaterial[] = $this->claseMaterial[$value];
                     }
                     $session->set('filtro', $sessionData);
                 }
@@ -784,23 +765,13 @@ class PedidosController extends Controller
             $sessionFilter = $session->get('filtro');
             if (!is_null($sessionFilter)) {
                 $form->bind( $sessionFilter );
-                $formData = $form->getData();
-                foreach ($formData as $key => $data) {
-                    foreach ($data as $value) {
-                        $listaClaseMaterial[] = $this->claseMaterial[$value];
-                    }
-                }
             }
         }
 
-        # Esto se hace para agregar el 'IN' a la consulta SQL
-        # SÓLO si se ha seleccionado alguno de los checkboxes.
-        if (count($listaClaseMaterial) == 0 || count($listaClaseMaterial) == 27){
-            $condicionConsultaClaseMaterial = "";
-            $session->remove('filtro');
-        } else {
-            $condicionConsultaClaseMaterial = "AND P.ClaseMaterial IN ('".implode("', '",$listaClaseMaterial)."')";
-        }
+        # En el contexto de este action, getSessionFilter()
+        # obtiene de la sesión tanto el filtro por Clase_Material
+        # como por OrgVenta.
+        $sessionFilter = $this->getSessionFilter();
         
         for ($i = 0; $i < 8; $i++) {
             $dateconvert = $this->dateconvert($i);
@@ -818,9 +789,8 @@ class PedidosController extends Controller
                     P.Eta >='".$start_week."'
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'CPU'
-                    AND P.OrgVenta = 1000
                     AND P.StatusMovimientodeMcia = 'A'".
-                    $condicionConsultaClaseMaterial
+                    $sessionFilter
                     );
 
             $cantEntregasCompletasEnPuerto[$i] = round($query->getSingleScalarResult()/1000,3);
@@ -837,9 +807,8 @@ class PedidosController extends Controller
                     P.Eta >='".$start_week."'
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'CPL'
-                    AND P.OrgVenta = 1000
                     AND P.StatusMovimientodeMcia = 'A'".
-                    $condicionConsultaClaseMaterial
+                    $sessionFilter
                     );
 
             $cantEntregasCompletasEnPlanta[$i] = round($query2->getSingleScalarResult()/1000,3);
@@ -857,9 +826,8 @@ class PedidosController extends Controller
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_ETA = TRUE
-                    AND P.OrgVenta = 1000
                     AND P.StatusMovimientodeMcia = 'A'".
-                    $condicionConsultaClaseMaterial
+                    $sessionFilter
                     );
 
             $cantEntregasCompletablesETA[$i] = round($query3->getSingleScalarResult()/1000,3);
@@ -877,9 +845,8 @@ class PedidosController extends Controller
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_FPE = TRUE
-                    AND P.OrgVenta = 1000
                     AND P.StatusMovimientodeMcia = 'A'".
-                    $condicionConsultaClaseMaterial
+                    $sessionFilter
                     );
 
             $cantEntregasCompletablesFPE[$i] = round($query31->getSingleScalarResult()/1000,3);
@@ -900,9 +867,8 @@ class PedidosController extends Controller
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_ETA = FALSE
-                    AND P.OrgVenta = 1000
                     AND P.StatusMovimientodeMcia = 'A'".
-                    $condicionConsultaClaseMaterial
+                    $sessionFilter
                     );
 
             $cantCompletadeEntregasIncompletasETA[$i] = round($query41->getSingleScalarResult()/1000,3);
@@ -920,9 +886,8 @@ class PedidosController extends Controller
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_ETA = FALSE
-                    AND P.OrgVenta = 1000
                     AND P.StatusMovimientodeMcia = 'A'".
-                    $condicionConsultaClaseMaterial
+                    $sessionFilter
                     );
 
             $cantIncompletadeEntregasIncompletasETA[$i] = round($query42->getSingleScalarResult()/1000,3);
@@ -945,9 +910,8 @@ class PedidosController extends Controller
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_FPE = FALSE
-                    AND P.OrgVenta = 1000
                     AND P.StatusMovimientodeMcia = 'A'".
-                    $condicionConsultaClaseMaterial
+                    $sessionFilter
                     );
 
             $cantCompletadeEntregasIncompletasFPE[$i] = round($query51->getSingleScalarResult()/1000,3);
@@ -965,9 +929,8 @@ class PedidosController extends Controller
                     AND P.Eta <='".$end_week."'
                     AND P.StatusComplete = 'NO'
                     AND P.PED_COMPLETABLE_FPE = FALSE
-                    AND P.OrgVenta = 1000
                     AND P.StatusMovimientodeMcia = 'A'".
-                    $condicionConsultaClaseMaterial
+                    $sessionFilter
                     );
 
             $cantIncompletadeEntregasIncompletasFPE[$i] = round($query52->getSingleScalarResult()/1000,3);
@@ -979,6 +942,7 @@ class PedidosController extends Controller
         }
 
         return array(
+            'formPath' => $request->get('_route'),
             'form' => $form->createView(),
             'cantEntregasCompletasEnPuerto' => $cantEntregasCompletasEnPuerto,
             'cantEntregasCompletasEnPlanta' => $cantEntregasCompletasEnPlanta,
@@ -1658,6 +1622,8 @@ class PedidosController extends Controller
         $listaClaseMaterial = array();
         $session = $this->getRequest()->getSession();
         $sessionFilter = $session->get('filtro');
+        $orgVentaSession = $session->get('org_venta');
+
         if (!is_null($sessionFilter)) {
             foreach ($sessionFilter as $key => $data) {
                 foreach ($data as $value) {
@@ -1673,6 +1639,18 @@ class PedidosController extends Controller
             $claseMaterial = "AND P.ClaseMaterial IN ('".implode("', '",$listaClaseMaterial)."')";
         }
         
-        return $claseMaterial;
+        $filter = $claseMaterial;
+        
+        if (!is_null($orgVentaSession)) {
+            switch ($orgVentaSession) {
+                case 'aasa':
+                    $filter = $filter . " AND P.OrgVenta = 1000";
+                    break;
+                case 'pasa':
+                    $filter = $filter . " AND (P.OrgVenta = 3000 OR P.OrgVenta = 3100)";
+            }
+        }
+        
+        return $filter;
     }
 }
